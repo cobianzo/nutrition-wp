@@ -1,48 +1,35 @@
-# Wordpress - ignore core, configuration, examples, uploads and logs.
-# https://github.com/github/gitignore/blob/main/WordPress.gitignore
-
-# Core
-#
-# Note: if you want to stage/commit WP core files
-# you can delete this whole section/until Configuration.
-/wp-admin/
-/wp-content/index.php
-/wp-content/languages
-/wp-content/plugins/index.php
-/wp-content/themes/index.php
-/wp-includes/
-/index.php
-/license.txt
-/readme.html
-/wp-*.php
-/xmlrpc.php
-
-# Configuration
-wp-config.php
-
-# Example themes
-/wp-content/themes/twenty*/
-
-# Example plugin
-/wp-content/plugins/hello.php
-
-# Uploads
-/wp-content/uploads/
-
-# Log files
+sgo-config.php
+db/1-old
+.DS_Store
+.sass-cache
+.cache
+.parcel-cache
+bower_components
+node_modules
+understrap.zip
+wflogs/*
+#dist
+dist-product
+npm-debug.log
+#plugins/query-monitor
+updraft/*
 *.log
+*.sqlite
+mmr/*
+cache/*
+wflogs/config.php
+*.log
+plugins/advanced-database-cleaner
+plugins-old-todelete
+# uploads has its own repo now
+uploads/*
+uploads
+#uploads/activity-log/*
+#uploads/**/*-*x*[0-9].*
+#uploads/db-backup/*
+#uploads/*.mp4
+#*.mp4
+db/3-untracked/*
+updraft/*
 
-# htaccess
-/.htaccess
-
-# All plugins
-#
-# Note: If you wish to whitelist plugins,
-# uncomment the next line
-#/wp-content/plugins
-
-# All themes
-#
-# Note: If you wish to whitelist themes,
-# uncomment the next line
-#/wp-content/themes
+asim-diet
