@@ -55,3 +55,11 @@ div[data-name="email"] {
     }
   }
 }
+
+/* Hide things for editors: */
+
+body.user-role-editor {
+  #authordiv {
+    display: none;
+  }
+}
