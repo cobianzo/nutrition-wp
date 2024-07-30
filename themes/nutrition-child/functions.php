@@ -1,18 +1,20 @@
 <?php
 
+add_theme_support( 'block-patterns' );
+
 
 require_once __DIR__ . '/class-cliente.php';
+require_once __DIR__ . '/class-dieta.php';
 require_once __DIR__ . '/includes/init.php';
 
 
-/**
- * Languages
- */
-// add_action( 'after_setup_theme', 'load_nutrition_textdomain' );
-// function load_nutrition_textdomain() {
-//   load_child_theme_textdomain( 'asim', get_stylesheet_directory() . '/languages' );
-// }
-
+add_filter('admin_body_class', function($classes) {
+    if (is_admin()) {
+        $user = wp_get_current_user();
+        $classes .= ' user-role-' . $user->roles[0];
+    }
+    return $classes;
+});
 
 /**
  * DEBUGGING HELPERS

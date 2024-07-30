@@ -139,6 +139,10 @@ class Cliente {
 			return $field;
 		}, 10, 1 );
 
+    add_filter('acf/load_field', [__CLASS__, 'client_dashboard'] );
+    
+    // Add admin styles for Edit client in CMS:
+    require_once( __DIR__ . '/admin/admin-styles.php' );
 	}
 
 	/**
@@ -308,6 +312,22 @@ class Cliente {
       return get_user_by( 'id', $client_double_check );
     }
     return null;
+  }
+
+  /** Dashboard in client CMS page */
+  public static function client_dashboard( $field ) {
+
+    if ( 'field_66a8b57619e9d' === $field['key'] ) {
+
+      $post_id = isset($_REQUEST['post'])? $_REQUEST['post'] : false;
+
+      $field['label'] = 'Actions';
+      ob_start();
+      get_template_part( 'cliente-dashboard', '', ['post_id' => $post_id] );
+      $field['message'] = ob_get_clean();
+    }
+    
+    return $field;
   }
 }
 
