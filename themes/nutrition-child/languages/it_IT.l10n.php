@@ -1,0 +1,2 @@
+<?php
+return ['project-id-version'=>'nutrition-child','report-msgid-bugs-to'=>'','pot-creation-date'=>'2024-07-30 06:49+0000','po-revision-date'=>'2024-07-30 06:50+0000','last-translator'=>'','language-team'=>'Italian','language'=>'it_IT','plural-forms'=>'nplurals=2; plural=n != 1;','mime-version'=>'1.0','content-type'=>'text/plain; charset=UTF-8','content-transfer-encoding'=>'8bit','x-generator'=>'Loco https://localise.biz/','x-loco-version'=>'2.6.11; wp-6.6.1','x-domain'=>'asim','messages'=>['<h3>Associated WP User profile:</h3>'=>'<h3>Profilo Wordpress associato:</h3>']];

@@ -32,4 +32,5 @@ uploads
 db/3-untracked/*
 updraft/*
 
+backups-dup-lite
 asim-diet
