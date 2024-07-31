@@ -12,16 +12,19 @@ if ( ! class_exists( 'acf_options_page' ) ) :
 		var $pages = array();
 
 
-		/**
-		 * Initialize filters, action, variables and includes
-		 *
-		 * @type    function
-		 * @date    23/06/12
-		 * @since   5.0.0
-		 *
-		 * @param   n/a
-		 * @return  n/a
-		 */
+		/*
+		*  __construct
+		*
+		*  Initialize filters, action, variables and includes
+		*
+		*  @type    function
+		*  @date    23/06/12
+		*  @since   5.0.0
+		*
+		*  @param   n/a
+		*  @return  n/a
+		*/
+
 		function __construct() {
 
 			/* do nothing */
@@ -111,16 +114,19 @@ if ( ! class_exists( 'acf_options_page' ) ) :
 		}
 
 
-		/**
-		 * This function will store an options page settings
-		 *
-		 * @type    function
-		 * @date    9/6/17
-		 * @since   5.6.0
-		 *
-		 * @param   $page (array)
-		 * @return  n/a
-		 */
+		/*
+		*  add_page
+		*
+		*  This function will store an options page settings
+		*
+		*  @type    function
+		*  @date    9/6/17
+		*  @since   5.6.0
+		*
+		*  @param   $page (array)
+		*  @return  n/a
+		*/
+
 		function add_page( $page ) {
 
 			// validate
@@ -140,16 +146,19 @@ if ( ! class_exists( 'acf_options_page' ) ) :
 		}
 
 
-		/**
-		 * description
-		 *
-		 * @type    function
-		 * @date    9/6/17
-		 * @since   5.6.0
-		 *
-		 * @param   $post_id (int)
-		 * @return  $post_id (int)
-		 */
+		/*
+		*  add_sub_page
+		*
+		*  description
+		*
+		*  @type    function
+		*  @date    9/6/17
+		*  @since   5.6.0
+		*
+		*  @param   $post_id (int)
+		*  @return  $post_id (int)
+		*/
+
 		function add_sub_page( $page ) {
 
 			// validate
@@ -170,17 +179,20 @@ if ( ! class_exists( 'acf_options_page' ) ) :
 		}
 
 
-		/**
-		 * This function will update an options page settings
-		 *
-		 * @type    function
-		 * @date    9/6/17
-		 * @since   5.6.0
-		 *
-		 * @param   $slug (string)
-		 * @param   $data (array)
-		 * @return  (array)
-		 */
+		/*
+		*  update_page
+		*
+		*  This function will update an options page settings
+		*
+		*  @type    function
+		*  @date    9/6/17
+		*  @since   5.6.0
+		*
+		*  @param   $slug (string)
+		*  @param   $data (array)
+		*  @return  (array)
+		*/
+
 		function update_page( $slug = '', $data = array() ) {
 
 			// vars
@@ -202,32 +214,38 @@ if ( ! class_exists( 'acf_options_page' ) ) :
 		}
 
 
-		/**
-		 * This function will return an options page settings
-		 *
-		 * @type    function
-		 * @date    6/07/2016
-		 * @since   5.4.0
-		 *
-		 * @param   $slug (string)
-		 * @return  (mixed)
-		 */
+		/*
+		*  get_page
+		*
+		*  This function will return an options page settings
+		*
+		*  @type    function
+		*  @date    6/07/2016
+		*  @since   5.4.0
+		*
+		*  @param   $slug (string)
+		*  @return  (mixed)
+		*/
+
 		function get_page( $slug ) {
 
 			return isset( $this->pages[ $slug ] ) ? $this->pages[ $slug ] : null;
 		}
 
 
-		/**
-		 * This function will return all options page settings
-		 *
-		 * @type    function
-		 * @date    6/07/2016
-		 * @since   5.4.0
-		 *
-		 * @param   $slug (string)
-		 * @return  (mixed)
-		 */
+		/*
+		*  get_pages
+		*
+		*  This function will return all options page settings
+		*
+		*  @type    function
+		*  @date    6/07/2016
+		*  @since   5.4.0
+		*
+		*  @param   $slug (string)
+		*  @return  (mixed)
+		*/
+
 		function get_pages() {
 
 			return $this->pages;
@@ -236,17 +254,17 @@ if ( ! class_exists( 'acf_options_page' ) ) :
 
 
 	/*
-	 * acf_options_page
-	 *
-	 * This function will return the options page instance
-	 *
-	 * @type    function
-	 * @date    9/6/17
-	 * @since   5.6.0
-	 *
-	 * @param   n/a
-	 * @return  (object)
-	 */
+	*  acf_options_page
+	*
+	*  This function will return the options page instance
+	*
+	*  @type    function
+	*  @date    9/6/17
+	*  @since   5.6.0
+	*
+	*  @param   n/a
+	*  @return  (object)
+	*/
 
 	function acf_options_page() {
 
@@ -269,35 +287,42 @@ if ( ! class_exists( 'acf_options_page' ) ) :
 endif; // class_exists check
 
 
-/**
- * alias of acf_options_page()->add_page()
- *
- * @type    function
- * @date    24/02/2014
- * @since   5.0.0
- *
- * @param   $page (mixed)
- * @return  (array)
- */
+/*
+*  acf_add_options_page
+*
+*  alias of acf_options_page()->add_page()
+*
+*  @type    function
+*  @date    24/02/2014
+*  @since   5.0.0
+*
+*  @param   $page (mixed)
+*  @return  (array)
+*/
+
 if ( ! function_exists( 'acf_add_options_page' ) ) :
 
 	function acf_add_options_page( $page = '' ) {
+
 		return acf_options_page()->add_page( $page );
 	}
 
 endif;
 
 
-/**
- * alias of acf_options_page()->add_sub_page()
- *
- * @type    function
- * @date    24/02/2014
- * @since   5.0.0
- *
- * @param   $page (mixed)
- * @return  (array)
- */
+/*
+*  acf_add_options_sub_page
+*
+*  alias of acf_options_page()->add_sub_page()
+*
+*  @type    function
+*  @date    24/02/2014
+*  @since   5.0.0
+*
+*  @param   $page (mixed)
+*  @return  (array)
+*/
+
 if ( ! function_exists( 'acf_add_options_sub_page' ) ) :
 
 	function acf_add_options_sub_page( $page = '' ) {
@@ -308,17 +333,20 @@ if ( ! function_exists( 'acf_add_options_sub_page' ) ) :
 endif;
 
 
-/**
- * alias of acf_options_page()->update_page()
- *
- * @type    function
- * @date    24/02/2014
- * @since   5.0.0
- *
- * @param   $slug (string)
- * @param   $page (mixed)
- * @return  (array)
- */
+/*
+*  acf_update_options_page
+*
+*  alias of acf_options_page()->update_page()
+*
+*  @type    function
+*  @date    24/02/2014
+*  @since   5.0.0
+*
+*  @param   $slug (string)
+*  @param   $page (mixed)
+*  @return  (array)
+*/
+
 if ( ! function_exists( 'acf_update_options_page' ) ) :
 
 	function acf_update_options_page( $slug = '', $data = array() ) {
@@ -329,16 +357,19 @@ if ( ! function_exists( 'acf_update_options_page' ) ) :
 endif;
 
 
-/**
- * This function will return an options page settings
- *
- * @type    function
- * @date    24/02/2014
- * @since   5.0.0
- *
- * @param   $slug (string)
- * @return  (array)
- */
+/*
+*  acf_get_options_page
+*
+*  This function will return an options page settings
+*
+*  @type    function
+*  @date    24/02/2014
+*  @since   5.0.0
+*
+*  @param   $slug (string)
+*  @return  (array)
+*/
+
 if ( ! function_exists( 'acf_get_options_page' ) ) :
 
 	function acf_get_options_page( $slug ) {
@@ -361,16 +392,19 @@ if ( ! function_exists( 'acf_get_options_page' ) ) :
 endif;
 
 
-/**
- * This function will return all options page settings
- *
- * @type    function
- * @date    24/02/2014
- * @since   5.0.0
- *
- * @param   n/a
- * @return  (array)
- */
+/*
+*  acf_get_options_pages
+*
+*  This function will return all options page settings
+*
+*  @type    function
+*  @date    24/02/2014
+*  @since   5.0.0
+*
+*  @param   n/a
+*  @return  (array)
+*/
+
 if ( ! function_exists( 'acf_get_options_pages' ) ) :
 
 	function acf_get_options_pages() {
@@ -448,16 +482,19 @@ if ( ! function_exists( 'acf_get_options_pages' ) ) :
 endif;
 
 
-/**
- * This function is used to customize the options page admin menu title
- *
- * @type    function
- * @date    13/07/13
- * @since   4.0.0
- *
- * @param   $title (string)
- * @return  n/a
- */
+/*
+*  acf_set_options_page_title
+*
+*  This function is used to customize the options page admin menu title
+*
+*  @type    function
+*  @date    13/07/13
+*  @since   4.0.0
+*
+*  @param   $title (string)
+*  @return  n/a
+*/
+
 if ( ! function_exists( 'acf_set_options_page_title' ) ) :
 
 	function acf_set_options_page_title( $title = 'Options' ) {
@@ -474,16 +511,19 @@ if ( ! function_exists( 'acf_set_options_page_title' ) ) :
 endif;
 
 
-/**
- * This function is used to customize the options page admin menu name
- *
- * @type    function
- * @date    13/07/13
- * @since   4.0.0
- *
- * @param   $title (string)
- * @return  n/a
- */
+/*
+*  acf_set_options_page_menu
+*
+*  This function is used to customize the options page admin menu name
+*
+*  @type    function
+*  @date    13/07/13
+*  @since   4.0.0
+*
+*  @param   $title (string)
+*  @return  n/a
+*/
+
 if ( ! function_exists( 'acf_set_options_page_menu' ) ) :
 
 	function acf_set_options_page_menu( $title = 'Options' ) {
@@ -499,16 +539,19 @@ if ( ! function_exists( 'acf_set_options_page_menu' ) ) :
 endif;
 
 
-/**
- * This function is used to customize the options page capability. Defaults to 'edit_posts'
- *
- * @type    function
- * @date    13/07/13
- * @since   4.0.0
- *
- * @param   $title (string)
- * @return  n/a
- */
+/*
+*  acf_set_options_page_capability
+*
+*  This function is used to customize the options page capability. Defaults to 'edit_posts'
+*
+*  @type    function
+*  @date    13/07/13
+*  @since   4.0.0
+*
+*  @param   $title (string)
+*  @return  n/a
+*/
+
 if ( ! function_exists( 'acf_set_options_page_capability' ) ) :
 
 	function acf_set_options_page_capability( $capability = 'edit_posts' ) {
@@ -524,16 +567,19 @@ if ( ! function_exists( 'acf_set_options_page_capability' ) ) :
 endif;
 
 
-/**
- * This is an old function which is now referencing the new 'acf_add_options_sub_page' function
- *
- * @type    function
- * @since   3.0.0
- * @date    29/01/13
- *
- * @param   {string}    $title
- * @return  N/A
- */
+/*
+*  register_options_page()
+*
+*  This is an old function which is now referencing the new 'acf_add_options_sub_page' function
+*
+*  @type    function
+*  @since   3.0.0
+*  @date    29/01/13
+*
+*  @param   {string}    $title
+*  @return  N/A
+*/
+
 if ( ! function_exists( 'register_options_page' ) ) :
 
 	function register_options_page( $page = '' ) {

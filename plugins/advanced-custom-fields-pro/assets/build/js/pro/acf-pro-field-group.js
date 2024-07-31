@@ -204,7 +204,6 @@
     initialize: function () {
       // add sortable
       var $tbody = this.$el.parent();
-      $tbody.css('position', 'relative');
       if (!$tbody.hasClass('ui-sortable')) {
         $tbody.sortable({
           items: '> .acf-field-setting-fc_layout',
@@ -255,7 +254,6 @@
       return $settings.hasClass('open');
     },
     open: function (element, isAddingLayout) {
-      const $header = element ? element.children('.acf-field-settings-fc_head') : this.$el.children('.acf-field-settings-fc_head');
       const $settings = element ? element.children('.acf-field-layout-settings') : this.$el.children('.acf-field-layout-settings');
       const toggle = element ? element.find('.toggle-indicator').first() : this.$el.find('.toggle-indicator').first();
 
@@ -277,10 +275,8 @@
         toggle.removeClass('closed');
       }
       $settings.addClass('open');
-      $header.addClass('open');
     },
     close: function () {
-      const $header = this.$el.children('.acf-field-settings-fc_head');
       const $settings = this.$el.children('.acf-field-layout-settings');
       const toggle = this.$el.find('.toggle-indicator').first();
 
@@ -288,7 +284,6 @@
       $settings.slideUp();
       $settings.removeClass('open');
       toggle.removeClass('open');
-      $header.removeClass('open');
       if (!toggle.hasClass('closed')) {
         toggle.addClass('closed');
       }
@@ -309,10 +304,9 @@
       }
     },
     onChangeName: function (e, $el) {
-      const sanitizedName = acf.strSanitize($el.val(), false);
-      $el.val(sanitizedName);
-      this.set('layoutName', sanitizedName);
-      this.$el.attr('data-layout-name', sanitizedName);
+      var name = $el.val();
+      this.set('layoutName', name);
+      this.$el.attr('data-layout-name', name);
     },
     onClickAdd: function (e, $el) {
       e.preventDefault();

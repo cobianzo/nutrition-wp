@@ -34,14 +34,36 @@ if ( ! class_exists( 'ACF_Admin_Field_Groups' ) ) :
 		/**
 		 * Constructor.
 		 *
+		 * @date    5/03/2014
 		 * @since   5.0.0
+		 *
+		 * @return  void
 		 */
 		public function __construct() {
 			add_action( 'admin_menu', array( $this, 'admin_menu' ), 7 );
 			add_action( 'load-edit.php', array( $this, 'handle_redirection' ) );
-			add_action( 'post_class', array( $this, 'get_admin_table_post_classes' ), 10, 3 );
+			add_action( 'admin_footer', array( $this, 'include_pro_features' ) );
 
 			parent::__construct();
+		}
+
+		/**
+		 * Renders HTML for the ACF PRO features upgrade notice.
+		 *
+		 * @return void
+		 */
+		public function include_pro_features() {
+			// Bail if on PRO.
+			if ( acf_is_pro() && acf_pro_is_license_active() ) {
+				return;
+			}
+
+			// Bail if not the edit field groups screen.
+			if ( ! acf_is_screen( 'edit-acf-field-group' ) ) {
+				return;
+			}
+
+			acf_get_view( $this->post_type . '/pro-features' );
 		}
 
 		/**
@@ -58,11 +80,14 @@ if ( ! class_exists( 'ACF_Admin_Field_Groups' ) ) :
 		/**
 		 * Redirects users from ACF 4.0 admin page.
 		 *
-		 * @since 5.7.6
+		 * @date    17/9/18
+		 * @since   5.7.6
+		 *
+		 * @return void
 		 */
 		public function handle_redirection() {
 			if ( isset( $_GET['post_type'] ) && $_GET['post_type'] === 'acf' ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-				wp_safe_redirect( $this->get_admin_url() );
+				wp_redirect( $this->get_admin_url() );
 				exit;
 			}
 		}
@@ -121,7 +146,7 @@ if ( ! class_exists( 'ACF_Admin_Field_Groups' ) ) :
 
 				// Description.
 				case 'acf-description':
-					if ( ( is_string( $post['description'] ) || is_numeric( $post['description'] ) ) && ! empty( $post['description'] ) ) {
+					if ( is_string( $post['description'] ) && ! empty( $post['description'] ) ) {
 						echo '<span class="acf-description">' . acf_esc_html( $post['description'] ) . '</span>';
 					} else {
 						echo '<span class="acf-emdash" aria-hidden="true">—</span>';
@@ -270,31 +295,12 @@ if ( ! class_exists( 'ACF_Admin_Field_Groups' ) ) :
 		}
 
 		/**
-		 * Gets the class(es) to be used by field groups in the list table.
-		 *
-		 * @since 6.2.8
-		 *
-		 * @param array   $classes   An array of the classes used by the field group.
-		 * @param array   $css_class An array of additional classes added to the field group.
-		 * @param integer $post_id   The ID of the field group.
-		 * @return array
-		 */
-		public function get_admin_table_post_classes( $classes, $css_class, $post_id ) {
-			// Bail early if not in the field group list table.
-			if ( ! is_admin() || $this->post_type !== get_post_type( $post_id ) ) {
-				return $classes;
-			}
-
-			return apply_filters( 'acf/field_group/list_table_classes', $classes, $css_class, $post_id );
-		}
-
-		/**
 		 * Fires when trashing a field group.
 		 *
 		 * @date    8/01/2014
 		 * @since   5.0.0
 		 *
-		 * @param   integer $post_id The post ID.
+		 * @param   int $post_id The post ID.
 		 * @return  void
 		 */
 		public function trashed_post( $post_id ) {
@@ -309,7 +315,7 @@ if ( ! class_exists( 'ACF_Admin_Field_Groups' ) ) :
 		 * @date    8/01/2014
 		 * @since   5.0.0
 		 *
-		 * @param   integer $post_id The post ID.
+		 * @param   int $post_id The post ID.
 		 * @return  void
 		 */
 		public function untrashed_post( $post_id ) {
@@ -324,7 +330,7 @@ if ( ! class_exists( 'ACF_Admin_Field_Groups' ) ) :
 		 * @date    8/01/2014
 		 * @since   5.0.0
 		 *
-		 * @param   integer $post_id The post ID.
+		 * @param   int $post_id The post ID.
 		 * @return  void
 		 */
 		public function deleted_post( $post_id ) {
@@ -338,8 +344,8 @@ if ( ! class_exists( 'ACF_Admin_Field_Groups' ) ) :
 		 *
 		 * @since 6.1
 		 *
-		 * @param string  $action The action being performed.
-		 * @param integer $count  The number of items the action was performed on.
+		 * @param string $action The action being performed.
+		 * @param int    $count  The number of items the action was performed on.
 		 * @return string
 		 */
 		public function get_action_notice_text( $action, $count = 1 ) {

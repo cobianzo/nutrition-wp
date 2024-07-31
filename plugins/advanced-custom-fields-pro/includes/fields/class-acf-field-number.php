@@ -5,16 +5,19 @@ if ( ! class_exists( 'acf_field_number' ) ) :
 	class acf_field_number extends acf_field {
 
 
-		/**
-		 * This function will setup the field type data
-		 *
-		 * @type    function
-		 * @date    5/03/2014
-		 * @since   5.0.0
-		 *
-		 * @param   n/a
-		 * @return  n/a
-		 */
+		/*
+		*  initialize
+		*
+		*  This function will setup the field type data
+		*
+		*  @type    function
+		*  @date    5/03/2014
+		*  @since   5.0.0
+		*
+		*  @param   n/a
+		*  @return  n/a
+		*/
+
 		function initialize() {
 
 			// vars
@@ -35,15 +38,18 @@ if ( ! class_exists( 'acf_field_number' ) ) :
 		}
 
 
-		/**
-		 * Create the HTML interface for your field
-		 *
-		 * @param   $field - an array holding all the field's data
-		 *
-		 * @type    action
-		 * @since   3.6
-		 * @date    23/01/13
-		 */
+		/*
+		*  render_field()
+		*
+		*  Create the HTML interface for your field
+		*
+		*  @param   $field - an array holding all the field's data
+		*
+		*  @type    action
+		*  @since   3.6
+		*  @date    23/01/13
+		*/
+
 		function render_field( $field ) {
 
 			// vars
@@ -90,20 +96,23 @@ if ( ! class_exists( 'acf_field_number' ) ) :
 			$html .= '<div class="acf-input-wrap">' . acf_get_text_input( $atts ) . '</div>';
 
 			// return
-			echo $html; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by individual html functions above.
+			echo $html;
 		}
 
 
-		/**
-		 * Create extra options for your field. This is rendered when editing a field.
-		 * The value of $field['name'] can be used (like bellow) to save extra data to the $field
-		 *
-		 * @type    action
-		 * @since   3.6
-		 * @date    23/01/13
-		 *
-		 * @param   $field  - an array holding all the field's data
-		 */
+		/*
+		*  render_field_settings()
+		*
+		*  Create extra options for your field. This is rendered when editing a field.
+		*  The value of $field['name'] can be used (like bellow) to save extra data to the $field
+		*
+		*  @type    action
+		*  @since   3.6
+		*  @date    23/01/13
+		*
+		*  @param   $field  - an array holding all the field's data
+		*/
+
 		function render_field_settings( $field ) {
 
 			// default_value
@@ -198,16 +207,19 @@ if ( ! class_exists( 'acf_field_number' ) ) :
 			);
 		}
 
-		/**
-		 * description
-		 *
-		 * @type    function
-		 * @date    11/02/2014
-		 * @since   5.0.0
-		 *
-		 * @param   $post_id (int)
-		 * @return  $post_id (int)
-		 */
+		/*
+		*  validate_value
+		*
+		*  description
+		*
+		*  @type    function
+		*  @date    11/02/2014
+		*  @since   5.0.0
+		*
+		*  @param   $post_id (int)
+		*  @return  $post_id (int)
+		*/
+
 		function validate_value( $valid, $value, $field, $input ) {
 
 			// remove ','
@@ -245,19 +257,22 @@ if ( ! class_exists( 'acf_field_number' ) ) :
 		}
 
 
-		/**
-		 * This filter is appied to the $value before it is updated in the db
-		 *
-		 * @type    filter
-		 * @since   3.6
-		 * @date    23/01/13
-		 *
-		 * @param   $value - the value which will be saved in the database
-		 * @param   $field - the field array holding all the field options
-		 * @param   $post_id - the post_id of which the value will be saved
-		 *
-		 * @return  $value - the modified value
-		 */
+		/*
+		*  update_value()
+		*
+		*  This filter is appied to the $value before it is updated in the db
+		*
+		*  @type    filter
+		*  @since   3.6
+		*  @date    23/01/13
+		*
+		*  @param   $value - the value which will be saved in the database
+		*  @param   $field - the field array holding all the field options
+		*  @param   $post_id - the $post_id of which the value will be saved
+		*
+		*  @return  $value - the modified value
+		*/
+
 		function update_value( $value, $post_id, $field ) {
 
 			// no formatting needed for empty value
@@ -304,9 +319,9 @@ if ( ! class_exists( 'acf_field_number' ) ) :
 		/**
 		 * Apply basic formatting to prepare the value for default REST output.
 		 *
-		 * @param mixed          $value
-		 * @param string|integer $post_id
-		 * @param array          $field
+		 * @param mixed      $value
+		 * @param string|int $post_id
+		 * @param array      $field
 		 * @return mixed
 		 */
 		public function format_value_for_rest( $value, $post_id, array $field ) {
