@@ -1,3 +1,7 @@
+# TODO:
+
+sync all personal fields: first name, telephone,
+
 # nutrition-wp
 
 Wordpress project, with child theme, to create a nutritionist website
@@ -29,7 +33,7 @@ Development of all the frontend: use of the right parent theme, definition of st
 By the End:
 
 - Cambiare twentytwentyfour per un'altro block theme.
-- Dashboard for Cliente login
+- Dashboard for Cliente login - remove access to anything except the profile.php. Remove even the sidebar.
 - Move ACF into programmatic
 - Internazionalization With Loco Translator
 - Set up permissions. Access to Editor to certain blocks.

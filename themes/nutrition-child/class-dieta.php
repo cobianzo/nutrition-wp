@@ -8,20 +8,30 @@ class Dieta {
    */
   public static function init() {
 
-    add_action('init', [__CLASS__, 'my_custom_dieta_pattern']);
+    add_action('enqueue_block_editor_assets', [__CLASS__, 'script_dieta_rules']);
 
   }
-  public static function my_custom_dieta_pattern() {
-    if (function_exists('register_block_pattern')) {
-        register_block_pattern(
-            'nutrition-child/dieta-pattern', // Un identificador único para el pattern
-            array(
-                'title'       => __('Dieta Predeterminada', 'asim'),
-                'description' => _x('Un patrón para una dieta predeterminada.', 'Block pattern description', 'textdomain'),
-                'content'     => "<!-- wp:paragraph --><p>Contenido predeterminado para dieta...</p><!-- /wp:paragraph -->",
-                'categories'  => ['dieta'],
-            )
-        );
+  public static function script_dieta_rules() {
+    $current_post_type = get_post_type();
+    
+    // Enqueue only for 'diet' post type
+    if ( $current_post_type === 'diet' ) {
+      $script_path = 'build/dieta-rules.js';
+      $asset_file = get_stylesheet_directory() . '/build/dieta-rules.asset.php';
+  
+      if ( file_exists( $asset_file ) ) {
+          $assets = include( $asset_file );
+      } else {
+          wp_die( sprintf('File %s not generated. Fix this first', $asset_file ) );
+      }
+  
+      wp_enqueue_script(
+          'dieta-rules-script',
+          get_stylesheet_directory_uri() . '/' . $script_path,
+          $assets['dependencies'],
+          $assets['version'],
+          true
+      );
     }
   }
 }

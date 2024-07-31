@@ -317,7 +317,7 @@ class Cliente {
   /** Dashboard in client CMS page */
   public static function client_dashboard( $field ) {
 
-    if ( 'field_66a8b57619e9d' === $field['key'] ) {
+    if ( 'field_66aa86c7f526b' === $field['key'] ) {
 
       $post_id = isset($_REQUEST['post'])? $_REQUEST['post'] : false;
 

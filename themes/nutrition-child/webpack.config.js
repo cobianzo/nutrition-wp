@@ -8,7 +8,8 @@ const defaultConfig = require("@wordpress/scripts/config/webpack.config");
 module.exports = {
   ...defaultConfig,
   entry: {
-    "block-alimento": "./src/blocks/alimento-block/index.js",
+    "alimento-block": "./gutenberg/alimento-block/index.js",
+    "dieta-rules": "./gutenberg/dieta-rules.js",
   },
   output: {
     ...defaultConfig.output,

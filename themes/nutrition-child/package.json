@@ -1,0 +1,17 @@
+{
+  "name": "nutrition-child",
+  "version": "1.0.0",
+  "main": "webpack.config.js",
+  "scripts": {
+    "start": "wp-scripts start",
+    "build": "wp-scripts build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@wordpress/scripts": "^28.4.0",
+    "ajv": "^7.2.4"
+  }
+}

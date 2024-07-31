@@ -1,0 +1,10 @@
+{
+  "apiVersion": 2,
+  "name": "asim/alimento-block",
+  "title": "Block Alimento",
+  "category": "widgets",
+  "icon": "smiley",
+  "editorScript": "file:../../build/alimento-block.js",
+  "style": "file:./style.css",
+  "render": "file:./render.php"
+}
