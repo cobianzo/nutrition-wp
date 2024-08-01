@@ -1,6 +1,9 @@
 # TODO:
 
+finish the block for aliment
+create block day-of-week
 sync all personal fields: first name, telephone,
+create restrictions of use of blocks for 'Editor' user
 
 # nutrition-wp
 
@@ -37,3 +40,4 @@ By the End:
 - Move ACF into programmatic
 - Internazionalization With Loco Translator
 - Set up permissions. Access to Editor to certain blocks.
+- Use AAM plugin to show/hide content and add redirects.
