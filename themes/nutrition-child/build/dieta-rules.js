@@ -167,8 +167,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-// Define the component to restrict blocks
-
+const allowedTopBlocks = ["core/group", "core/paragraph", "asim/alimento-block"];
+const allowedBlocks = ["core/group", "core/paragraph", "core/heading", "asim/alimento-block"];
+/**
+ * FILTER 1: For `diet`, at the top level accept only core/group blocks.
+ * @param {*} allowedBlocks
+ * @param {*} blockEditor
+ * @returns
+ */
 const restrictBlocks = (0,_wordpress_compose__WEBPACK_IMPORTED_MODULE_0__.createHigherOrderComponent)(BlockEdit => {
   return props => {
     // Check if the block has a parent (i.e., it's nested)
@@ -180,26 +186,11 @@ const restrictBlocks = (0,_wordpress_compose__WEBPACK_IMPORTED_MODULE_0__.create
     if (postType === "diet") {
       // Only allow `core/group` block at the root level
       console.log("%c" + props.name, "background: #222; color: #bada55");
-      if (!parentBlock && !["core/group", "core/paragraph", "asim/alimento-block"].includes(props.name)) {
-        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
-            style: {
-              color: "red",
-              marginBottom: "30px"
-            },
-            children: "Only Group blocks are allowed at the top level."
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, {
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
-              title: "Block Restrictions",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
-                style: {
-                  color: "red"
-                },
-                children: "Only Group blocks are allowed at the top level."
-              })
-            })
-          })]
+      if (!parentBlock && !allowedTopBlocks.includes(props.name)) {
+        (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.dispatch)("core/notices").createErrorNotice("Only Group blocks are allowed at the top level.", {
+          id: "group-block-restriction"
         });
+        return null;
       }
     }
     return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(BlockEdit, {
@@ -210,6 +201,25 @@ const restrictBlocks = (0,_wordpress_compose__WEBPACK_IMPORTED_MODULE_0__.create
 
 // Add filter to apply the component
 (0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)("editor.BlockEdit", "custom/restrict-blocks", restrictBlocks);
+
+/**
+ * FILTER 2: restring blocks for `diet` to paragraph, group and headings.
+ * @param {*} allowedBlocks
+ * @param {*} blockEditor
+ * @returns
+ */
+// Function to unregister blocks that are not in the allowedBlocks array
+console.log("TODELEEL");
+const restrictBlocksForDietCPT = (settings, name) => {
+  const postType = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.select)("core/editor").getCurrentPostType();
+  if (postType === "diet" && !allowedBlocks.includes(name)) {
+    return null; // Unregister the block by returning null
+  }
+  return settings;
+};
+
+// Apply the filter to restrict blocks for the 'diet' CPT
+(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)("blocks.registerBlockType", "asim/restrict-blocks-diet-cpt", restrictBlocksForDietCPT);
 /******/ })()
 ;
 //# sourceMappingURL=dieta-rules.js.map

@@ -1,5 +1,11 @@
 {
   "version": 3,
   "$schema": "https://schemas.wp.org/wp/6.6/theme.json",
-  "patterns": ["logorrea"]
+  "patterns": ["logorrea"],
+  "settings": {
+    "layout": {
+      "contentSize": "1024px",
+      "wideSize": "1200px"
+    }
+  }
 }

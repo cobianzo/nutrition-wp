@@ -4,6 +4,28 @@
   "title": "Block Alimento",
   "category": "widgets",
   "icon": "smiley",
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "html": false
+  },
+  "textdomain": "asim",
+  "attributes": {
+    "content": {
+      "type": "string"
+    },
+    "alimentoID": {
+      "type": "string"
+    },
+    "imgID": {
+      "type": "string"
+    }
+  },
+  "providesContext": {
+    "custom/restricted-inner-blocks": "content"
+  },
+  "usesContext": ["core/paragraph", "core/heading"],
+
   "editorScript": "file:../../build/alimento-block.js",
   "style": "file:./style.css",
   "render": "file:./render.php"
