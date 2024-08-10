@@ -7,6 +7,7 @@ class Dieta {
     'core/paragraph',
     'core/group',
     'core/heading',
+    'core/list',
     'asim/alimento-block', // Replace with your custom block's name
   ];
 

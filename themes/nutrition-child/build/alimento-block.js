@@ -36,7 +36,32 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function edit(props) {
-  const [currentImage, setCurrentImage] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)(null);
+  // helper
+  const fetchImage = async () => {
+    const fetchPost = async () => {
+      const data = await _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5___default()({
+        path: `/wp/v2/aliment/${props.attributes.alimentoID}`
+      });
+      return data;
+    };
+    const postData = await fetchPost();
+    debugger;
+    if (postData?.featured_media) {
+      // featured_media is the ID of the attachment. We grab the media src.
+      // NOTE: I tried using `select` but for some reasonit doesnt work.
+      _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5___default()({
+        path: `/wp/v2/media/${postData.featured_media}`
+      }).then(attachmentPost => {
+        if (attachmentPost && attachmentPost.media_details && attachmentPost.media_details.sizes) {
+          const imageSource = attachmentPost.media_details.sizes.full.source_url;
+          console.log(imageSource);
+          props.setAttributes({
+            imgSrc: imageSource
+          });
+        }
+      });
+    }
+  };
 
   // Get all Aliments CPT and convert them into Options
   const aliments = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => {
@@ -55,26 +80,6 @@ function edit(props) {
 
   // keep attr imgSrc Up to date.
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useEffect)(() => {
-    const fetchImage = async () => {
-      const {
-        featured_media
-      } = await (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.select)("core").getEntityRecord("postType", "aliment", props.attributes.alimentoID);
-      if (featured_media) {
-        // featured_media is the ID of the attachment. We grab the media src.
-        // NOTE: I tried using `select` but for some reasonit doesnt work.
-        _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5___default()({
-          path: `/wp/v2/media/${featured_media}`
-        }).then(attachmentPost => {
-          if (attachmentPost && attachmentPost.media_details && attachmentPost.media_details.sizes) {
-            const imageSource = attachmentPost.media_details.sizes.full.source_url;
-            console.log(imageSource);
-            props.setAttributes({
-              imgSrc: imageSource
-            });
-          }
-        });
-      }
-    };
     if (props.attributes.alimentoID) {
       fetchImage();
     } else {
@@ -83,6 +88,9 @@ function edit(props) {
       }); // TODO : use default?
     }
   }, [props.attributes.alimentoID]);
+
+  // useEffect(fetchImage, []);
+
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
     ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.useBlockProps)({
       className: props.attributes.imgSrc ? `has-image` : `no-image`
@@ -107,9 +115,12 @@ function edit(props) {
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
       className: "alimento-left-column",
       children: ["This is the left column", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.InnerBlocks, {
-        allowedBlocks: ["core/paragraph", "core/heading"],
-        orientation: "horizontal",
-        template: [["core/paragraph"], ["core/paragraph"], ["core/paragraph"]]
+        allowedBlocks: ["core/paragraph", "core/heading", "core/list"],
+        orientation: "vertical",
+        template: [["core/paragraph"], ["core/paragraph"], ["core/paragraph"]],
+        onChange: content => setAttributes({
+          textContent: content
+        })
       })]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
       className: "alimento-right-column",
@@ -282,9 +293,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./gutenberg/alimento-block/edit.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./edit */ "./gutenberg/alimento-block/edit.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__);
+
+
+
 
 
 // import { addFilter } from "@wordpress/hooks";
@@ -297,10 +313,21 @@ __webpack_require__.r(__webpack_exports__);
   title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Alimento Block", "asim"),
   icon: "cart",
   category: "common",
-  edit: _edit__WEBPACK_IMPORTED_MODULE_2__["default"],
-  save: () => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-    children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Hello from Block 1", "asim")
-  })
+  edit: _edit__WEBPACK_IMPORTED_MODULE_3__["default"],
+  save: function ({
+    attributes
+  }) {
+    const blockProps = _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps.save();
+
+    // Use InnerBlocks.Content to render the inner blocks' content
+    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      ...blockProps,
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+        className: "alimento-left-column",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InnerBlocks.Content, {})
+      })
+    });
+  }
 });
 
 // Function to disable the Styles tab

@@ -14,7 +14,35 @@ import { useState, useEffect } from "@wordpress/element";
 import apiFetch from "@wordpress/api-fetch";
 
 export default function edit(props) {
-  const [currentImage, setCurrentImage] = useState(null);
+  // helper
+  const fetchImage = async () => {
+    const fetchPost = async () => {
+      const data = await apiFetch({
+        path: `/wp/v2/aliment/${props.attributes.alimentoID}`,
+      });
+      return data;
+    };
+    const postData = await fetchPost();
+    debugger;
+    if (postData?.featured_media) {
+      // featured_media is the ID of the attachment. We grab the media src.
+      // NOTE: I tried using `select` but for some reasonit doesnt work.
+      apiFetch({ path: `/wp/v2/media/${postData.featured_media}` }).then(
+        (attachmentPost) => {
+          if (
+            attachmentPost &&
+            attachmentPost.media_details &&
+            attachmentPost.media_details.sizes
+          ) {
+            const imageSource =
+              attachmentPost.media_details.sizes.full.source_url;
+            console.log(imageSource);
+            props.setAttributes({ imgSrc: imageSource });
+          }
+        }
+      );
+    }
+  };
 
   // Get all Aliments CPT and convert them into Options
   const aliments = useSelect((select) => {
@@ -30,37 +58,14 @@ export default function edit(props) {
 
   // keep attr imgSrc Up to date.
   useEffect(() => {
-    const fetchImage = async () => {
-      const { featured_media } = await select("core").getEntityRecord(
-        "postType",
-        "aliment",
-        props.attributes.alimentoID
-      );
-      if (featured_media) {
-        // featured_media is the ID of the attachment. We grab the media src.
-        // NOTE: I tried using `select` but for some reasonit doesnt work.
-        apiFetch({ path: `/wp/v2/media/${featured_media}` }).then(
-          (attachmentPost) => {
-            if (
-              attachmentPost &&
-              attachmentPost.media_details &&
-              attachmentPost.media_details.sizes
-            ) {
-              const imageSource =
-                attachmentPost.media_details.sizes.full.source_url;
-              console.log(imageSource);
-              props.setAttributes({ imgSrc: imageSource });
-            }
-          }
-        );
-      }
-    };
     if (props.attributes.alimentoID) {
       fetchImage();
     } else {
       props.setAttributes({ imgSrc: "" }); // TODO : use default?
     }
   }, [props.attributes.alimentoID]);
+
+  // useEffect(fetchImage, []);
 
   return (
     <div
@@ -88,13 +93,14 @@ export default function edit(props) {
       <div className="alimento-left-column">
         This is the left column
         <InnerBlocks
-          allowedBlocks={["core/paragraph", "core/heading"]}
-          orientation="horizontal"
+          allowedBlocks={["core/paragraph", "core/heading", "core/list"]}
+          orientation="vertical"
           template={[
             ["core/paragraph"],
             ["core/paragraph"],
             ["core/paragraph"],
           ]}
+          onChange={(content) => setAttributes({ textContent: content })}
         />
       </div>
       <div className="alimento-right-column">

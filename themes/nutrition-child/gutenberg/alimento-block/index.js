@@ -1,5 +1,8 @@
 import { registerBlockType } from "@wordpress/blocks";
 import { __ } from "@wordpress/i18n";
+import { useBlockProps } from "@wordpress/block-editor";
+import { InnerBlocks } from "@wordpress/block-editor";
+
 // import { addFilter } from "@wordpress/hooks";
 // import { getBlockType } from "@wordpress/blocks";
 // import { createElement } from "@wordpress/element";
@@ -10,7 +13,18 @@ registerBlockType("asim/alimento-block", {
   icon: "cart",
   category: "common",
   edit: Edit,
-  save: () => <div>{__("Hello from Block 1", "asim")}</div>,
+  save: function ({ attributes }) {
+    const blockProps = useBlockProps.save();
+
+    // Use InnerBlocks.Content to render the inner blocks' content
+    return (
+      <div {...blockProps}>
+        <div className="alimento-left-column">
+          <InnerBlocks.Content />
+        </div>
+      </div>
+    );
+  },
 });
 
 // Function to disable the Styles tab

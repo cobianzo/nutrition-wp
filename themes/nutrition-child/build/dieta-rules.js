@@ -168,7 +168,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const allowedTopBlocks = ["core/group", "core/paragraph", "asim/alimento-block"];
-const allowedBlocks = ["core/group", "core/paragraph", "core/heading", "asim/alimento-block"];
+const allowedBlocks = ["core/group", "core/paragraph", "core/heading", "core/list", "core/heading", "asim/alimento-block"];
 /**
  * FILTER 1: For `diet`, at the top level accept only core/group blocks.
  * @param {*} allowedBlocks

@@ -16,6 +16,8 @@ const allowedBlocks = [
   "core/group",
   "core/paragraph",
   "core/heading",
+  "core/list",
+  "core/heading",
   "asim/alimento-block",
 ];
 /**

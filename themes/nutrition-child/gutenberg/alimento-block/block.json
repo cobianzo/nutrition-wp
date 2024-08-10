@@ -1,5 +1,5 @@
 {
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "asim/alimento-block",
   "title": "Block Alimento",
   "category": "widgets",
@@ -11,13 +11,15 @@
   },
   "textdomain": "asim",
   "attributes": {
-    "content": {
-      "type": "string"
+    "textContent": {
+      "type": "string",
+      "source": "html",
+      "selector": ".alimento-left-column"
     },
     "alimentoID": {
       "type": "string"
     },
-    "imgID": {
+    "imgSrc": {
       "type": "string"
     }
   },
