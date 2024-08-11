@@ -4,8 +4,10 @@ import {
   InspectorControls,
 } from "@wordpress/block-editor";
 
-import { PanelBody, SelectControl } from "@wordpress/components";
-import { select, useSelect } from "@wordpress/data";
+import { parse } from "@wordpress/blocks";
+
+import { PanelBody, SelectControl, Button } from "@wordpress/components";
+import { select, useSelect, useDispatch } from "@wordpress/data";
 import { __ } from "@wordpress/i18n";
 
 // import useState
@@ -13,7 +15,15 @@ import { useState, useEffect } from "@wordpress/element";
 
 import apiFetch from "@wordpress/api-fetch";
 
+/**
+ * Functional component for the Edit.js
+ * @param {*} props
+ * @returns
+ */
 export default function edit(props) {
+  // We'll use it later
+  const { replaceInnerBlocks } = useDispatch("core/block-editor");
+
   // helper
   const fetchImage = async () => {
     const fetchPost = async () => {
@@ -23,7 +33,6 @@ export default function edit(props) {
       return data;
     };
     const postData = await fetchPost();
-    debugger;
     if (postData?.featured_media) {
       // featured_media is the ID of the attachment. We grab the media src.
       // NOTE: I tried using `select` but for some reasonit doesnt work.
@@ -65,7 +74,25 @@ export default function edit(props) {
     }
   }, [props.attributes.alimentoID]);
 
-  // useEffect(fetchImage, []);
+  // create a function that grabs the editor content for the current attr alimentoID.
+  // And it replaces the inner blocks with the content of the editor
+  const prefillInnerBlocks = () => {
+    const content = apiFetch({
+      path: `/wp/v2/aliment/${props.attributes.alimentoID}?context=edit`,
+    }).then((json) => {
+      if (json && json.content && json.content.raw) {
+        const content = json.content.raw;
+        alert(content);
+        const blocks = parse(content);
+        console.log(blocks);
+        replaceInnerBlocks(props.clientId, blocks);
+
+        // props.setAttributes({
+        //   innerBlocks: blocks,
+        // });
+      }
+    });
+  };
 
   return (
     <div
@@ -88,6 +115,16 @@ export default function edit(props) {
               });
             }}
           />
+          <Button
+            isPrimary
+            onClick={() => {
+              console.log("You clicked the button!");
+              // Here we can add the logic to alter the block attributes
+              prefillInnerBlocks();
+            }}
+          >
+            {__("Prefill text with defaults", "asim")}
+          </Button>
         </PanelBody>
       </InspectorControls>
       <div className="alimento-left-column">
