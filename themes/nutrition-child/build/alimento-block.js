@@ -14,10 +14,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
-/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
@@ -38,12 +38,28 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const mealTimes = [{
+  label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Breakfast", "asim"),
+  value: "breakfast"
+}, {
+  label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Snack", "asim"),
+  value: "snack"
+}, {
+  label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Lunch", "asim"),
+  value: "lunch"
+}, {
+  label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Dinner", "asim"),
+  value: "dinner"
+}, {
+  label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Alternative", "asim"),
+  value: "alternative"
+}];
+
 /**
  * Functional component for the Edit.js
  * @param {*} props
  * @returns
  */
-
 function edit(props) {
   // We'll use it later
   const {
@@ -123,7 +139,7 @@ function edit(props) {
     }).then(json => {
       if (json && json.content && json.content.raw) {
         const content = json.content.raw;
-        const blocks = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.parse)(content);
+        const blocks = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_2__.parse)(content);
         console.log(blocks);
         replaceInnerBlocks(props.clientId, blocks);
 
@@ -135,12 +151,12 @@ function edit(props) {
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
     ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.useBlockProps)({
-      className: (props.attributes.imgSrc ? ` has-image ` : ` no-image `) + (props.attributes.isAlternative ? ` is-alternative ` : ``)
+      className: (props.attributes.imgSrc ? ` has-image ` : ` no-image `) + ` is-${props.attributes.mealType}`
     }),
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.InspectorControls, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelBody, {
         title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Select aliment", "asim"),
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.SelectControl, {
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("ALIMENT", "asim"),
           value: props.attributes.alimentoID,
           options: [{
@@ -152,7 +168,7 @@ function edit(props) {
               alimentoID: value
             });
           }
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
           isPrimary: true,
           onClick: () => {
             console.log("You clicked the button!");
@@ -160,16 +176,23 @@ function edit(props) {
             prefillInnerBlocks();
           },
           children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Prefill text with defaults", "asim")
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, {
-          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Is alternative?", "asim"),
-          checked: props.attributes.isAlternative,
-          onChange: value => {
-            const newTitle = value && !props.attributes.title ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Alternative", "asim") : props.attributes.title;
-            props.setAttributes({
-              isAlternative: value,
-              title: newTitle
-            });
-          }
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.RadioControl, {
+            label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Meal", "asim"),
+            selected: props.attributes.mealType,
+            options: [{
+              label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("--none---", "asim"),
+              value: ""
+            }, ...mealTimes],
+            onChange: value => {
+              const label = mealTimes.find(meal => meal.value === value).label;
+              const translated = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)(label, "asim");
+              props.setAttributes({
+                mealType: value,
+                title: translated
+              });
+            }
+          })
         })]
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__.Fragment, {

@@ -5,14 +5,14 @@ import {
   RichText,
 } from "@wordpress/block-editor";
 
-import { parse } from "@wordpress/blocks";
-
 import {
   PanelBody,
   SelectControl,
   Button,
-  ToggleControl,
+  RadioControl,
 } from "@wordpress/components";
+
+import { parse } from "@wordpress/blocks";
 import { select, useSelect, useDispatch } from "@wordpress/data";
 import { __ } from "@wordpress/i18n";
 
@@ -20,6 +20,14 @@ import { __ } from "@wordpress/i18n";
 import { useState, useEffect, Fragment } from "@wordpress/element";
 
 import apiFetch from "@wordpress/api-fetch";
+
+const mealTimes = [
+  { label: __("Breakfast", "asim"), value: "breakfast" },
+  { label: __("Snack", "asim"), value: "snack" },
+  { label: __("Lunch", "asim"), value: "lunch" },
+  { label: __("Dinner", "asim"), value: "dinner" },
+  { label: __("Alternative", "asim"), value: "alternative" },
+];
 
 /**
  * Functional component for the Edit.js
@@ -121,7 +129,7 @@ export default function edit(props) {
       {...useBlockProps({
         className:
           (props.attributes.imgSrc ? ` has-image ` : ` no-image `) +
-          (props.attributes.isAlternative ? ` is-alternative ` : ``),
+          ` is-${props.attributes.mealType}`,
       })}
     >
       <InspectorControls>
@@ -151,20 +159,28 @@ export default function edit(props) {
           </Button>
           <br />
           <br />
-          <ToggleControl
-            label={__("Is alternative?", "asim")}
-            checked={props.attributes.isAlternative}
-            onChange={(value) => {
-              const newTitle =
-                value && !props.attributes.title
-                  ? __("Alternative", "asim")
-                  : props.attributes.title;
-              props.setAttributes({
-                isAlternative: value,
-                title: newTitle,
-              });
-            }}
-          />
+          <div>
+            {
+              <RadioControl
+                label={__("Meal", "asim")}
+                selected={props.attributes.mealType}
+                options={[
+                  { label: __("--none---", "asim"), value: "" },
+                  ...mealTimes,
+                ]}
+                onChange={(value) => {
+                  const label = mealTimes.find(
+                    (meal) => meal.value === value
+                  ).label;
+                  const translated = __(label, "asim");
+                  props.setAttributes({
+                    mealType: value,
+                    title: translated,
+                  });
+                }}
+              />
+            }
+          </div>
         </PanelBody>
       </InspectorControls>
       <Fragment>

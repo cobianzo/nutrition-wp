@@ -1,9 +1,11 @@
 # TODO:
 
-finish the block for aliment
-create block day-of-week
+✅ finish the block for aliment in the backend
+insert realistic data: All aliments for the example pdf. Create the diet.
+Start using the default template for every term.
+create pattern day-of-week, with an empty aliment.
 sync all personal fields: first name, telephone,
-create restrictions of use of blocks for 'Editor' user
+✅ create restrictions of use of blocks for 'Editor' user
 
 # nutrition-wp
 
@@ -41,3 +43,8 @@ By the End:
 - Internazionalization With Loco Translator
 - Set up permissions. Access to Editor to certain blocks.
 - Use AAM plugin to show/hide content and add redirects.
+
+# Testing cases:
+
+- Sync user / client CPT
+-

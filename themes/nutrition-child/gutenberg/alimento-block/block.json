@@ -28,9 +28,9 @@
       "type": "string",
       "default": ""
     },
-    "isAlternative": {
-      "type": "boolean",
-      "default": false
+    "mealType": {
+      "type": "string",
+      "default": ""
     }
   },
   "providesContext": {
