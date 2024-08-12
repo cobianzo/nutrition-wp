@@ -2,16 +2,22 @@ import {
   InnerBlocks,
   useBlockProps,
   InspectorControls,
+  RichText,
 } from "@wordpress/block-editor";
 
 import { parse } from "@wordpress/blocks";
 
-import { PanelBody, SelectControl, Button } from "@wordpress/components";
+import {
+  PanelBody,
+  SelectControl,
+  Button,
+  ToggleControl,
+} from "@wordpress/components";
 import { select, useSelect, useDispatch } from "@wordpress/data";
 import { __ } from "@wordpress/i18n";
 
 // import useState
-import { useState, useEffect } from "@wordpress/element";
+import { useState, useEffect, Fragment } from "@wordpress/element";
 
 import apiFetch from "@wordpress/api-fetch";
 
@@ -24,7 +30,7 @@ export default function edit(props) {
   // We'll use it later
   const { replaceInnerBlocks } = useDispatch("core/block-editor");
 
-  // helper
+  // helper to update the attribute.imgSrc when alimentoID changes.
   const fetchImage = async () => {
     const fetchPost = async () => {
       const data = await apiFetch({
@@ -53,7 +59,7 @@ export default function edit(props) {
     }
   };
 
-  // Get all Aliments CPT and convert them into Options
+  // Get all Aliments CPT and convert them into Options for the Dropdown
   const aliments = useSelect((select) => {
     const alimenti = select("core").getEntityRecords("postType", "aliment");
     if (alimenti) {
@@ -65,12 +71,29 @@ export default function edit(props) {
     }
   }, []);
 
-  // keep attr imgSrc Up to date.
   useEffect(() => {
+    // keep attr imgSrc Up to date.
     if (props.attributes.alimentoID) {
       fetchImage();
     } else {
       props.setAttributes({ imgSrc: "" }); // TODO : use default?
+    }
+
+    // Replace the content text with the default one for the aliment.
+    if (props.attributes.alimentoID) {
+      const innerBlocks = select("core/block-editor").getBlock(
+        props.clientId
+      ).innerBlocks;
+
+      const innerBlockContent = innerBlocks.map((block) => {
+        return block.innerBlocks.map((innerBlock) => {
+          return innerBlock.attributes.content;
+        });
+      });
+      // if the inner blocks are empty, we replace them with the default aliment content
+      if (innerBlockContent.every((content) => content.length === 0)) {
+        prefillInnerBlocks();
+      }
     }
   }, [props.attributes.alimentoID]);
 
@@ -82,7 +105,6 @@ export default function edit(props) {
     }).then((json) => {
       if (json && json.content && json.content.raw) {
         const content = json.content.raw;
-        alert(content);
         const blocks = parse(content);
         console.log(blocks);
         replaceInnerBlocks(props.clientId, blocks);
@@ -97,7 +119,9 @@ export default function edit(props) {
   return (
     <div
       {...useBlockProps({
-        className: props.attributes.imgSrc ? `has-image` : `no-image`,
+        className:
+          (props.attributes.imgSrc ? ` has-image ` : ` no-image `) +
+          (props.attributes.isAlternative ? ` is-alternative ` : ``),
       })}
     >
       <InspectorControls>
@@ -125,34 +149,60 @@ export default function edit(props) {
           >
             {__("Prefill text with defaults", "asim")}
           </Button>
+          <br />
+          <br />
+          <ToggleControl
+            label={__("Is alternative?", "asim")}
+            checked={props.attributes.isAlternative}
+            onChange={(value) => {
+              const newTitle =
+                value && !props.attributes.title
+                  ? __("Alternative", "asim")
+                  : props.attributes.title;
+              props.setAttributes({
+                isAlternative: value,
+                title: newTitle,
+              });
+            }}
+          />
         </PanelBody>
       </InspectorControls>
-      <div className="alimento-left-column">
-        This is the left column
-        <InnerBlocks
-          allowedBlocks={["core/paragraph", "core/heading", "core/list"]}
-          orientation="vertical"
-          template={[
-            ["core/paragraph"],
-            ["core/paragraph"],
-            ["core/paragraph"],
-          ]}
-          onChange={(content) => setAttributes({ textContent: content })}
+      <Fragment>
+        <RichText
+          tagName="h2"
+          className="alimento-title"
+          value={props.attributes.title}
+          placeholder={__("eg. Breakfast", "asim")}
+          onChange={(value) => {
+            props.setAttributes({ title: value });
+          }}
         />
-      </div>
-      <div className="alimento-right-column">
-        {props.attributes.alimentoID && (
-          <div className="alimento-image">
-            <img
-              src={
-                props.attributes.imgSrc
-                  ? props.attributes.imgSrc
-                  : "http://placehold.it/300x300"
-              }
-            />
-          </div>
-        )}
-      </div>
+        <div className="alimento-left-column">
+          <InnerBlocks
+            allowedBlocks={["core/paragraph", "core/heading", "core/list"]}
+            orientation="vertical"
+            template={[
+              ["core/paragraph"],
+              ["core/paragraph"],
+              ["core/paragraph"],
+            ]}
+            onChange={(content) => setAttributes({ textContent: content })}
+          />
+        </div>
+        <div className="alimento-right-column">
+          {props.attributes.alimentoID && (
+            <div className="alimento-image">
+              <img
+                src={
+                  props.attributes.imgSrc
+                    ? props.attributes.imgSrc
+                    : "http://placehold.it/300x300"
+                }
+              />
+            </div>
+          )}
+        </div>
+      </Fragment>
     </div>
   );
 }

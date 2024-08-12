@@ -22,6 +22,7 @@ const allowedBlocks = [
 ];
 /**
  * FILTER 1: For `diet`, at the top level accept only core/group blocks.
+ * currently disabled.
  * @param {*} allowedBlocks
  * @param {*} blockEditor
  * @returns
@@ -54,7 +55,8 @@ const restrictBlocks = createHigherOrderComponent((BlockEdit) => {
 }, "restrictBlocks");
 
 // Add filter to apply the component
-addFilter("editor.BlockEdit", "custom/restrict-blocks", restrictBlocks);
+// @TODO: currently disabled,it doesnt work very well
+// addFilter("editor.BlockEdit", "custom/restrict-blocks", restrictBlocks);
 
 /**
  * FILTER 2: restring blocks for `diet` to paragraph, group and headings.

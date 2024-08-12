@@ -171,6 +171,7 @@ const allowedTopBlocks = ["core/group", "core/paragraph", "asim/alimento-block"]
 const allowedBlocks = ["core/group", "core/paragraph", "core/heading", "core/list", "core/heading", "asim/alimento-block"];
 /**
  * FILTER 1: For `diet`, at the top level accept only core/group blocks.
+ * currently disabled.
  * @param {*} allowedBlocks
  * @param {*} blockEditor
  * @returns
@@ -200,7 +201,8 @@ const restrictBlocks = (0,_wordpress_compose__WEBPACK_IMPORTED_MODULE_0__.create
 }, "restrictBlocks");
 
 // Add filter to apply the component
-(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)("editor.BlockEdit", "custom/restrict-blocks", restrictBlocks);
+// @TODO: currently disabled,it doesnt work very well
+// addFilter("editor.BlockEdit", "custom/restrict-blocks", restrictBlocks);
 
 /**
  * FILTER 2: restring blocks for `diet` to paragraph, group and headings.

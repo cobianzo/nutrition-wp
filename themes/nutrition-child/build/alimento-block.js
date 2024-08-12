@@ -50,7 +50,7 @@ function edit(props) {
     replaceInnerBlocks
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useDispatch)("core/block-editor");
 
-  // helper
+  // helper to update the attribute.imgSrc when alimentoID changes.
   const fetchImage = async () => {
     const fetchPost = async () => {
       const data = await _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_6___default()({
@@ -76,7 +76,7 @@ function edit(props) {
     }
   };
 
-  // Get all Aliments CPT and convert them into Options
+  // Get all Aliments CPT and convert them into Options for the Dropdown
   const aliments = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => {
     const alimenti = select("core").getEntityRecords("postType", "aliment");
     if (alimenti) {
@@ -90,15 +90,28 @@ function edit(props) {
       return [];
     }
   }, []);
-
-  // keep attr imgSrc Up to date.
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_5__.useEffect)(() => {
+    // keep attr imgSrc Up to date.
     if (props.attributes.alimentoID) {
       fetchImage();
     } else {
       props.setAttributes({
         imgSrc: ""
       }); // TODO : use default?
+    }
+
+    // Replace the content text with the default one for the aliment.
+    if (props.attributes.alimentoID) {
+      const innerBlocks = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.select)("core/block-editor").getBlock(props.clientId).innerBlocks;
+      const innerBlockContent = innerBlocks.map(block => {
+        return block.innerBlocks.map(innerBlock => {
+          return innerBlock.attributes.content;
+        });
+      });
+      // if the inner blocks are empty, we replace them with the default aliment content
+      if (innerBlockContent.every(content => content.length === 0)) {
+        prefillInnerBlocks();
+      }
     }
   }, [props.attributes.alimentoID]);
 
@@ -110,7 +123,6 @@ function edit(props) {
     }).then(json => {
       if (json && json.content && json.content.raw) {
         const content = json.content.raw;
-        alert(content);
         const blocks = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.parse)(content);
         console.log(blocks);
         replaceInnerBlocks(props.clientId, blocks);
@@ -123,7 +135,7 @@ function edit(props) {
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
     ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.useBlockProps)({
-      className: props.attributes.imgSrc ? `has-image` : `no-image`
+      className: (props.attributes.imgSrc ? ` has-image ` : ` no-image `) + (props.attributes.isAlternative ? ` is-alternative ` : ``)
     }),
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.InspectorControls, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
@@ -148,26 +160,48 @@ function edit(props) {
             prefillInnerBlocks();
           },
           children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Prefill text with defaults", "asim")
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, {
+          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Is alternative?", "asim"),
+          checked: props.attributes.isAlternative,
+          onChange: value => {
+            const newTitle = value && !props.attributes.title ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Alternative", "asim") : props.attributes.title;
+            props.setAttributes({
+              isAlternative: value,
+              title: newTitle
+            });
+          }
         })]
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-      className: "alimento-left-column",
-      children: ["This is the left column", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.InnerBlocks, {
-        allowedBlocks: ["core/paragraph", "core/heading", "core/list"],
-        orientation: "vertical",
-        template: [["core/paragraph"], ["core/paragraph"], ["core/paragraph"]],
-        onChange: content => setAttributes({
-          textContent: content
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.RichText, {
+        tagName: "h2",
+        className: "alimento-title",
+        value: props.attributes.title,
+        placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("eg. Breakfast", "asim"),
+        onChange: value => {
+          props.setAttributes({
+            title: value
+          });
+        }
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+        className: "alimento-left-column",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.InnerBlocks, {
+          allowedBlocks: ["core/paragraph", "core/heading", "core/list"],
+          orientation: "vertical",
+          template: [["core/paragraph"], ["core/paragraph"], ["core/paragraph"]],
+          onChange: content => setAttributes({
+            textContent: content
+          })
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+        className: "alimento-right-column",
+        children: props.attributes.alimentoID && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+          className: "alimento-image",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("img", {
+            src: props.attributes.imgSrc ? props.attributes.imgSrc : "http://placehold.it/300x300"
+          })
         })
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-      className: "alimento-right-column",
-      children: props.attributes.alimentoID && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-        className: "alimento-image",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("img", {
-          src: props.attributes.imgSrc ? props.attributes.imgSrc : "http://placehold.it/300x300"
-        })
-      })
     })]
   });
 }

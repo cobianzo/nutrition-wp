@@ -5,22 +5,32 @@
   "category": "widgets",
   "icon": "smiley",
   "supports": {
-    "align": true,
+    "align": false,
     "anchor": true,
     "html": false
   },
   "textdomain": "asim",
   "attributes": {
+    "title": {
+      "type": "string",
+      "default": ""
+    },
     "textContent": {
       "type": "string",
       "source": "html",
       "selector": ".alimento-left-column"
     },
     "alimentoID": {
-      "type": "string"
+      "type": "string",
+      "default": ""
     },
     "imgSrc": {
-      "type": "string"
+      "type": "string",
+      "default": ""
+    },
+    "isAlternative": {
+      "type": "boolean",
+      "default": false
     }
   },
   "providesContext": {
