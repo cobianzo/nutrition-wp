@@ -197,7 +197,7 @@ function edit(props) {
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.RichText, {
-        tagName: "h2",
+        tagName: "h3",
         className: "alimento-title",
         value: props.attributes.title,
         placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("eg. Breakfast", "asim"),

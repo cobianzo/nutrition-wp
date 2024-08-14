@@ -10,6 +10,7 @@ module.exports = {
   entry: {
     "alimento-block": "./gutenberg/alimento-block/index.js",
     "dieta-rules": "./gutenberg/dieta-rules.js",
+    "generic-rules": "./gutenberg/generic-rules.js",
   },
   output: {
     ...defaultConfig.output,

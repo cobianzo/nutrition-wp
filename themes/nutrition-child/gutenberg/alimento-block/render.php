@@ -11,24 +11,26 @@
  * @package block-developer-examples
  */
 
-// Get the current year.
-$current_year = gmdate( 'Y' );
+//  echo "<h4>Alimentooo</h4>";
+//  dd( $attributes );
+//  dd ( $content ); // inner posts.
+//  echo "<h4>----------</h4>";
 
-// Determine which content to display.
-if ( isset( $attributes['fallbackCurrentYear'] ) && $attributes['fallbackCurrentYear'] === $current_year ) {
+$extra = [ 
+	'class' => ($attributes['imgSrc'] ? ' has-image ' : ' no-image ' ) . ' is-' . $attributes['mealType']
+];
 
-	// The current year is the same as the fallback, so use the block content saved in the database (by the save.js function).
-	$block_content = $content;
-} else {
+?>
+<div <?php echo get_block_wrapper_attributes($extra) ?>>
+  <h3 class="alimento-title"><?php echo $attributes['title']; ?></h3>
+  <div class="alimento-left-column">
+    <?php echo $content; ?>
+  </div>
+  <div class="alimento-right-column">
+    <?php if ($attributes['imgSrc']) { ?>
+      <img src="<?php echo $attributes['imgSrc']; ?>" alt="<?php echo $attributes['title']; ?>" />
+    <?php } ?>
+  </div>
+</div>
 
-	// The current year is different from the fallback, so render the updated block content.
-	if ( ! empty( $attributes['startingYear'] ) && ! empty( $attributes['showStartingYear'] ) ) {
-		$display_date = $attributes['startingYear'] . '–' . $current_year;
-	} else {
-		$display_date = $current_year;
-	}
 
-	$block_content = '<p ' . get_block_wrapper_attributes() . '>© ' . esc_html( $display_date ) . '</p>';
-}
-
-echo wp_kses_post( $block_content );

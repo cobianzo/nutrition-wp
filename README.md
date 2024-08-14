@@ -1,11 +1,14 @@
 # TODO:
 
 ✅ finish the block for aliment in the backend
-insert realistic data: All aliments for the example pdf. Create the diet.
-Start using the default template for every term.
-create pattern day-of-week, with an empty aliment.
-sync all personal fields: first name, telephone,
+✅ insert realistic data: All aliments for the example pdf. Create the diet.
+✅ Start using the default template for every term. -
+✅create pattern day-of-week, with an empty aliment.
+sync all personal fields: first name, telephone, Client <=> WP User.
+Create frontend for the Dieta. And permissions to be visible only for editor-admin- and owner
 ✅ create restrictions of use of blocks for 'Editor' user
+Create a link in the sidebar of Dieta to go back to the client Edit.
+Show link to the diet(s) of a client from the client dashboard.
 
 # nutrition-wp
 
@@ -25,13 +28,16 @@ Wordpress project, with child theme, to create a nutritionist website
    Cliente
    Alimento
 
+   Dieta-category (stitichezza/generica/..)
+
    Insert setup to ass new styles with css to the editor pages.
 
 3. Create -
-   Sync creation/deletion of 'Cliente' with a 'cliente' role editor.
-   Create pattern for logorrea, etc in html templates.
-   Create a fully custom control panel inside Client.
-   Create a custom block for alimenti inside of a dieta.
+   - Sync creation/deletion of 'Cliente' with a 'cliente' role editor.
+   - Create pattern for logorrea, etc in html templates.
+     - Create a field in Dieta Category to a pattern for the default new dieta.
+   - Create a fully custom control panel inside Client. (client Dashboard)
+   - Create a custom block for alimenti inside of a dieta.
 
 Development of all the frontend: use of the right parent theme, definition of styles using theme.json, create the right templates for the right pages on frontend. (restrict access only to logged in users?)
 

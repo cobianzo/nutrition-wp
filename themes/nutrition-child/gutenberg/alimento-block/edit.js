@@ -185,7 +185,7 @@ export default function edit(props) {
       </InspectorControls>
       <Fragment>
         <RichText
-          tagName="h2"
+          tagName="h3"
           className="alimento-title"
           value={props.attributes.title}
           placeholder={__("eg. Breakfast", "asim")}

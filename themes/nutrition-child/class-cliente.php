@@ -329,6 +329,61 @@ class Cliente {
     
     return $field;
   }
+
+	function create_diet_for_client() {
+    // Verificar la acción
+    if ( ! isset( $_GET['action'] ) || 'create_diet' !== $_GET['action'] ) {
+        return;
+    }
+
+    // Verificar los parámetros necesarios
+    if ( ! isset( $_GET['client_id'] ) || ! isset( $_GET['diet-category'] ) ) {
+        wp_die( 'Missing required parameters.' );
+    }
+
+    $client_id = intval( $_GET['client_id'] );
+    $diet_category_id = intval( $_GET['diet-category'] );
+
+    // Obtener la información del cliente
+    $client_post = get_post( $client_id );
+    if ( ! $client_post ) {
+        wp_die( 'Invalid client ID.' );
+    }
+
+    // Obtener el usuario asociado al cliente
+    $user = Cliente::get_client_user_by_post_id( $client_id );
+    if ( ! $user || ! is_a( $user, 'WP_User' ) ) {
+        wp_die( 'Invalid user associated with the client.' );
+    }
+
+    // Crear el nuevo CPT 'diet'
+    $diet_title = 'Diet for client ' . $client_post->post_title;
+
+    $diet_post = array(
+        'post_title'   => $diet_title,
+        'post_type'    => 'diet',
+        'post_status'  => 'draft', // Cambiar si es necesario
+        'post_author'  => $user->ID,
+        'meta_input'   => array(
+            '_related_client_id' => $client_id, // Guardar la relación con el cliente si es necesario
+        ),
+    );
+
+    $diet_id = wp_insert_post( $diet_post );
+
+    if ( is_wp_error( $diet_id ) ) {
+        wp_die( 'Error creating the diet post.' );
+    }
+
+    // Asociar la nueva 'diet' con el término 'diet-category'
+    wp_set_post_terms( $diet_id, array( $diet_category_id ), 'diet-category' );
+
+    // Redirigir a la página de edición del nuevo CPT 'diet'
+    wp_redirect( admin_url( "post.php?post={$diet_id}&action=edit" ) );
+    exit;
+}
+
+
 }
 
 Cliente::init();

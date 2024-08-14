@@ -12,7 +12,7 @@ div[data-name="email"] {
   }
 }
 
-#client-dashboard {
+.client-dashboard {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 1rem;
@@ -23,6 +23,7 @@ div[data-name="email"] {
   }
 
   > div,
+  .tile,
   button {
     border-radius: 1rem;
     border: 1px solid darkgoldenrod;
@@ -36,9 +37,11 @@ div[data-name="email"] {
     );
     padding: 1rem;
     font-size: 1.2rem;
+    text-align: center;
   }
 
-  > button {
+  > button,
+  .tile--button {
     cursor: pointer;
     background: repeating-linear-gradient(
       45deg,
