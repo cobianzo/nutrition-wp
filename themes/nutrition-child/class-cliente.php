@@ -20,6 +20,9 @@
  * 
  * sync Featured images with user avatar.
  */
+
+require_once __DIR__ . '/includes/cpt-tax/cpt-cliente.php';
+
 class Cliente {
 
 	/**
@@ -33,9 +36,10 @@ class Cliente {
 	 */
 	public static function init() {
 		
+		// When creating or updating the post, we need to create or update the WP User
 		add_action(
 			'wp_insert_post',
-			array( __CLASS__, 'create_user_from_client' ),
+			array( __CLASS__, 'create_update_user_from_client' ),
 			10, 3
 		);
 
@@ -49,12 +53,9 @@ class Cliente {
     //   'save_post',
     //   array( __CLASS__, 'update_user_from_client' )
     // );
-    add_action( 'profile_update', function( $user_id, $old_user_data ) {
-      $new_email = get_user_by( 'id', $user_id )->user_email;
-      if ( $old_user_data->user_email !== $new_email ) {
-        self::update_client_post_from_user( $user_id, $new_email, $old_user_data->user_email );
-      }
-    }, 10, 2 );
+
+		// Update (from WP User >> CPT)
+    add_action( 'profile_update', [__CLASS__, 'sync_client_from_wpuser'], 10, 2 );
 
 		// We don't let change the email if there is another user with that email.
 		// This applies on new users and updating existing users.
@@ -151,15 +152,35 @@ class Cliente {
 	 * @since 1.0
 	 *
 	 */
-	public static function create_user_from_client( $post_id, $post, $update ) {
+	public static function create_update_user_from_client( $post_id, $post, $update ) {
 		
 		if ( $post->post_status !== 'publish' || $post->post_type !== 'client' ) {
 			return;
     }
 
+
+		// to avoid calling the function multiple times
+		remove_action('profile_update', [__CLASS__, 'sync_client_from_wpuser' ] );
+
+
 		// Before we go, we check if there is a user with that email already, using our static function
 		$user_exists = self::get_client_user_by_post_id( $post->ID );
 		
+		// ACF fields to WP User: 
+		$acf_to_wpuser_fields = [
+			'first_name' => get_field( 'name', $post_id ),
+			'last_name' => get_field( 'surname', $post_id ),
+		];
+
+		$acf_to_acf_fields = [
+			'address'         => get_field( 'address', $post_id ),
+			'telephone'       => get_field( 'telephone', $post_id ),
+			'sex'             => get_field( 'sex', $post_id ),
+			'born'            => get_field( 'born', $post_id ),
+			'profession'      => get_field( 'profession', $post_id ),
+			'pathology'       => get_field( 'pathology', $post_id )
+		];
+
 		if ( ! $user_exists ) {
 			// Only in new posts.
 
@@ -167,7 +188,7 @@ class Cliente {
 			$user_by_email = get_user_by( 'email', $email ); // this should be false
 
 			// If there is already a user with that email. Trigger error log in this is a new post?
-			if ( $user_by_email && $user_by_email->ID !== $user_exists ) {
+			if ( $user_by_email ) {
 				return;
 			}
 
@@ -186,24 +207,82 @@ class Cliente {
 				'role'       => 'client',
 			);
 
-			$user_id = wp_insert_user( $user_data );
+			$ff = array_merge($user_data, $acf_to_wpuser_fields );
+			$user_id = wp_insert_user( $ff );
 
-			//userID		
+			// Change the owner of the post to the associated user and create a post meta for easy identification
 			wp_update_post( array( 'ID' => $post->ID, 'post_author' => $user_id ), false, false );
 			update_post_meta( $post->ID, self::META, (int) $user_id );
 
 		} else {
+			// If updating an existing client post:
+			$user_data = ! ( $user_exists instanceof WP_User )? [] : get_object_vars( $user_exists->data );
 
 			// If updating an existing client post:
 			// If the email has changed, we update the email of the WP user too.
 			// NOTE: if the new email corresponds to another existing user, there is another hook `acf/validate_value` to prevent it.
 			$email = get_field( 'email', $post->ID );
-			if ( $email !== $user_exists->user_email ) {
-				$user_exists->user_email = $email;
-				wp_update_user( $user_exists );
+			if ( $email !== $user_data['user_email'] ) {
+				$acf_to_wpuser_fields['user_email'] = $email;
 			}
-			
+
+			$user_id = $user_data['ID'];
+			$ff = array_merge( $user_data, $acf_to_wpuser_fields );
+			wp_update_user( $ff );
 		}
+
+		// for both creation or update, we update the acf fields of the WP User
+		foreach ( $acf_to_acf_fields as $field_name => $new_value ) {
+			if ($field_name === 'pathology') {
+
+				$up = update_user_meta( 37, $field_name, [5] );
+
+				// sync the ACF field with the terms of the CPT
+				if ( is_array($new_value) ) {
+					$term_ids = array_map(function($term_id) {
+						return (int) $term_id;
+					}, $new_value);
+					wp_set_post_terms($post_id, $term_ids, 'diet-category');
+				}
+				
+				
+				// and sync the ACF field for the user too.
+			} else {
+				update_field( $field_name, $new_value, 'user_' . $user_id );
+			}
+				
+		} //end foreach.
+
+		// return to activate the hook.
+		add_action( 'profile_update', [__CLASS__, 'sync_client_from_wpuser' ] );
+
+	}
+
+
+	public static function sync_client_from_wpuser( $user_id, $old_user_data ) {
+		$user = get_user_by( 'id', $user_id );
+		$user_data = ! ( $user instanceof WP_User )? [] : get_object_vars( $user->data );
+		$new_email = $user_data['user_email'];
+		if ( $old_user_data->user_email !== $new_email ) {
+			self::update_client_email_post_from_user( $user_id, $new_email, $old_user_data->user_email );
+		}
+
+		$client_post = self::get_client_post_by_user_id( $user_id );
+		update_field( 'name', $user_data['first_name'], $client_post->ID );
+		update_field( 'surname', $user_data['last_name'], $client_post->ID );
+	
+		// rest of fields
+		$acf_to_acf_fields = [
+			'address'         => get_field( 'address', 'user_' . $user_id ),
+			'telephone'       => get_field( 'telephone', 'user_' . $user_id ),
+			'sex'             => get_field( 'sex', 'user_' . $user_id ),
+			'born'            => get_field( 'born', 'user_' . $user_id ),
+			'profession'      => get_field( 'profession', 'user_' . $user_id ),
+		];
+		foreach ( $acf_to_acf_fields as $field_name => $new_value ) {
+			update_field( $field_name, $new_value, $client_post->ID );
+		}
+
 	}
 
 	/**
@@ -217,6 +296,7 @@ class Cliente {
 		if ( 'client' !== get_post_type( $post_id ) ) {
 			return;
 		}
+		// executes when deleted from the Trash!
 		$user = self::get_client_user_by_post_id( $post_id );
 		if ( $user ) {
 			$current = get_current_user_id();
@@ -236,16 +316,29 @@ class Cliente {
 		if ( 'client' !== get_post_type( $post_id ) ) {
 			return;
 		}
-		$old_email = get_field( 'email', $post_id, true );
-		$email     = get_field( 'email', $post_id );
+		$old_email      = get_field( 'email', $post_id, true );
+		$email          = get_field( 'email', $post_id );
+		$wp_user_fields = [];
 		if ( $old_email !== $email ) {
 			$user_id = self::get_client_post_by_user_id( $post_id );
 			if ( $user_id ) {
-				wp_update_user( array(
+				$wp_user_fields = array_merge( $wp_user_fields, [
 					'ID'         => $user_id,
 					'user_email' => $email,
-				) );
+				] );
 			}
+		}
+
+		// now the rest of user fields:
+		$name    = get_field( 'name', $post_id );
+		$surname = get_field( 'surname', $post_id );
+		$wp_user_fields = array_merge( $wp_user_fields, [
+			'first_name' => $name,
+			'last_name'  => $surname,
+		] );
+
+		if ( ! empty( $wp_user_fields ) ) {
+			wp_update_user( $wp_user_fields );
 		}
 	}
 
@@ -260,9 +353,10 @@ class Cliente {
 	 * @param string $new_email New email.
 	 * @param string $old_email Old email.
 	 */
-	public static function update_client_post_from_user( $user_id, $new_email, $old_email ) {
+	public static function update_client_email_post_from_user( $user_id, $new_email, $old_email ) {
 		$client_post = self::get_client_post_by_user_id( $user_id );
 		if ( $client_post ) {
+
 			update_field( 'email', $new_email, $client_post->ID );
 		}
 	}
@@ -314,7 +408,9 @@ class Cliente {
     return null;
   }
 
-  /** Dashboard in client CMS page */
+  /** Dashboard in client CMS page
+	 * See cliente-dashboard.php
+	*/
   public static function client_dashboard( $field ) {
 
     if ( 'field_66aa86c7f526b' === $field['key'] ) {
@@ -330,6 +426,11 @@ class Cliente {
     return $field;
   }
 
+	/**
+	 * Action when clicked on the button to create a Diet in the Client Dashboard
+	 *
+	 * @return void
+	 */
 	function create_diet_for_client() {
     // Verificar la acción
     if ( ! isset( $_GET['action'] ) || 'create_diet' !== $_GET['action'] ) {
@@ -340,6 +441,9 @@ class Cliente {
     if ( ! isset( $_GET['client_id'] ) || ! isset( $_GET['diet-category'] ) ) {
         wp_die( 'Missing required parameters.' );
     }
+
+		// @TODO: verify that current user can create diets.
+		
 
     $client_id = intval( $_GET['client_id'] );
     $diet_category_id = intval( $_GET['diet-category'] );

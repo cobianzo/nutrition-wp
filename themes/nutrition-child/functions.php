@@ -46,11 +46,11 @@ add_action('enqueue_block_editor_assets', function() {
 
 add_action('init', function(){
 	if (isset($_GET['w-test'])) {
-		$diet_cat = 5;
-		$pattern_slug = get_field('linked_pattern_template', "term_$diet_cat");
-		$pattern_post = get_page_by_path($pattern_slug, OBJECT, 'wp_block');
-		ddie($pattern_post);
-		ddie( 'waht the hell am i doing here' );
+		$user_id = 37;
+		$new_value = [ 5 ];
+		$up = update_user_meta( $user_id, 'pathology', $new_value );
+		$f = get_field( 'pathology', 'user_' . $user_id );
+		ddie($f);
 	}
 });
 function dd($var) {

@@ -1,7 +1,7 @@
 <?php 
 
-
-require_once __DIR__ . '/cpt-cliente.php';
+// Kind of the functions.php equivalent
+// We insert generic things here.
 
 
 add_action('admin_init', 'mytheme_enqueue_block_editor_assets');

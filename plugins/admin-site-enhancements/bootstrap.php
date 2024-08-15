@@ -184,6 +184,13 @@ class Admin_Site_Enhancements {
                 10,
                 3
             );
+            add_filter( 'wp_calculate_image_srcset', [$svg_upload, 'disable_svg_srcset'] );
+            add_filter(
+                'wp_calculate_image_sizes',
+                [$svg_upload, 'remove_svg_responsive_image_attr'],
+                10,
+                3
+            );
             add_action( 'wp_ajax_svg_get_attachment_url', [$svg_upload, 'get_svg_attachment_url'] );
             add_filter( 'wp_prepare_attachment_for_js', [$svg_upload, 'get_svg_url_in_media_library'] );
         }
@@ -279,9 +286,6 @@ class Admin_Site_Enhancements {
             add_action( 'wp_head', [$auto_publish_posts_with_missed_schedule, 'publish_missed_schedule_posts'] );
             add_action( 'admin_head', [$auto_publish_posts_with_missed_schedule, 'publish_missed_schedule_posts'] );
         }
-        // =================================================================
-        // ADMIN INTERFACE
-        // =================================================================
         // Hide or Modify Elements / Clean Up Admin Bar
         if ( array_key_exists( 'hide_modify_elements', $options ) && $options['hide_modify_elements'] ) {
             $cleanup_admin_bar = new ASENHA\Classes\Cleanup_Admin_Bar();
@@ -799,6 +803,10 @@ class Admin_Site_Enhancements {
                 add_filter( 'gutenberg_use_widgets_block_editor', '__return_false' );
                 // Disables the block editor from managing widgets.
                 add_filter( 'use_widgets_block_editor', '__return_false' );
+            }
+            if ( array_key_exists( 'disable_lazy_load', $options ) && $options['disable_lazy_load'] ) {
+                add_filter( 'wp_lazy_loading_enabled', '__return_false' );
+                add_filter( 'wp_get_attachment_image_attributes', [$disable_smaller_components, 'eager_load_featured_images'] );
             }
         }
         // =================================================================
