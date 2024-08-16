@@ -1,3 +1,6 @@
+// Not in use anymore.
+// If we decide to use it, we need to use allowed-blocks.json instead.
+
 // Import necessary WordPress packages
 import { createHigherOrderComponent } from "@wordpress/compose";
 import { addFilter } from "@wordpress/hooks";

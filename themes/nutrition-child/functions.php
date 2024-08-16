@@ -8,6 +8,8 @@ require_once __DIR__ . '/class-dieta.php';
 require_once __DIR__ . '/class-dieta-category.php';
 require_once __DIR__ . '/class-alimento.php';
 require_once __DIR__ . '/includes/init.php';
+require_once __DIR__ . '/includes/redirections.php';
+require_once __DIR__ . '/includes/shortcodes.php';
 
 
 add_filter('admin_body_class', function($classes) {

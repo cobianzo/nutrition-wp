@@ -11,6 +11,9 @@ And permissions to be visible only for editor-admin- and owner
 ✅ create restrictions of use of blocks for 'Editor' user
 ✅ Create a link in the sidebar of Dieta to go back to the client Edit. (in metabox)
 ✅ Show link to the diet(s) of a client from the client dashboard. Allow to delete the diet from there.
+whitelist the patterns with category 'diet' in the Allowed blocks
+Improve the look of an Aliment Block. Front and backend.
+Start translations.
 
 # nutrition-wp
 
@@ -52,6 +55,7 @@ By the End:
 - Set up permissions. Access to Editor to certain blocks. Check the @TODO
 - Use AAM plugin to show/hide content and add redirects. Use ChatGPT.
 - Use ASE Plugin at maximum. Use chatGPT for that.
+- Create a CSS specific for printing, to hide idle elements of the diet.
 
 Proposals:
 
@@ -83,3 +87,16 @@ Proposals:
    Puedes usar el Pattern `Giorno Settimana` para ayudarte
 3. Asociar la categoria eg. /wp-admin/term.php?taxonomy=diet-category&tag_ID=5&post_type=diet
    con el pattern. Rellenar el campo `Linked Pattern Template` con el slug del pattern que acabas de crear. El slug es predecible a partir del título del Pattern. Si el título es `Dieta Genérica Pattern`, entonces su slug será `dieta-generica-pattern`, que deberá ir en el el campo `Linked Pattern Template`
+
+## Maquetar las page templates del frontend.
+
+1. Las páginas relevantes del frontend son:
+
+- La homepage. Visible sólo si estás logueado - Hace falta maquetar
+
+  - La template asociada a la página. En este caso `page-no-title`: /wp-admin/site-editor.php?postType=wp_template&postId=nutrition-child%2F%2Fpage-no-title&canvas=edit
+    Allí hace falta establecer el ancho del contenido, el header de la página si queremos uno, el footer.
+  - El contenido de la página en sí. Pagine > Home (/wp-admin/site-editor.php?postType=page&postId=2&canvas=edit)
+    Estamos usando las opciones de visibildad para mostrar contenidos diferentes dependiendo de si el usuario está logueado, y de si es `client`, si es `editor` o `administrator` > redirect a Dashboard.
+
+2. Página de una dieta, visible sólo para el cliente, lista para imprimir.

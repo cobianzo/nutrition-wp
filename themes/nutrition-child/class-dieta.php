@@ -3,27 +3,47 @@
 
 class Dieta {
 
-  // const ALLOWED_BLOCKS = [
-  //   'core/paragraph',
-  //   'core/group',
-  //   'core/heading',
-  //   'core/list',
-  //   'asim/alimento-block', // Replace with your custom block's name
-  // ];
-
   /**
    * Init hooks
    */
   public static function init() {
 
-    add_action('enqueue_block_editor_assets', [__CLASS__, 'script_dieta_rules']);
+    // add_action('enqueue_block_editor_assets', [__CLASS__, 'script_dieta_rules']);
+    // We don't use this anymore. It weas about creating a rule to force using a group block 
+    // at the top level of the content.
 
-    // MOVE this to generic, it's not only for Dieta.
-    add_filter('allowed_block_types_all', [__CLASS__, 'restrict_gutenberg_blocks_for_diet_cpt'], 10, 2);
-
+    
     // Actions in cliente-dashboard
     add_action( 'admin_post_create_diet', [ __CLASS__, 'create_diet_for_client' ] );
     add_action( 'admin_post_delete_diet_action', [__CLASS__, 'delete_diet_of_client'] );
+
+
+    // info sidebar metabox. prescidible
+    add_action('add_meta_boxes', function() {
+      add_meta_box(
+        'diet_metabox_id',                // Unique ID
+        'Related Client Post',            // Title
+        [__CLASS__, 'display_diet_metabox'],           // Callback function
+        'diet',                           // Post type
+        'side',                           // Context
+        'high'                            // Priority
+      );
+    });
+
+    add_filter( 'default_content', function ( $content, $post ) {
+      if ( 'diet' === $post->post_type && empty( $post->post_content ) ) {
+          $content = '<!-- wp:group -->
+          <div class="wp-block-group"><!-- wp:paragraph -->
+          <p>Delete this paragraph and start using Aliment Blocks here.</p>
+          <!-- /wp:paragraph --></div>
+          <!-- /wp:group -->';
+      }
+      return $content;
+    }, 10, 2 );
+
+    // sync the ACF field with the CPT author. The post_author is the one that counts, but the ACF
+    // makes it easier to identify for the editor.
+    add_action( 'save_post', [__CLASS__, 'sync_cliente_owner_with_author'] );
 
   }
 
@@ -54,31 +74,7 @@ class Dieta {
   }
 
 
-  /**
-   * with PHP restrict the allowed blocks
-   *
-   * @param [type] $allowed_blocks
-   * @param [type] $post
-   * @return void
-   */
-  public static function restrict_gutenberg_blocks_for_diet_cpt($allowed_blocks, $editor) {
-
-    $json_path      = get_stylesheet_directory_uri() . '/includes/allowed-blocks.json';
-    $json_data      = file_get_contents($json_path);
-    $allowed_blocks = json_decode($json_data, true);
-
-    // Check if the current post type is 'diet'
-    // if ($editor->post && $editor ->post->post_type === 'diet') {
-      // if (!current_user_can('administrator')) {
-        // Specify the allowed blocks
-    if ( is_array($allowed_blocks) ) {
-      return $allowed_blocks;
-    }
-    // }
-
-    // For other post types, return the default allowed blocks
-    return $allowed_blocks;
-  }
+  
 
   // CRUD relationship dieta-client
 
@@ -234,31 +230,73 @@ class Dieta {
     exit;
   }
 
+
+  /**
+   * Informational metabox on sidebar. Not important.
+   *
+   * @param [type] $post
+   * @return void
+   */
+  public static function display_diet_metabox( $post ) {
+    $the_user_owner_id = $post->post_author;
+    $client_post = Cliente::get_client_post_by_user_id( $the_user_owner_id );
+    if ( $client_post ) {
+      $edit_link = get_edit_post_link( $client_post->ID );
+      echo '<p><a href="' . esc_url( $edit_link ) . '">' . $client_post->post_title . '</a></p>';
+    }
+  }
+
+  /**
+   * Diet CPT, sync ACF with post_author
+   *
+   * @param [type] $post_id
+   * @return void
+   */
+  public static function sync_cliente_owner_with_author( $post_id ) {
+    // Avoid infinite loops
+    remove_action( 'save_post', [__CLASS__, 'sync_cliente_owner_with_author'] );
+
+    // Get the post object
+    $post = get_post( $post_id );
+
+    // Check if the post is of type 'diet'
+    if ( 'diet' !== $post->post_type ) {
+        return;
+    }
+
+    // Get the current ACF field value
+    $cliente_owner = get_field( 'cliente_owner', $post_id );
+
+    // Get the post author ID
+    $post_author_id = $post->post_author;
+
+    // Check if the ACF field is empty
+    if ( empty( $cliente_owner ) ) {
+        // Check if the post author has the 'client' role
+        $post_author = get_userdata( $post_author_id );
+        if ( in_array( 'client', (array) $post_author->roles ) ) {
+            // Update the ACF field with the post author ID
+            update_field( 'cliente_owner', $post_author_id, $post_id );
+        }
+    } else {
+        // If the ACF field is not empty, sync the post author with the ACF field
+        $new_author_id = intval( $cliente_owner );
+        $new_author    = get_userdata( $new_author_id );
+
+        // Check if the new author has the 'client' role
+        if ( in_array( 'client', (array) $new_author->roles ) ) {
+            // Update the post author
+            wp_update_post( array(
+                'ID'          => $post_id,
+                'post_author' => $new_author_id,
+            ) );
+        }
+    }
+
+    // Re-add the hook to avoid disrupting other save_post actions
+    add_action( 'save_post', [__CLASS__, 'sync_cliente_owner_with_author'] );
+  }
 }
 
 Dieta::init();
 
-
-
-
-
-add_action('add_meta_boxes', 'add_diet_metabox');
-function add_diet_metabox() {
-  add_meta_box(
-      'diet_metabox_id',                // Unique ID
-      'Related Client Post',            // Title
-      'display_diet_metabox',           // Callback function
-      'diet',                           // Post type
-      'side',                           // Context
-      'high'                            // Priority
-  );
-}
-
-function display_diet_metabox( $post ) {
-  $the_user_owner_id = $post->post_author;
-  $client_post = Cliente::get_client_post_by_user_id( $the_user_owner_id );
-  if ( $client_post ) {
-    $edit_link = get_edit_post_link( $client_post->ID );
-    echo '<p><a href="' . esc_url( $edit_link ) . '">' . $client_post->post_title . '</a></p>';
-  }
-}
