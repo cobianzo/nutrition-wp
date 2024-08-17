@@ -1,7 +1,7 @@
 <?php
 
 /**
- * [user_display_name]
+ * [user_display_name wrapper="p" class="my-class"]
  */
 add_shortcode( 'user_display_name', 'mostrar_nombre_de_usuario' );
 function mostrar_nombre_de_usuario( $atts = [] ) {
@@ -9,16 +9,18 @@ function mostrar_nombre_de_usuario( $atts = [] ) {
   $atts = shortcode_atts(
     array(
         'wrapper' => 'p', // Tipo de etiqueta HTML
+        'class' => ''
     ),
     $atts,
     'user_display_name'
   );
 
-  $wrapper = tag_escape($atts['wrapper']); // Escapar la etiqueta HTML
+  $wrapper = tag_escape( $atts['wrapper'] ); // Escapar la etiqueta HTML
+  $class = esc_attr( $atts['class'] );
 
   if ( is_user_logged_in() ) {
       $current_user = wp_get_current_user();
-      return '<' . $wrapper . '>' . esc_html($current_user->display_name) . '</' . $wrapper . '>';
+      return '<' . $wrapper . ' class="' . $class . '">' . esc_html($current_user->display_name) . '</' . $wrapper . '>';
 
   }
   return '';

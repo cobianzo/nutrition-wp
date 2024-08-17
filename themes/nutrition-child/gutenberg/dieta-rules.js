@@ -1,3 +1,4 @@
+// @TODELETE:
 // Not in use anymore.
 // If we decide to use it, we need to use allowed-blocks.json instead.
 

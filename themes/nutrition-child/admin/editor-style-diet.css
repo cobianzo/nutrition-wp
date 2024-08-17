@@ -1,0 +1,9 @@
+/*
+Styles for Editor:  /wp-admin/post.php?post=xxx for CPT 'diet'
+*/
+
+.editor-styles-wrapper {
+  /* move to somewhere outside... */
+  padding-bottom: 4rem;
+  border-bottom: 10px solid aqua;
+}

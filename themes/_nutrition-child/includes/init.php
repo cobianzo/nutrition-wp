@@ -8,31 +8,22 @@ class Setup {
   
   public static function init() {
     
-    // editor styles css: Add css to the gutenberg and the tiny mce editors, in case I want to use it.
-    add_action( 'admin_init', [__CLASS__, 'mytheme_enqueue_block_editor_assets'] );
-
+    // editor styles css: in /admin/admin-styles.php
+    
     // print styles css:
     add_action( 'wp_enqueue_scripts', [__CLASS__, 'enqueue_print_stylesheet'] );
+
+    // enqueue fonts
+    add_action( 'wp_enqueue_scripts', [__CLASS__, 'enqueue_fonts'] );
+    add_action( 'admin_enqueue_scripts', [__CLASS__, 'enqueue_fonts'] );
 
     // retrict the blocks in the whole site. We don't need most of them
     add_filter( 'allowed_block_types_all', [__CLASS__, 'restrict_gutenberg_blocks_for_diet_cpt'], 10, 2 );
 
-    
 
   }
 
-  public static function mytheme_enqueue_block_editor_assets() {
-    // Enqueue the editor style
-    // get the url path to the child theme
-    $url = get_stylesheet_directory_uri() . '/includes/editor-style.css';
-    add_editor_style( $url );
-    
-    if ( isset($_GET['post']) &&  'diet' === get_post_type( $_GET['post'] ) ) {
-      $url = get_stylesheet_directory_uri() . '/includes/editor-style-diet.css';
-      add_editor_style( $url );
-    }
   
-  }
 
   static public function enqueue_print_stylesheet() {
     wp_enqueue_style(
@@ -44,6 +35,17 @@ class Setup {
     );
   }
 
+
+  public static function enqueue_fonts() {
+    // Enqueue parent theme styles
+    wp_enqueue_style('parent-style', get_template_directory_uri() . '/style.css');
+
+    // Enqueue child theme styles
+    wp_enqueue_style('child-style', get_stylesheet_uri());
+
+    // Enqueue custom fonts
+    // wp_enqueue_style('custom-fonts', get_stylesheet_directory_uri() . '/fonts/fonts.css');    
+  }
   /**
    * with PHP restrict the allowed blocks
    * @TODO: I think I need to whitelist the patterns. At least those with the category 'Diet'

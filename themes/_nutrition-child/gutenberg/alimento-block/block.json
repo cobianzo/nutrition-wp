@@ -1,0 +1,56 @@
+{
+  "apiVersion": 3,
+  "version": "1.0.0",
+  "name": "asim/alimento-block",
+  "title": "Block Alimento",
+  "category": "widgets",
+  "icon": "smiley",
+  "supports": {
+    "align": false,
+    "anchor": true,
+    "html": false
+  },
+  "parent": ["core/group"],
+  "textdomain": "asim",
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": ""
+    },
+    "textContent": {
+      "type": "string",
+      "source": "html",
+      "selector": ".alimento-left-column"
+    },
+    "alimentoID": {
+      "type": "string",
+      "default": ""
+    },
+    "imgSrc": {
+      "type": "string",
+      "default": ""
+    },
+    "mealType": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "example": {
+    "attributes": {
+      "title": "Colazione",
+      "textContent": "",
+      "alimentoID": "123",
+      "imgSrc": "/wp-content/uploads/2024/07/naturasi-biscotti.png",
+      "mealType": "breakfast"
+    }
+  },
+  "providesContext": {
+    "custom/restricted-inner-blocks": "content"
+  },
+  "usesContext": ["core/paragraph", "core/heading", "core/list"],
+
+  "editorScript": "file:../../build/alimento-block.js",
+  "style": "file:./style.css",
+  "editorStyle": "file:./editor.css",
+  "render": "file:./render.php"
+}

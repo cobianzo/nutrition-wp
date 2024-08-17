@@ -1,6 +1,6 @@
 == nutrition-child ==
 
-Contributors: @cobianzo
+Contributors: cobianzo
 Requires at least: 6.0
 Tested up to: 6.6
 Requires PHP: 5.7
@@ -10,8 +10,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 
-Child theme with all definitions for the nutrition site. Depends on plugins ACF, Members
-
+Child of Fork, dedicated to the Nutrtition site
 
 == Changelog ==
 
@@ -21,7 +20,7 @@ Child theme with all definitions for the nutrition site. Depends on plugins ACF,
 
 == Copyright ==
 
-nutrition-child WordPress Theme, (C) 2024 @cobianzo
+nutrition-child WordPress Theme, (C) 2024 cobianzo
 nutrition-child is distributed under the terms of the GNU GPL.
 
 This program is free software: you can redistribute it and/or modify
@@ -34,4 +33,6 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
+
+nutrition-child is a child theme of Fork (https://themeisle.com/themes/fork/), (C) ThemeIsle, [GPLv2 or later](http://www.gnu.org/licenses/gpl-2.0.html)
 

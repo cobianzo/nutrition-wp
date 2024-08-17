@@ -1,0 +1,14 @@
+/*
+  Styles only for the editor, for the Aliment block.
+*/
+.wp-block-asim-alimento-block {
+  &.is-selected {
+    border: 10px solid red;
+  }
+
+  &.has-child-selected {
+    .block-editor-inner-blocks {
+      border: 10px solid red;
+    }
+  }
+}

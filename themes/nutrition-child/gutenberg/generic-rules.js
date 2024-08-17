@@ -1,3 +1,7 @@
+// @TODO: informarme de qué hace exactamente esto.
+
+// reactivarlo
+
 // import allowedBlocksData from "../includes/allowed-blocks.json";
 
 // // Aplicar restricciones en Gutenberg

@@ -1,11 +1,130 @@
 {
-  "version": 3,
-  "$schema": "https://schemas.wp.org/wp/6.6/theme.json",
-  "patterns": [],
-  "settings": {
-    "layout": {
-      "contentSize": "1024px",
-      "wideSize": "1200px"
-    }
-  }
+	"settings": {
+		"color": {
+			"palette": [
+				{
+					"color": "#FFFFFF",
+					"name": "Background",
+					"slug": "ti-bg"
+				},
+				{
+					"color": "#202020",
+					"name": "Foreground",
+					"slug": "ti-fg"
+				},
+				{
+					"color": "#c5eac5",
+					"name": "Background Alt",
+					"slug": "ti-bg-alt"
+				},
+				{
+					"color": "#276a27",
+					"name": "Background Dark",
+					"slug": "ti-bg-inv"
+				},
+				{
+					"color": "#FBFBFB",
+					"name": "Foreground Alt",
+					"slug": "ti-fg-alt"
+				},
+				{
+					"color": "#276A27",
+					"name": "Accent",
+					"slug": "ti-accent"
+				},
+				{
+					"color": "#45B644",
+					"name": "Accent-2",
+					"slug": "ti-accent-2"
+				}
+			]
+		},
+		"typography": {
+			"customFontSize": true,
+			"fontFamilies": [
+				{
+					"fontFace": [
+						{
+							"fontFamily": "\"Playfair Display\"",
+							"fontStyle": "normal",
+							"fontWeight": "400",
+							"src": [
+								"file:./assets/fonts/nuFvD-vYSZviVYUb_rj3ij__anPXJzDwcbmjWBN2PKdFvUDVZNLo_U2r.woff2"
+							]
+						},
+						{
+							"fontFamily": "\"Playfair Display\"",
+							"fontStyle": "normal",
+							"fontWeight": "900",
+							"src": [
+								"file:./assets/fonts/nuFvD-vYSZviVYUb_rj3ij__anPXJzDwcbmjWBN2PKfsukDVZNLo_U2r.woff2"
+							]
+						}
+					],
+					"fontFamily": "\"Playfair Display\", serif",
+					"name": "Playfair Display Base",
+					"slug": "base"
+				},
+				{
+					"fontFace": [
+						{
+							"fontFamily": "\"AR One Sans\"",
+							"fontStyle": "normal",
+							"fontWeight": "400",
+							"src": [
+								"file:./assets/fonts/TUZezwhrmbFp0Srr_tH6fv6RcUejHO_u7GF5aXfv-U2QzBLF6gslWn_9DWg3no5mBF4.woff2"
+							]
+						},
+						{
+							"fontFamily": "\"AR One Sans\"",
+							"fontStyle": "normal",
+							"fontWeight": "700",
+							"src": [
+								"file:./assets/fonts/TUZezwhrmbFp0Srr_tH6fv6RcUejHO_u7GF5aXfv-U2QzBLF6gslWpj6DWg3no5mBF4.woff2"
+							]
+						}
+					],
+					"fontFamily": "\"AR One Sans\", sans-serif",
+					"name": "AR One Sans Headings",
+					"slug": "headings"
+				}
+			],
+			"lineHeight": true
+		}
+	},
+	"styles": {
+		"blocks": {
+			"core/button": {
+				"typography": {
+					"fontFamily": "var(--wp--preset--font-family--headings)"
+				}
+			},
+			"core/heading": {
+				"typography": {
+					"fontFamily": "var(--wp--preset--font-family--headings)"
+				}
+			}
+		},
+		"color": {
+			"background": "var(--wp--preset--color--ti-bg)",
+			"text": "var(--wp--preset--color--ti-fg)"
+		},
+		"elements": {
+			"link": {
+				":hover": {
+					"color": {
+						"text": "var(--wp--preset--color--ti-accent)"
+					}
+				},
+				"color": {
+					"text": "var(--wp--preset--color--ti-accent)"
+				}
+			}
+		},
+		"typography": {
+			"fontFamily": "var(--wp--preset--font-family--base)"
+		}
+	},
+	"version": 3,
+	"$schema": "https://schemas.wp.org/wp/6.6/theme.json"
 }

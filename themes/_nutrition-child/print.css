@@ -1,0 +1,5 @@
+/* these styles are only for printing */
+
+.hide-print {
+  display: none !important;
+}
