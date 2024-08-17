@@ -49,7 +49,10 @@ function show_client_diet_links( $atts = [] ) {
   if ( $query->have_posts() ) {
     while ( $query->have_posts() ) {
       $query->the_post();
-      echo '<div class="wp-block-button"><a class="wp-block-button__link" href="' . get_permalink() . '">' . get_the_title() . '</a></div>';
+      echo '<div class="wp-block-button"><a class="wp-block-button__link" href="' . get_permalink() . '">' 
+        . get_the_title()
+        . '<br>' . get_the_date()
+        . '</a></div>';
     }
   }
 
@@ -57,4 +60,32 @@ function show_client_diet_links( $atts = [] ) {
 }
 
 
-// [registro-misurazioni]
+// [registro_misurazioni]
+add_shortcode( 'registro_misurazioni', 'show_registro_misurazioni' );
+function show_registro_misurazioni( $atts = [] ) {
+  
+  if ( !is_user_logged_in() || !current_user_can( 'client' ) ) {
+    return 'Access denied';
+  }
+
+  // get the `client` CPT for current user. 
+  $client_post = Cliente::get_client_post_by_user_id( get_current_user_id() );
+
+  if ( !$client_post ) {
+    return 'Client not found';
+  }
+
+  $visits = get_field('visits', $client_post->ID);
+  $output = '';
+  if ( !empty($visits) ) {
+    $output .= '<ul>';
+    foreach ( $visits as $visit ) {
+      $output .= '<li>';
+      $output .= $visit['date'] . ' - ' . $visit['weight'] . 'Kg - ' . $visit['height'] . 'cm - ' . $visit['other'];
+      $output .= '</li>';
+    }
+    $output .= '</ul>';
+  }
+
+  return $output;
+}

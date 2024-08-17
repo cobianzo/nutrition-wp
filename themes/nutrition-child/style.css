@@ -14,3 +14,23 @@ Template: fork
 Text Domain: nutrition-child
 Tags: nutrition, custom
 */
+
+/* for dieta template*/
+main.wp-block-group.alignfull {
+  padding: 0 2rem;
+}
+@media screen and (min-width: 768px) {
+  main.wp-block-group.alignfull {
+    padding: 0 0;
+  }
+}
+/*
+second level of ul smaller text.
+*/
+ul {
+  li {
+    > ul > li {
+      font-size: var(--wp--preset--font-size--small);
+    }
+  }
+}

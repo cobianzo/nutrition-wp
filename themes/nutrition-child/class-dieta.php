@@ -155,7 +155,7 @@ class Dieta {
     }
 
     // Crear el nuevo CPT 'diet'
-    $diet_title = sprintf( __( 'Diet for client %s - %s', 'asim'), $client_post->post_title, $diet_category->name );
+    $diet_title = sprintf( __( 'Diet for client %s', 'asim'), $client_post->post_title ); // , $diet_category->name
 
     // Initialize the content, if there is linked patter associated to this term.
     $content = '';

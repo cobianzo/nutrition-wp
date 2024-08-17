@@ -45,11 +45,6 @@ if ( ! class_exists( 'ACF_Updates' ) ) {
 		 */
 		public function __construct() {
 
-			// disable showing updates if show updates is hidden.
-			if ( ! acf_pro_is_updates_page_visible() ) {
-				return;
-			}
-
 			// append update information to transient.
 			add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'modify_plugins_transient' ), 10, 1 );
 
@@ -129,27 +124,12 @@ if ( ! class_exists( 'ACF_Updates' ) ) {
 				acf_log( $url, $body );
 			}
 
-			$license_key = acf_pro_get_license_key();
-			if ( ! $license_key ) {
-				$license_key = '';
-			}
-
-			$site_url = acf_pro_get_home_url();
-			if ( ! $site_url ) {
-				$site_url = '';
-			}
-
 			// Make request.
 			$raw_response = wp_remote_post(
 				$url,
 				array(
-					'timeout' => 28,
+					'timeout' => 10,
 					'body'    => $body,
-					'headers' => array(
-						'X-ACF-Version' => ACF_VERSION,
-						'X-ACF-License' => $license_key,
-						'X-ACF-URL'     => $site_url,
-					),
 				)
 			);
 
@@ -201,7 +181,7 @@ if ( ! class_exists( 'ACF_Updates' ) ) {
 			}
 
 			// allow json to include expiration but force minimum and max for safety.
-			$expiration = $this->get_expiration( $response, DAY_IN_SECONDS );
+			$expiration = $this->get_expiration( $response, DAY_IN_SECONDS, MONTH_IN_SECONDS );
 
 			// update transient.
 			set_transient( $transient_name, $response, $expiration );
@@ -264,11 +244,6 @@ if ( ! class_exists( 'ACF_Updates' ) ) {
 		public function get_plugin_updates( $force_check = false ) {
 			$transient_name = 'acf_plugin_updates';
 
-			// Don't call our site if no plugins have registered updates.
-			if ( empty( $this->plugins ) ) {
-				return array();
-			}
-
 			// Construct array of 'checked' plugins.
 			// Sort by key to avoid detecting change due to "include order".
 			$checked = array();
@@ -298,7 +273,7 @@ if ( ! class_exists( 'ACF_Updates' ) ) {
 				'wp'      => wp_json_encode(
 					array(
 						'wp_name'      => get_bloginfo( 'name' ),
-						'wp_url'       => acf_pro_get_home_url(),
+						'wp_url'       => acf_get_home_url(),
 						'wp_version'   => get_bloginfo( 'version' ),
 						'wp_language'  => get_bloginfo( 'language' ),
 						'wp_timezone'  => get_option( 'timezone_string' ),
@@ -329,7 +304,7 @@ if ( ! class_exists( 'ACF_Updates' ) ) {
 			}
 
 			// Allow json to include expiration but force minimum and max for safety.
-			$expiration = $this->get_expiration( $response );
+			$expiration = $this->get_expiration( $response, DAY_IN_SECONDS, MONTH_IN_SECONDS );
 
 			// Update transient and return.
 			set_transient( $transient_name, $response, $expiration );
@@ -342,16 +317,16 @@ if ( ! class_exists( 'ACF_Updates' ) ) {
 		 * @since   5.6.9
 		 *
 		 * @param   mixed   $response The response from the server. Default false.
-		 * @param   integer $min      The minimum expiration limit. Default 3 hours.
-		 * @param   integer $max      The maximum expiration limit. Default 7 days.
+		 * @param   integer $min      The minimum expiration limit. Default 0.
+		 * @param   integer $max      The maximum expiration limit. Default 0.
 		 * @return  integer
 		 */
-		public function get_expiration( $response = false, $min = 10800, $max = 604800 ) {
+		public function get_expiration( $response = false, $min = 0, $max = 0 ) {
 			$expiration = 0;
 
 			// Check possible error conditions.
 			if ( is_wp_error( $response ) || is_string( $response ) ) {
-				return 15 * MINUTE_IN_SECONDS;
+				return 5 * MINUTE_IN_SECONDS;
 			}
 
 			// Use the server requested expiration if present.

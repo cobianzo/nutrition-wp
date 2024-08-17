@@ -9,16 +9,19 @@ if ( ! class_exists( 'acf_loop' ) ) :
 	class acf_loop {
 
 
-		/**
-		 * This function will setup the class functionality
-		 *
-		 * @type    function
-		 * @date    5/03/2014
-		 * @since   5.0.0
-		 *
-		 * @param   n/a
-		 * @return  n/a
-		 */
+		/*
+		*  __construct
+		*
+		*  This function will setup the class functionality
+		*
+		*  @type    function
+		*  @date    5/03/2014
+		*  @since   5.0.0
+		*
+		*  @param   n/a
+		*  @return  n/a
+		*/
+
 		function __construct() {
 
 			// vars
@@ -26,48 +29,57 @@ if ( ! class_exists( 'acf_loop' ) ) :
 		}
 
 
-		/**
-		 * This function will return true if no loops exist
-		 *
-		 * @type    function
-		 * @date    3/03/2016
-		 * @since   5.3.2
-		 *
-		 * @param   n/a
-		 * @return  (boolean)
-		 */
+		/*
+		*  is_empty
+		*
+		*  This function will return true if no loops exist
+		*
+		*  @type    function
+		*  @date    3/03/2016
+		*  @since   5.3.2
+		*
+		*  @param   n/a
+		*  @return  (boolean)
+		*/
+
 		function is_empty() {
 
 			return empty( $this->loops );
 		}
 
 
-		/**
-		 * This function will return true if a loop exists for the given array index
-		 *
-		 * @type    function
-		 * @date    3/03/2016
-		 * @since   5.3.2
-		 *
-		 * @param   $i (int)
-		 * @return  (boolean)
-		 */
+		/*
+		*  is_loop
+		*
+		*  This function will return true if a loop exists for the given array index
+		*
+		*  @type    function
+		*  @date    3/03/2016
+		*  @since   5.3.2
+		*
+		*  @param   $i (int)
+		*  @return  (boolean)
+		*/
+
 		function is_loop( $i = 0 ) {
 
 			return isset( $this->loops[ $i ] );
 		}
 
 
-		/**
-		 * This function will return a valid array index for the given $i
-		 *
-		 * @type    function
-		 * @date    3/03/2016
-		 * @since   5.3.2
-		 *
-		 * @param   $i (mixed)
-		 * @return  (int)
-		 */
+		/*
+		*  get_i
+		*
+		*  This function will return a valid array index for the given $i
+		*
+		*  @type    function
+		*  @date    3/03/2016
+		*  @since   5.3.2
+		*
+		*  @param   $i (mixed)
+		*  @return  (int)
+		*/
+
 		function get_i( $i = 0 ) {
 
 			// 'active'
@@ -90,16 +102,19 @@ if ( ! class_exists( 'acf_loop' ) ) :
 		}
 
 
-		/**
-		 * This function will add a new loop
-		 *
-		 * @type    function
-		 * @date    3/03/2016
-		 * @since   5.3.2
-		 *
-		 * @param   $loop (array)
-		 * @return  n/a
-		 */
+		/*
+		*  add_loop
+		*
+		*  This function will add a new loop
+		*
+		*  @type    function
+		*  @date    3/03/2016
+		*  @since   5.3.2
+		*
+		*  @param   $loop (array)
+		*  @return  n/a
+		*/
+
 		function add_loop( $loop = array() ) {
 
 			// defaults
@@ -133,18 +148,21 @@ if ( ! class_exists( 'acf_loop' ) ) :
 		}
 
 
-		/**
-		 * This function will update a loop's setting
-		 *
-		 * @type    function
-		 * @date    3/03/2016
-		 * @since   5.3.2
-		 *
-		 * @param   $i (mixed)
-		 * @param   $key (string) the loop setting name
-		 * @param   $value (mixed) the loop setting value
-		 * @return  (boolean) true on success
-		 */
+		/*
+		*  update_loop
+		*
+		*  This function will update a loop's setting
+		*
+		*  @type    function
+		*  @date    3/03/2016
+		*  @since   5.3.2
+		*
+		*  @param   $i (mixed)
+		*  @param   $key (string) the loop setting name
+		*  @param   $value (mixed) the loop setting value
+		*  @return  (boolean) true on success
+		*/
+
 		function update_loop( $i = 'active', $key = null, $value = null ) {
 
 			// i
@@ -163,17 +181,20 @@ if ( ! class_exists( 'acf_loop' ) ) :
 		}
 
 
-		/**
-		 * This function will return a loop, or loop's setting for a given index & key
-		 *
-		 * @type    function
-		 * @date    3/03/2016
-		 * @since   5.3.2
-		 *
-		 * @param   $i (mixed)
-		 * @param   $key (string) the loop setting name
-		 * @return  (mixed) false on failure
-		 */
+		/*
+		*  get_loop
+		*
+		*  This function will return a loop, or loop's setting for a given index & key
+		*
+		*  @type    function
+		*  @date    3/03/2016
+		*  @since   5.3.2
+		*
+		*  @param   $i (mixed)
+		*  @param   $key (string) the loop setting name
+		*  @return  (mixed) false on failure
+		*/
+
 		function get_loop( $i = 'active', $key = null ) {
 
 			// i
@@ -194,16 +215,19 @@ if ( ! class_exists( 'acf_loop' ) ) :
 		}
 
 
-		/**
-		 * This function will remove a loop
-		 *
-		 * @type    function
-		 * @date    3/03/2016
-		 * @since   5.3.2
-		 *
-		 * @param   $i (mixed)
-		 * @return  (boolean) true on success
-		 */
+		/*
+		*  remove_loop
+		*
+		*  This function will remove a loop
+		*
+		*  @type    function
+		*  @date    3/03/2016
+		*  @since   5.3.2
+		*
+		*  @param   $i (mixed)
+		*  @return  (boolean) true on success
+		*/
+
 		function remove_loop( $i = 'active' ) {
 
 			// i
@@ -233,64 +257,76 @@ endif; // class_exists check
 
 
 
-/**
- * alias of acf()->loop->add_loop()
- *
- * @type    function
- * @date    6/10/13
- * @since   5.0.0
- *
- * @param   n/a
- * @return  n/a
- */
+/*
+*  acf_add_loop
+*
+*  alias of acf()->loop->add_loop()
+*
+*  @type    function
+*  @date    6/10/13
+*  @since   5.0.0
+*
+*  @param   n/a
+*  @return  n/a
+*/
+
 function acf_add_loop( $loop = array() ) {
 
 	return acf()->loop->add_loop( $loop );
 }
 
 
-/**
- * alias of acf()->loop->update_loop()
- *
- * @type    function
- * @date    6/10/13
- * @since   5.0.0
- *
- * @param   n/a
- * @return  n/a
- */
+/*
+*  acf_update_loop
+*
+*  alias of acf()->loop->update_loop()
+*
+*  @type    function
+*  @date    6/10/13
+*  @since   5.0.0
+*
+*  @param   n/a
+*  @return  n/a
+*/
+
 function acf_update_loop( $i = 'active', $key = null, $value = null ) {
 
 	return acf()->loop->update_loop( $i, $key, $value );
 }
 
 
-/**
- * alias of acf()->loop->get_loop()
- *
- * @type    function
- * @date    6/10/13
- * @since   5.0.0
- *
- * @param   n/a
- * @return  n/a
- */
+/*
+*  acf_get_loop
+*
+*  alias of acf()->loop->get_loop()
+*
+*  @type    function
+*  @date    6/10/13
+*  @since   5.0.0
+*
+*  @param   n/a
+*  @return  n/a
+*/
+
 function acf_get_loop( $i = 'active', $key = null ) {
 
 	return acf()->loop->get_loop( $i, $key );
 }
 
 
-/**
- * alias of acf()->loop->remove_loop()
- *
- * @type    function
- * @date    6/10/13
- * @since   5.0.0
- *
- * @param   n/a
- * @return  n/a
- */
+/*
+*  acf_remove_loop
+*
+*  alias of acf()->loop->remove_loop()
+*
+*  @type    function
+*  @date    6/10/13
+*  @since   5.0.0
+*
+*  @param   n/a
+*  @return  n/a
+*/
+
 function acf_remove_loop( $i = 'active' ) {
 
 	return acf()->loop->remove_loop( $i );

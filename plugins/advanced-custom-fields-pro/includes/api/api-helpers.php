@@ -396,7 +396,7 @@ function acf_merge_atts( $atts, $extra = array() ) {
  * @param string $nonce The nonce parameter string.
  */
 function acf_nonce_input( $nonce = '' ) {
-	echo '<input type="hidden" name="_acf_nonce" value="' . esc_attr( wp_create_nonce( $nonce ) ) . '" />';
+	echo '<input type="hidden" name="_acf_nonce" value="' . wp_create_nonce( $nonce ) . '" />';
 }
 
 /**
@@ -682,32 +682,27 @@ function acf_verify_nonce( $value ) {
 }
 
 /**
- * Returns true if the current AJAX request is valid.
+ * acf_verify_ajax
+ *
+ * This function will return true if the current AJAX request is valid
  * It's action will also allow WPML to set the lang and avoid AJAX get_posts issues
  *
  * @since   5.2.3
  *
- * @param string $nonce  The nonce to check.
- * @param string $action The action of the nonce.
- * @return boolean
+ * @param   n/a
+ * @return  (boolean)
  */
-function acf_verify_ajax( $nonce = '', $action = '' ) {
-	// Bail early if we don't have a nonce to check.
-	if ( empty( $nonce ) && empty( $_REQUEST['nonce'] ) ) {
+function acf_verify_ajax() {
+
+	// bail early if not acf nonce
+	if ( empty( $_REQUEST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( $_REQUEST['nonce'] ), 'acf_nonce' ) ) {
 		return false;
 	}
 
-	$nonce_to_check = ! empty( $nonce ) ? $nonce : $_REQUEST['nonce']; // phpcs:ignore WordPress.Security -- We're verifying a nonce here.
-	$nonce_action   = ! empty( $action ) ? $action : 'acf_nonce';
-
-	// Bail if nonce can't be verified.
-	if ( ! wp_verify_nonce( sanitize_text_field( $nonce_to_check ), $nonce_action ) ) {
-		return false;
-	}
-
-	// Action for 3rd party customization (WPML).
+	// action for 3rd party customization
 	do_action( 'acf/verify_ajax' );
 
+	// return
 	return true;
 }
 
@@ -1158,7 +1153,7 @@ function acf_get_posts( $args = array() ) {
 		$args['post_status'] = acf_get_post_stati();
 	}
 
-	// Check if specific post IDs have been provided.
+	// Check if specifc post ID's have been provided.
 	if ( $args['post__in'] ) {
 
 		// Clean value into an array of IDs.
@@ -1366,26 +1361,22 @@ function acf_get_grouped_posts( $args ) {
 	return $data;
 }
 
-/**
- * The internal ACF function to add order by post types for use in `acf_get_grouped_posts`
- *
- * @param string $orderby  The current orderby value for a query.
- * @param object $wp_query The WP_Query.
- * @return string The potentially modified orderby string.
- */
-function _acf_orderby_post_type( $orderby, $wp_query ) {
+function _acf_orderby_post_type( $ordeby, $wp_query ) {
+
+	// global
 	global $wpdb;
 
+	// get post types
 	$post_types = $wp_query->get( 'post_type' );
 
-	// Prepend the SQL.
+	// prepend SQL
 	if ( is_array( $post_types ) ) {
-		$post_types = array_map( 'esc_sql', $post_types );
 		$post_types = implode( "','", $post_types );
-		$orderby    = "FIELD({$wpdb->posts}.post_type,'$post_types')," . $orderby;
+		$ordeby     = "FIELD({$wpdb->posts}.post_type,'$post_types')," . $ordeby;
 	}
 
-	return $orderby;
+	// return
+	return $ordeby;
 }
 
 function acf_get_post_title( $post = 0, $is_search = false ) {
@@ -1420,6 +1411,7 @@ function acf_get_post_title( $post = 0, $is_search = false ) {
 		// get ancestors
 		$ancestors = get_ancestors( $post->ID, $post->post_type );
 		$prepend  .= str_repeat( '- ', count( $ancestors ) );
+
 	}
 
 	// merge
@@ -1680,42 +1672,62 @@ function acf_str_exists( $needle, $haystack ) {
 }
 
 /**
- * A legacy function designed for developer debugging.
+ * acf_debug
  *
- * @deprecated 6.2.6 Removed for security, but keeping the definition in case third party devs have it in their code.
- * @since 5.0.0
+ * description
  *
- * @return false
+ * @since   5.0.0
+ *
+ * @param   $post_id (int)
+ * @return  $post_id (int)
  */
 function acf_debug() {
-	_deprecated_function( __FUNCTION__, '6.2.7' );
-	return false;
+
+	// vars
+	$args = func_get_args();
+	$s    = array_shift( $args );
+	$o    = '';
+	$nl   = "\r\n";
+
+	// start script
+	$o .= '<script type="text/javascript">' . $nl;
+
+	$o .= 'console.log("' . $s . '"';
+
+	if ( ! empty( $args ) ) {
+		foreach ( $args as $arg ) {
+			if ( is_object( $arg ) || is_array( $arg ) ) {
+				$arg = json_encode( $arg );
+			} elseif ( is_bool( $arg ) ) {
+				$arg = $arg ? 'true' : 'false';
+			} elseif ( is_string( $arg ) ) {
+				$arg = '"' . $arg . '"';
+			}
+
+			$o .= ', ' . $arg;
+		}
+	}
+
+	$o .= ');' . $nl;
+
+	// end script
+	$o .= '</script>' . $nl;
+
+	// echo
+	echo $o;
 }
 
-/**
- * A legacy function designed for developer debugging.
- *
- * @deprecated 6.2.6 Removed for security, but keeping the definition in case third party devs have it in their code.
- * @since 5.0.0
- *
- * @return false
- */
 function acf_debug_start() {
-	_deprecated_function( __FUNCTION__, '6.2.7' );
-	return false;
+
+	acf_update_setting( 'debug_start', memory_get_usage() );
 }
 
-/**
- * A legacy function designed for developer debugging.
- *
- * @deprecated 6.2.6 Removed for security, but keeping the definition in case third party devs have it in their code.
- * @since 5.0.0
- *
- * @return false
- */
 function acf_debug_end() {
-	_deprecated_function( __FUNCTION__, '6.2.7' );
-	return false;
+
+	$start = acf_get_setting( 'debug_start' );
+	$end   = memory_get_usage();
+
+	return $end - $start;
 }
 
 /**
@@ -2317,10 +2329,6 @@ function acf_isset_termmeta( $taxonomy = '' ) {
  */
 function acf_upload_files( $ancestors = array() ) {
 
-	if ( empty( $_FILES['acf'] ) ) {
-		return;
-	}
-
 	$file = acf_sanitize_files_array( $_FILES['acf'] ); // phpcs:disable WordPress.Security.NonceVerification.Missing -- Verified upstream.
 
 	// walk through ancestors.
@@ -2713,31 +2721,6 @@ function acf_current_user_can_admin() {
 
 	// return
 	return false;
-}
-
-/**
- * Wrapper function for current_user_can( 'edit_post', $post_id ).
- *
- * @since 6.3.4
- *
- * @param integer $post_id The post ID to check.
- * @return boolean
- */
-function acf_current_user_can_edit_post( int $post_id ): bool {
-	/**
-	 * The `edit_post` capability is a meta capability, which
-	 * gets converted to the correct post type object `edit_post`
-	 * equivalent.
-	 *
-	 * If the post type does not have `map_meta_cap` enabled and the user is
-	 * not manually mapping the `edit_post` capability, this will fail
-	 * unless the role has the `edit_post` capability added to a user/role.
-	 *
-	 * However, more (core) stuff will likely break in this scenario.
-	 */
-	$user_can_edit = current_user_can( 'edit_post', $post_id );
-
-	return (bool) apply_filters( 'acf/current_user_can_edit_post', $user_can_edit, $post_id );
 }
 
 /**
@@ -3143,19 +3126,28 @@ function acf_is_row_collapsed( $field_key = '', $row_index = 0 ) {
 }
 
 /**
- * Return an image tag for the provided attachment ID
+ * acf_get_attachment_image
  *
- * @since 5.5.0
- * @deprecated 6.3.2
+ * description
  *
- * @param integer $attachment_id The attachment ID
- * @param string  $size          The image size to use in the image tag.
- * @return false
+ * @since   5.5.0
+ *
+ * @param   $post_id (int)
+ * @return  $post_id (int)
  */
 function acf_get_attachment_image( $attachment_id = 0, $size = 'thumbnail' ) {
-	// report function as deprecated
-	_deprecated_function( __FUNCTION__, '6.3.2' );
-	return false;
+
+	// vars
+	$url = wp_get_attachment_image_src( $attachment_id, 'thumbnail' );
+	$alt = get_post_meta( $attachment_id, '_wp_attachment_image_alt', true );
+
+	// bail early if no url
+	if ( ! $url ) {
+		return '';
+	}
+
+	// return
+	$value = '<img src="' . $url . '" alt="' . $alt . '" />';
 }
 
 /**
@@ -3313,14 +3305,17 @@ function acf_format_date( $value, $format ) {
 }
 
 /**
- * Previously, deletes the debug.log file.
+ * acf_clear_log
  *
- * @since      5.7.10
- * @deprecated 6.2.7
+ * Deletes the debug.log file.
+ *
+ * @since   5.7.10
+ *
+ * @param   type $var Description. Default.
+ * @return  type Description.
  */
 function acf_clear_log() {
-	_deprecated_function( __FUNCTION__, '6.2.7' );
-	return false;
+	unlink( WP_CONTENT_DIR . '/debug.log' );
 }
 
 /**
@@ -3944,7 +3939,7 @@ function acf_is_block_editor() {
  * @return array The WordPress reserved terms list.
  */
 function acf_get_wp_reserved_terms() {
-	return array( 'action', 'attachment', 'attachment_id', 'author', 'author_name', 'calendar', 'cat', 'category', 'category__and', 'category__in', 'category__not_in', 'category_name', 'comments_per_page', 'comments_popup', 'custom', 'customize_messenger_channel', 'customized', 'cpage', 'day', 'debug', 'embed', 'error', 'exact', 'feed', 'fields', 'hour', 'link', 'link_category', 'm', 'minute', 'monthnum', 'more', 'name', 'nav_menu', 'nonce', 'nopaging', 'offset', 'order', 'orderby', 'p', 'page', 'page_id', 'paged', 'pagename', 'pb', 'perm', 'post', 'post__in', 'post__not_in', 'post_format', 'post_mime_type', 'post_status', 'post_tag', 'post_type', 'posts', 'posts_per_archive_page', 'posts_per_page', 'preview', 'robots', 's', 'search', 'second', 'sentence', 'showposts', 'static', 'status', 'subpost', 'subpost_id', 'tag', 'tag__and', 'tag__in', 'tag__not_in', 'tag_id', 'tag_slug__and', 'tag_slug__in', 'taxonomy', 'tb', 'term', 'terms', 'theme', 'themes', 'title', 'type', 'types', 'w', 'withcomments', 'withoutcomments', 'year' );
+	return array( 'action', 'attachment', 'attachment_id', 'author', 'author_name', 'calendar', 'cat', 'category', 'category__and', 'category__in', 'category__not_in', 'category_name', 'comments_per_page', 'comments_popup', 'custom', 'customize_messenger_channel', 'customized', 'cpage', 'day', 'debug', 'embed', 'error', 'exact', 'feed', 'fields', 'hour', 'link_category', 'm', 'minute', 'monthnum', 'more', 'name', 'nav_menu', 'nonce', 'nopaging', 'offset', 'order', 'orderby', 'p', 'page', 'page_id', 'paged', 'pagename', 'pb', 'perm', 'post', 'post__in', 'post__not_in', 'post_format', 'post_mime_type', 'post_status', 'post_tag', 'post_type', 'posts', 'posts_per_archive_page', 'posts_per_page', 'preview', 'robots', 's', 'search', 'second', 'sentence', 'showposts', 'static', 'status', 'subpost', 'subpost_id', 'tag', 'tag__and', 'tag__in', 'tag__not_in', 'tag_id', 'tag_slug__and', 'tag_slug__in', 'taxonomy', 'tb', 'term', 'terms', 'theme', 'title', 'type', 'types', 'w', 'withcomments', 'withoutcomments', 'year' );
 }
 
 /**

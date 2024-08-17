@@ -1238,7 +1238,6 @@
       timeout: 0,
       dismiss: true,
       target: false,
-      location: 'before',
       close: function () {}
     },
     events: {
@@ -1290,13 +1289,8 @@
     },
     show: function () {
       var $target = this.get('target');
-      var location = this.get('location');
       if ($target) {
-        if (location === 'after') {
-          $target.append(this.$el);
-        } else {
-          $target.prepend(this.$el);
-        }
+        $target.prepend(this.$el);
       }
     },
     hide: function () {
@@ -2099,7 +2093,7 @@
   acf.strSlugify = function (str) {
     return acf.strReplace('_', '-', str.toLowerCase());
   };
-  acf.strSanitize = function (str, toLowerCase = true) {
+  acf.strSanitize = function (str) {
     // chars (https://jsperf.com/replace-foreign-characters)
     var map = {
       À: 'A',
@@ -2344,9 +2338,7 @@
     str = str.replace(nonWord, mapping);
 
     // lowercase
-    if (toLowerCase) {
-      str = str.toLowerCase();
-    }
+    str = str.toLowerCase();
 
     // return
     return str;
@@ -3306,25 +3298,31 @@
   };
 
   /**
-   * Prepares AJAX data prior to being sent.
+   *  acf.prepareForAjax
    *
-   * @since 5.6.5
+   *  description
    *
-   * @param {Object} data The data to prepare
-   * @return {Object} The prepared data.
+   *  @date	4/1/18
+   *  @since	5.6.5
+   *
+   *  @param	type $var Description. Default.
+   *  @return	type Description.
    */
+
   acf.prepareForAjax = function (data) {
-    // Set a default nonce if we don't have one already.
-    if ('undefined' === typeof data.nonce) {
-      data.nonce = acf.get('nonce');
-    }
+    // required
+    data.nonce = acf.get('nonce');
     data.post_id = acf.get('post_id');
+
+    // language
     if (acf.has('language')) {
       data.lang = acf.get('language');
     }
 
-    // Filter for 3rd party customization.
+    // filter for 3rd party customization
     data = acf.applyFilters('prepare_for_ajax', data);
+
+    // return
     return data;
   };
 
@@ -3869,6 +3867,7 @@
           itemsHtml += '<option value="' + acf.escAttr(id) + '"' + (item.disabled ? ' disabled="disabled"' : '') + '>' + acf.strEscape(text) + '</option>';
         }
       });
+
       // return
       return itemsHtml;
     };
@@ -4347,15 +4346,6 @@
     $(window).trigger('acfrefresh');
     acf.doAction('refresh');
   }, 0);
-
-  /**
-   * Log something to console if we're in debug mode.
-   *
-   * @since 6.3
-   */
-  acf.debug = function () {
-    if (acf.get('debug')) console.log.apply(null, arguments);
-  };
 
   // Set up actions from events
   $(document).ready(function () {

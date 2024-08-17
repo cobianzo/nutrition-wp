@@ -41,7 +41,7 @@ if ( ! class_exists( 'ACF_Admin_UI_Options_Page' ) ) :
 		}
 
 		/**
-		 * Customizes the messages shown when editing a UI options page.
+		 * This function will customize the message shown when editing a post type.
 		 *
 		 * @since 6.2
 		 *
@@ -144,7 +144,9 @@ if ( ! class_exists( 'ACF_Admin_UI_Options_Page' ) ) :
 		/**
 		 * Sets up all functionality for the post type edit page to work.
 		 *
-		 * @since 3.1.8
+		 * @since   3.1.8
+		 *
+		 * @return  void
 		 */
 		public function admin_head() {
 			// global.
@@ -174,6 +176,8 @@ if ( ! class_exists( 'ACF_Admin_UI_Options_Page' ) ) :
 
 		/**
 		 * This action will allow ACF to render metaboxes after the title.
+		 *
+		 * @return void
 		 */
 		public function edit_form_after_title() {
 
@@ -194,10 +198,10 @@ if ( ! class_exists( 'ACF_Admin_UI_Options_Page' ) ) :
 		/**
 		 * This function will add extra HTML to the acf form data element
 		 *
-		 * @since   5.3.8
+		 *  @since   5.3.8
 		 *
-		 * @param array $args Arguments array to pass through to action.
-		 * @return void
+		 *  @param array $args Arguments array to pass through to action.
+		 *  @return void
 		 */
 		public function form_data( $args ) {
 			do_action( 'acf/ui_options_page/form_data', $args );
@@ -218,7 +222,9 @@ if ( ! class_exists( 'ACF_Admin_UI_Options_Page' ) ) :
 		/**
 		 * Admin footer third party hook support
 		 *
-		 * @since 5.3.2
+		 * @since   5.3.2
+		 *
+		 * @return void
 		 */
 		public function admin_footer() {
 			do_action( 'acf/ui_options_page/admin_footer' );
@@ -239,7 +245,8 @@ if ( ! class_exists( 'ACF_Admin_UI_Options_Page' ) ) :
 		/**
 		 * Sets the "Edit Post Type" screen to use a one-column layout.
 		 *
-		 * @param  integer $columns Number of columns for layout.
+		 * @param integer $columns Number of columns for layout.
+		 *
 		 * @return integer
 		 */
 		public function screen_layout( $columns = 0 ) {
@@ -249,7 +256,8 @@ if ( ! class_exists( 'ACF_Admin_UI_Options_Page' ) ) :
 		/**
 		 * Force basic settings to always be visible
 		 *
-		 * @param  array $hidden_metaboxes The metaboxes hidden on this page.
+		 * @param array $hidden_metaboxes The metaboxes hidden on this page.
+		 *
 		 * @return array
 		 */
 		public function force_basic_settings( $hidden_metaboxes ) {
@@ -262,7 +270,8 @@ if ( ! class_exists( 'ACF_Admin_UI_Options_Page' ) ) :
 		/**
 		 * Force advanced settings to be visible
 		 *
-		 * @param  array $hidden_metaboxes The metaboxes hidden on this page.
+		 * @param array $hidden_metaboxes The metaboxes hidden on this page.
+		 *
 		 * @return array
 		 */
 		public function force_advanced_settings( $hidden_metaboxes ) {
@@ -275,7 +284,9 @@ if ( ! class_exists( 'ACF_Admin_UI_Options_Page' ) ) :
 		/**
 		 * This function will customize the publish metabox
 		 *
-		 * @since 5.2.9
+		 * @since   5.2.9
+		 *
+		 * @return void
 		 */
 		public function post_submitbox_misc_actions() {
 			global $acf_ui_options_page;
@@ -295,8 +306,9 @@ if ( ! class_exists( 'ACF_Admin_UI_Options_Page' ) ) :
 		 *
 		 * @since 1.0.0
 		 *
-		 * @param  integer $post_id The post ID.
-		 * @param  WP_Post $post    The post object.
+		 * @param integer $post_id The post ID.
+		 * @param WP_Post $post    The post object.
+		 *
 		 * @return integer $post_id
 		 */
 		public function save_post( $post_id, $post ) {
@@ -324,6 +336,8 @@ if ( ! class_exists( 'ACF_Admin_UI_Options_Page' ) ) :
 		 * Renders HTML for the basic settings metabox.
 		 *
 		 * @since 6.2
+		 *
+		 * @return void
 		 */
 		public function mb_basic_settings() {
 			global $acf_ui_options_page, $acf_parent_page_options;
@@ -342,6 +356,8 @@ if ( ! class_exists( 'ACF_Admin_UI_Options_Page' ) ) :
 		 * Renders the HTML for the advanced settings metabox.
 		 *
 		 * @since 6.2
+		 *
+		 * @return void
 		 */
 		public function mb_advanced_settings() {
 			acf_get_view( __DIR__ . '/../views/acf-ui-options-page/advanced-settings.php' );
@@ -359,7 +375,6 @@ if ( ! class_exists( 'ACF_Admin_UI_Options_Page' ) ) :
 			global $menu;
 			$acf_all_options_pages   = acf_get_options_pages();
 			$acf_parent_page_choices = array( 'None' => array( 'none' => __( 'No Parent', 'acf' ) ) );
-			$self_slug               = false;
 
 			if ( is_array( $acf_all_options_pages ) ) {
 				foreach ( $acf_all_options_pages as $options_page ) {
@@ -370,7 +385,6 @@ if ( ! class_exists( 'ACF_Admin_UI_Options_Page' ) ) :
 
 					// Can't be a child of itself.
 					if ( isset( $options_page['ID'] ) && $post_id === $options_page['ID'] ) {
-						$self_slug = $options_page['menu_slug'];
 						continue;
 					}
 
@@ -391,13 +405,9 @@ if ( ! class_exists( 'ACF_Admin_UI_Options_Page' ) ) :
 					$markup         = '/<[^>]+>.*<\/[^>]+>/';
 					$sanitized_name = preg_replace( $markup, '', $page_name );
 
-					// Prevent options pages being parents of themselves.
-					if ( ! empty( $item[2] ) && $item[2] === $self_slug ) {
-						continue;
-					}
-
-					// If the current item is not an ACF-created options page, add it to the "Others" list.
-					if ( empty( $acf_parent_page_choices['acfOptionsPages'][ $item[2] ] ) ) {
+					// Ensure that the current item is not an ACF page or that ACF pages are an empty array before adding to others.
+					if ( ! empty( $acf_parent_page_choices['acfOptionsPages'] ) && ! in_array( $page_name, $acf_parent_page_choices['acfOptionsPages'], true ) || empty( $acf_parent_page_choices['acfOptionsPages'] ) ) {
+						// If matched menu slug is not in the list add it to others.
 						$acf_parent_page_choices['Others'][ $item[2] ] = acf_esc_html( $sanitized_name );
 					}
 				}

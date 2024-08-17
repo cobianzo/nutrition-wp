@@ -3,16 +3,34 @@
 */
 
 .wp-block-asim-alimento-block {
-  border: 1px solid #ccc;
-  margin-bottom: 2rem;
-  padding: 1rem;
-  background-color: #ccc;
-
   &.is-alternative {
-    background-color: #e32828;
+    border-left: 5px solid var(--wp--preset--color--ti-accent);
+
+    padding-left: 1rem;
+    h3 {
+      font-size: var(--wp--preset--font-size--medium);
+      background-color: var(--wp--preset--color--ti-accent);
+      color: var(--wp--preset--color--ti-bg);
+      padding-left: 1rem;
+      margin-left: -1rem;
+      text-transform: uppercase;
+    }
+
+    .alimento-left-column > p:first-child {
+      font-size: var(--wp--preset--font-size--normal) !important;
+    }
+
+    @media screen and (min-width: 768px) {
+      padding-left: 3rem;
+      h3 {
+        padding-left: 3rem;
+        margin-left: -3rem;
+      }
+    }
   }
 }
 
+/* diplay content as a grid. */
 .wp-block-asim-alimento-block {
   display: grid;
   grid-template-rows: auto auto;
@@ -20,26 +38,62 @@
   grid-template-areas:
     "top top"
     "left right";
-  gap: 1em;
+  gap: 0;
   margin-bottom: 2rem;
+
+  .wp-block-asim-alimento-block {
+    margin-bottom: 0;
+  }
 }
 
 .alimento-title {
   grid-area: top;
+  color: var(--wp--preset--color--ti-accent);
+  border-bottom: 1px solid var(--wp--preset--color--ti-accent);
+  margin: 0;
 }
 
 .alimento-left-column {
   grid-area: left;
+
+  p {
+    margin: 1rem 0 0 0;
+  }
+
+  > p:first-child {
+    font-size: var(--wp--preset--font-size--medium);
+  }
 }
 
 .alimento-right-column {
   grid-area: right;
-
+  padding-top: 2rem;
   img {
-    max-height: 300px;
+    width: 100%;
+    object-fit: contain;
   }
 }
 
+.wp-block-asim-alimento-block {
+  grid-template-columns: 80% 20%;
+
+  &.no-image {
+    grid-template-areas:
+      "top"
+      "left";
+    grid-template-columns: 100%;
+
+    .alimento-right-column {
+      display: none;
+    }
+
+    @media screen and (min-width: 768px) {
+      .wp-block-asim-alimento-block {
+        grid-template-columns: 100%;
+      }
+    }
+  }
+}
 @media screen and (min-width: 768px) {
   .wp-block-asim-alimento-block {
     grid-template-columns: 70% 30%;

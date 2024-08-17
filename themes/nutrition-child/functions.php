@@ -22,7 +22,7 @@ class Setup {
     // print styles css:
     add_action( 'wp_enqueue_scripts', [__CLASS__, 'enqueue_print_stylesheet'] );
 
-    // enqueue fonts
+    // enqueue style.css for both front and backend.
     add_action( 'wp_enqueue_scripts', [__CLASS__, 'enqueue_style_css'] );
     add_action( 'admin_enqueue_scripts', [__CLASS__, 'enqueue_style_css'] );
 

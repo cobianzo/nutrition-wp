@@ -1,14 +1,32 @@
+@keyframes selected-outline {
+  0% {
+    outline-color: var(--wp--preset--color--ti-accent);
+  }
+  100% {
+    outline-color: transparent;
+  }
+}
+
 /*
   Styles only for the editor, for the Aliment block.
 */
 .wp-block-asim-alimento-block {
   &.is-selected {
-    border: 10px solid red;
+    outline: 5px solid transparent;
+    animation: selected-outline 2s infinite;
   }
 
   &.has-child-selected {
     .block-editor-inner-blocks {
-      border: 10px solid red;
+      outline: 2px solid transparent;
+      animation: selected-outline 2s infinite;
+    }
+  }
+
+  /* repeat rule made in frontend */
+  .block-editor-block-list__layout {
+    > p:first-child {
+      font-size: 1.5rem;
     }
   }
 }
