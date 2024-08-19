@@ -20,8 +20,11 @@ class Redirections {
     add_action( 'pre_get_posts', [__CLASS__, 'restringir_acceso_a_diet'] );
 
     // redirections for the homeage, if you are logged in as non `client`
-    add_action( 'template_redirect', [__CLASS__, 'redirect_non_clients_to_dashboard'] );
+    // add_action( 'template_redirect', [__CLASS__, 'redirect_non_clients_to_dashboard'] );
 
+    // disable search page and from the admin bar
+    add_action( 'template_redirect', [__CLASS__, 'disable_search_redirect'] );
+    add_action( 'admin_bar_menu', fn($wp_admin_bar) => $wp_admin_bar->remove_node('search'), 999 );
 
   }
 
@@ -61,16 +64,25 @@ class Redirections {
    */
   public static function redirect_non_clients_to_dashboard() {
     // Verifica si el usuario está logueado
-    if (is_user_logged_in()) {
+    if ( is_home() || is_front_page() ) {
+      if (is_user_logged_in()) {
         // Obtiene la información del usuario actual
         $current_user = wp_get_current_user();
         
         // Verifica si el usuario no tiene el rol 'client'
         if (!in_array('client', $current_user->roles)) {
-            // Redirige al dashboard del admin
-            wp_redirect(admin_url());
-            exit;
+          // Redirige al dashboard del admin
+          wp_redirect(admin_url());
+          exit;
         }
+      }
+    }
+  }
+
+  public static function disable_search_redirect() {
+    if (is_search()) {
+      wp_redirect(home_url('/'));
+      exit;
     }
   }
 }

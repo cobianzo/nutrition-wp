@@ -1,0 +1,9 @@
+/*
+Styles for Editor:  /wp-admin/post.php?post=xxx for CPT 'aliment'
+*/
+
+.editor-styles-wrapper > div {
+  > .wp-block-paragraph:first-child {
+    font-size: var(--wp--preset--font-size--medium) !important;
+  }
+}

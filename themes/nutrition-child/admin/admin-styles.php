@@ -41,6 +41,12 @@ add_action( 'admin_init', function () {
     if ( isset($_GET['post']) &&  'diet' === get_post_type( $_GET['post'] ) ) {
       $url = get_stylesheet_directory_uri() . '/admin/editor-style-diet.css';
       add_editor_style( $url );
+      wp_enqueue_style('diet-editor-styles', $url, array(), filemtime(get_stylesheet_directory() . '/admin/editor-style-diet.css'));
+    }
+    if ( isset($_GET['post']) &&  'aliment' === get_post_type( $_GET['post'] ) ) {
+      $url = get_stylesheet_directory_uri() . '/admin/editor-style-aliment.css';
+      add_editor_style( $url );
+      wp_enqueue_style('aliment-editor-styles', $url, array(), filemtime(get_stylesheet_directory() . '/admin/editor-style-aliment.css'));
     }
   
   }

@@ -1,23 +1,24 @@
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: nutrition-child\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-30 06:49+0000\n"
-"PO-Revision-Date: 2024-08-18 07:13+0000\n"
-"Last-Translator: \n"
-"Language-Team: Italiano\n"
-"Language: it_IT\n"
+"POT-Creation-Date: 2024-08-18 07:32+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Loco https://localise.biz/\n"
 "X-Loco-Version: 2.6.11; wp-6.6.1\n"
-"X-Domain: asim\n"
+"X-Domain: asim"
 
 #: gutenberg/alimento-block/edit.js:168
 msgid "--none---"
-msgstr "—"
+msgstr ""
 
 #: class-cliente.php:104
 #, php-format
@@ -25,13 +26,11 @@ msgid ""
 "<br> - Link: <a href=\"%s\" target=\"_blank\">click here to edit %s's user "
 "profile</a>"
 msgstr ""
-"<br> - Link: <a href=\"%s\" target=\"_blank\">ciicca qui per editar il "
-"profilo di %s</a>"
 
 #: class-cliente.php:130
 #, php-format
 msgid "<br> - Post ID: <b>%s</b>"
-msgstr "<br> - ID post: <b>%s</b>"
+msgstr ""
 
 #: class-cliente.php:131
 #, php-format
@@ -39,47 +38,45 @@ msgid ""
 "<br> - Post link: <a href=\"%s\" target=\"_blank\">click here to edit %s's "
 "post</a>"
 msgstr ""
-"<br> - Link al post: <a href=\"%s\" target=\"_blank\">clicca qui per "
-"modificare il post di %s</a>"
 
 #: class-cliente.php:103
 #, php-format
 msgid "<br> - User email: <b>%s</b>"
-msgstr "<br> - Email dell'utente: <b>%s</b>"
+msgstr ""
 
 #: class-cliente.php:101
 #, php-format
 msgid "<br> - User ID: <b>%s</b>"
-msgstr "<br> - ID utente: <b>%s</b>"
+msgstr ""
 
 #: class-cliente.php:102
 #, php-format
 msgid "<br> - User login: <b>%s</b>"
-msgstr "<br> - Accesso utente: <b>%s</b>"
+msgstr ""
 
 #: class-cliente.php:98
 msgid "<h3>Associated WP User profile:</h3>"
-msgstr "<h3>Profilo Wordpress associato:</h3>"
+msgstr ""
 
 #: class-cliente.php:95
 msgid "<h3>Post ID not found</h3>"
-msgstr "<h3>Post ID non trovato</h3>"
+msgstr ""
 
 #: gutenberg/alimento-block/edit.js:138
 msgid "ALIMENT"
-msgstr "ALIMENTO"
+msgstr ""
 
 #: gutenberg/alimento-block/index.js:12
 msgid "Alimento Block"
-msgstr "Blocco Alimento"
+msgstr ""
 
 #: gutenberg/alimento-block/edit.js:29
 msgid "Alternative"
-msgstr "Alternativa"
+msgstr ""
 
 #: gutenberg/alimento-block/edit.js:25
 msgid "Breakfast"
-msgstr "Colazione"
+msgstr ""
 
 #. Description of the theme
 msgid "Child of Fork, dedicated to the Nutrtition site"
@@ -98,14 +95,14 @@ msgstr ""
 msgid "Current diet(s) for the client."
 msgstr ""
 
-#: cliente-dashboard.php:13
+#: functions.php:127 functions.php:128 cliente-dashboard.php:13
 msgid "Currently this client has not any diet assigned."
-msgstr "Attualmente questo cliente non ha una dieta assegnata"
+msgstr ""
 
 #: class-dieta.php:158
 #, php-format
 msgid "Diet for client %s"
-msgstr "Dieta per client %s"
+msgstr ""
 
 #: gutenberg/alimento-block/edit.js:28
 msgid "Dinner"
@@ -113,7 +110,7 @@ msgstr ""
 
 #: gutenberg/alimento-block/edit.js:191
 msgid "eg. Breakfast"
-msgstr "es. Colazione"
+msgstr ""
 
 #: class-cliente.php:75
 #, php-format
@@ -126,7 +123,7 @@ msgstr ""
 
 #: gutenberg/alimento-block/edit.js:27
 msgid "Lunch"
-msgstr "Pranzo"
+msgstr ""
 
 #: gutenberg/alimento-block/edit.js:165
 msgid "Meal"
@@ -152,12 +149,15 @@ msgstr ""
 
 #: gutenberg/alimento-block/edit.js:141
 msgid "SELECT ALIMENT"
-msgstr "Seleziona Alimento"
+msgstr ""
 
 #: gutenberg/alimento-block/edit.js:136
 msgid "Select aliment"
-msgstr "Seleziona Alimento"
+msgstr ""
 
 #: gutenberg/alimento-block/edit.js:26
 msgid "Snack"
-msgstr "Spuntino"
+msgstr ""
+
+msgid "Error, duplicate 1: Breakfast"
+msgstr ""

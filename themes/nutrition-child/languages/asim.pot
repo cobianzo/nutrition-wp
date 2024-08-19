@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nutrition-child\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-30 06:49+0000\n"
+"POT-Creation-Date: 2024-08-18 07:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -16,73 +16,144 @@ msgstr ""
 "X-Loco-Version: 2.6.11; wp-6.6.1\n"
 "X-Domain: asim"
 
-#: class-cliente.php:103
+#: gutenberg/alimento-block/edit.js:168
+msgid "--none---"
+msgstr ""
+
+#: class-cliente.php:104
 #, php-format
 msgid ""
 "<br> - Link: <a href=\"%s\" target=\"_blank\">click here to edit %s's user "
 "profile</a>"
 msgstr ""
 
-#: class-cliente.php:129
+#: class-cliente.php:130
 #, php-format
 msgid "<br> - Post ID: <b>%s</b>"
 msgstr ""
 
-#: class-cliente.php:130
+#: class-cliente.php:131
 #, php-format
 msgid ""
 "<br> - Post link: <a href=\"%s\" target=\"_blank\">click here to edit %s's "
 "post</a>"
 msgstr ""
 
-#: class-cliente.php:102
+#: class-cliente.php:103
 #, php-format
 msgid "<br> - User email: <b>%s</b>"
 msgstr ""
 
-#: class-cliente.php:100
+#: class-cliente.php:101
 #, php-format
 msgid "<br> - User ID: <b>%s</b>"
 msgstr ""
 
-#: class-cliente.php:101
+#: class-cliente.php:102
 #, php-format
 msgid "<br> - User login: <b>%s</b>"
 msgstr ""
 
-#: class-cliente.php:97
+#: class-cliente.php:98
 msgid "<h3>Associated WP User profile:</h3>"
 msgstr ""
 
-#: class-cliente.php:94
+#: class-cliente.php:95
 msgid "<h3>Post ID not found</h3>"
 msgstr ""
 
-#. Author of the theme
-msgid "@cobianzo"
+#: gutenberg/alimento-block/edit.js:138
+msgid "ALIMENT"
+msgstr ""
+
+#: gutenberg/alimento-block/index.js:12
+msgid "Alimento Block"
+msgstr ""
+
+#: gutenberg/alimento-block/edit.js:29
+msgid "Alternative"
 msgstr ""
 
 #. Description of the theme
-msgid ""
-"Child theme with all definitions for the nutrition site. Depends on plugins "
-"ACF, Members"
+msgid "Child of Fork, dedicated to the Nutrtition site"
 msgstr ""
 
-#: class-cliente.php:74
+#. Author of the theme
+msgid "cobianzo"
+msgstr ""
+
+#: cliente-dashboard.php:36
+#, php-format
+msgid "Create a new diet from type <b>%s</b>"
+msgstr ""
+
+#: cliente-dashboard.php:46
+msgid "Current diet(s) for the client."
+msgstr ""
+
+#: functions.php:127 functions.php:128 cliente-dashboard.php:13
+msgid "Currently this client has not any diet assigned."
+msgstr ""
+
+#: class-dieta.php:158
+#, php-format
+msgid "Diet for client %s"
+msgstr ""
+
+#: gutenberg/alimento-block/edit.js:28
+msgid "Dinner"
+msgstr ""
+
+#: gutenberg/alimento-block/edit.js:191
+msgid "eg. Breakfast"
+msgstr ""
+
+#: class-cliente.php:75
 #, php-format
 msgid "Email already exists: <a target=\"_blank\" href=\"%s\"><b>%s</b></a>"
 msgstr ""
 
-#: class-cliente.php:132
+#. Author URI of the theme
+msgid "https://cobianzo.com"
+msgstr ""
+
+#: gutenberg/alimento-block/edit.js:27
+msgid "Lunch"
+msgstr ""
+
+#: gutenberg/alimento-block/edit.js:165
+msgid "Meal"
+msgstr ""
+
+#: class-cliente.php:133
 #, php-format
 msgid "No post associated with user ID <b>%s</b>"
 msgstr ""
 
-#: class-cliente.php:105
+#: class-cliente.php:106
 #, php-format
 msgid "Not user associated for post ID %s"
 msgstr ""
 
 #. Name of the theme
 msgid "nutrition-child"
+msgstr ""
+
+#: gutenberg/alimento-block/edit.js:158
+msgid "Prefill text with defaults"
+msgstr ""
+
+#: gutenberg/alimento-block/edit.js:141
+msgid "SELECT ALIMENT"
+msgstr ""
+
+#: gutenberg/alimento-block/edit.js:136
+msgid "Select aliment"
+msgstr ""
+
+#: gutenberg/alimento-block/edit.js:26
+msgid "Snack"
+msgstr ""
+
+msgid "Breakfast"
 msgstr ""

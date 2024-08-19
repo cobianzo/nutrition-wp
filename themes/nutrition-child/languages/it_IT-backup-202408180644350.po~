@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: nutrition-child\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-30 06:49+0000\n"
-"PO-Revision-Date: 2024-08-18 07:13+0000\n"
+"PO-Revision-Date: 2024-08-18 06:43+0000\n"
 "Last-Translator: \n"
 "Language-Team: Italiano\n"
 "Language: it_IT\n"
@@ -67,11 +67,11 @@ msgstr "<h3>Post ID non trovato</h3>"
 
 #: gutenberg/alimento-block/edit.js:138
 msgid "ALIMENT"
-msgstr "ALIMENTO"
+msgstr ""
 
 #: gutenberg/alimento-block/index.js:12
 msgid "Alimento Block"
-msgstr "Blocco Alimento"
+msgstr ""
 
 #: gutenberg/alimento-block/edit.js:29
 msgid "Alternative"
@@ -100,12 +100,12 @@ msgstr ""
 
 #: cliente-dashboard.php:13
 msgid "Currently this client has not any diet assigned."
-msgstr "Attualmente questo cliente non ha una dieta assegnata"
+msgstr ""
 
 #: class-dieta.php:158
 #, php-format
 msgid "Diet for client %s"
-msgstr "Dieta per client %s"
+msgstr ""
 
 #: gutenberg/alimento-block/edit.js:28
 msgid "Dinner"
@@ -152,11 +152,11 @@ msgstr ""
 
 #: gutenberg/alimento-block/edit.js:141
 msgid "SELECT ALIMENT"
-msgstr "Seleziona Alimento"
+msgstr ""
 
 #: gutenberg/alimento-block/edit.js:136
 msgid "Select aliment"
-msgstr "Seleziona Alimento"
+msgstr ""
 
 #: gutenberg/alimento-block/edit.js:26
 msgid "Snack"

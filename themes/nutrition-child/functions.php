@@ -118,14 +118,14 @@ Setup::init();
 /**
  * DEBUGGING HELPERS
  */
-
 add_action('init', function(){
 	if (isset($_GET['w-test'])) {
-		$user_id = 37;
-		$new_value = [ 5 ];
-		$up = update_user_meta( $user_id, 'pathology', $new_value );
-		$f = get_field( 'pathology', 'user_' . $user_id );
-		ddie($f);
+		// echo __('Currently this client has not any diet assigned.', 'asim');
+		// wp_die();
+    $current_language = get_locale();
+    echo 'The current language is: ' . $current_language;
+    _e('Currently this client has not any diet assigned.','asim');
+    wp_die( __('Currently this client has not any diet assigned.', 'asim') );
 	}
 });
 function dd($var) {

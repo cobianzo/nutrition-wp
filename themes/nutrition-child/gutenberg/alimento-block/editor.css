@@ -24,7 +24,7 @@
   }
 
   /* repeat rule made in frontend */
-  .block-editor-block-list__layout {
+  .alimento-left-column > div > .block-editor-block-list__layout {
     > p:first-child {
       font-size: 1.5rem;
     }
