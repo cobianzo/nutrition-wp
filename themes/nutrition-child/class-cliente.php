@@ -140,7 +140,11 @@ class Cliente {
 			return $field;
 		}, 10, 1 );
 
-    add_filter('acf/load_field', [__CLASS__, 'client_dashboard'] );
+		// Custom HTML for diets dashboard:
+    add_filter('acf/load_field', [__CLASS__, 'client_dashboard_for_diets'] );
+		
+		// Custom HTML for programmi dashboard:
+    add_filter('acf/load_field', [__CLASS__, 'client_dashboard_for_programmes'] );
     
     // Add admin styles for Edit client in CMS:
     require_once( __DIR__ . '/admin/admin-styles.php' );
@@ -411,7 +415,7 @@ class Cliente {
   /** Dashboard in client CMS page
 	 * See cliente-dashboard.php
 	*/
-  public static function client_dashboard( $field ) {
+  public static function client_dashboard_for_diets( $field ) {
 
     if ( 'field_66aa86c7f526b' === $field['key'] ) {
 
@@ -420,6 +424,25 @@ class Cliente {
       $field['label'] = 'Actions';
       ob_start();
       get_template_part( 'cliente-dashboard', '', ['post_id' => $post_id] );
+      $field['message'] = ob_get_clean();
+    }
+    
+    return $field;
+  }
+
+
+  /** Dashboard in client CMS page
+	 * See cliente-dashboard.php
+	*/
+  public static function client_dashboard_for_programmes( $field ) {
+
+    if ( 'field_66c5c6d769b16' === $field['key'] ) {
+
+      $post_id = isset($_REQUEST['post'])? $_REQUEST['post'] : false;
+
+      $field['label'] = 'Actions';
+      ob_start();
+      get_template_part( 'cliente-dashboard-programmi', '', ['post_id' => $post_id] );
       $field['message'] = ob_get_clean();
     }
     
@@ -485,6 +508,67 @@ class Cliente {
     // Redirigir a la página de edición del nuevo CPT 'diet'
     wp_redirect( admin_url( "post.php?post={$diet_id}&action=edit" ) );
     exit;
+}
+
+/**
+ * Action when clicked on the button to create a Programme in the Client Dashboard
+ *
+ * @return void
+ */
+function create_programme_for_client() {
+	// Verificar la acción
+	if ( ! isset( $_GET['action'] ) || 'create_programme' !== $_GET['action'] ) {
+			return;
+	}
+
+	// Verificar los parámetros necesarios
+	if ( ! isset( $_GET['client_id'] ) || ! isset( $_GET['diet-category'] ) ) {
+			wp_die( 'Missing required parameters.' );
+	}
+
+	// @TODO: verify that current user can create programmes.
+	
+
+	$client_id        = intval( $_GET['client_id'] );
+	$diet_category_id = intval( $_GET['diet-category'] );
+
+	// Obtener la información del cliente
+	$client_post = get_post( $client_id );
+	if ( ! $client_post ) {
+			wp_die( 'Invalid client ID.' );
+	}
+
+	// Obtener el usuario asociado al cliente
+	$user = Cliente::get_client_user_by_post_id( $client_id );
+	if ( ! $user || ! is_a( $user, 'WP_User' ) ) {
+			wp_die( 'Invalid user associated with the client.' );
+	}
+
+	// Crear el nuevo CPT 'programme'
+	$programme_title = 'Food programme for client ' . $client_post->post_title;
+
+	$programme_post = array(
+			'post_title'   => $programme_title,
+			'post_type'    => 'programme',
+			'post_status'  => 'draft', // Cambiar si es necesario
+			'post_author'  => $user->ID,
+			'meta_input'   => array(
+					'_related_client_id' => $client_id, // Guardar la relación con el cliente si es necesario
+			),
+	);
+
+	$programme_id = wp_insert_post( $programme_post );
+
+	if ( is_wp_error( $programme_id ) ) {
+			wp_die( 'Error creating the programme post.' );
+	}
+
+	// Asociar la nueva 'programme' con el término 'diet-category'
+	wp_set_post_terms( $programme_id, array( $diet_category_id ), 'diet-category' );
+
+	// Redirigir a la página de edición del nuevo CPT 'programme'
+	wp_redirect( admin_url( "post.php?post={$programme_id}&action=edit" ) );
+	exit;
 }
 
 

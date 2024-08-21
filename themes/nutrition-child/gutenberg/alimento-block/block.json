@@ -4,13 +4,13 @@
   "name": "asim/alimento-block",
   "title": "Block Alimento",
   "category": "widgets",
-  "icon": "smiley",
+  "icon": "cart",
   "supports": {
     "align": false,
     "anchor": true,
     "html": false
   },
-  "parent": ["core/group"],
+  "parent": [],
   "textdomain": "asim",
   "attributes": {
     "title": {
