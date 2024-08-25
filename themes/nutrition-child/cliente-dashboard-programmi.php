@@ -4,84 +4,93 @@
  * 
  */
 
- extract( $args ); // $post_id.
+ extract( $args ); // $post_id. of the client
 
- 
+ $user = Cliente::get_client_user_by_post_id( $post_id );
 
- if ( empty( $programs ) ) :
+ if ( ! $user || ! is_a( $user, 'WP_User' ) ) {
+     wp_die( 'Invalid user associated with the client.' );
+ }
+
+ $programs = get_posts([
+   'post_type' => 'programme',
+   'post_author' => $user->ID,
+ ]);
 ?>
-  <h4><?php _e('Currently this client has not any programs assigned.','asim'); ?></h4>
-<?php
- endif;
-?>
 
 
 
-
-<div class="client-dashboard">
+<div class="client-dashboard client-dashboard-programme">
   <?php 
-  if ( empty( $programs ) || 1 ) :
+  if ( empty( $programs ) ) :
 
-    $terms = get_terms(array(
-        'taxonomy' => 'diet-category',
-        'hide_empty' => false,
-    ));
-    if (!empty($terms) && !is_wp_error($terms)) {
-      foreach ($terms as $term) {
+    $args = array(
+      'post_type' => 'wp_block',
+      'tax_query' => array(
+          array(
+              'taxonomy' => 'wp_pattern_category',
+              'field'    => 'slug',
+              'terms'    => 'programma-alimentare', // Slug de la categoría de pattern
+          ),
+      ),
+    );
+
+    $patterns = get_posts( $args );
+
+    if ( empty( $patterns ) ) {
+    ?>
+      <h4><?php _e('There are no templates for Food Programmes. Create them in the Editor.','asim'); ?></h4>
+    <?php 
+    } else {
+      foreach ($patterns as $pattern) {
         // Crear el enlace con el query param
         
-        $url = admin_url( "admin-post.php?action=create_programme&client_id={$post_id}&diet-category=$term->term_id" );
+        // Generate a nonce for the request
+        $nonce = wp_create_nonce('create_programme_action');
 
-        echo '<a class="tile tile--button" href="' . $url . '">' . 
-          sprintf( __( 'Create a new programme from type <b>%s</b>', 'asim' ), esc_html($term->name) )
+        // Construct the URL with parameters
+        $url = add_query_arg([
+            'action' => 'create_programme',
+            'client_id' => $post_id,
+            'pattern_template' => $pattern->ID,
+            'create_programme_nonce' => $nonce,
+        ], admin_url('admin-post.php'));
+
+        echo '<a class="tile tile--button" href="' . esc_url($url) . '">' . 
+          sprintf( __( 'Create a new programme from template <b>%s</b>', 'asim' ), get_the_title( $pattern->ID ) )
         . '</a>';
       }
     }
-  endif;  
-    ?>
+  ?>
+
+  <?php
+  endif;
+  ?>
 </div>
+
+<!-- End if the initial dashboard to create a new programme -->
+
 <?php
 if ( ! empty( $programs ) ) : 
 ?>
-<h4><?php _e('Current programme(s) for the client.','asim'); ?></h4>
-<div class="client-dashboard">
+<h3><?php _e('Current programme for the client.','asim'); ?></h3>
+<div class="client-dashboard client-dashboard-programme">
   <?php
-    $user = Cliente::get_client_user_by_post_id( $post_id );
-    if ( ! $user || ! is_a( $user, 'WP_User' ) ) {
-        wp_die( 'Invalid user associated with the client.' );
-    }
-
-    $args = array(
-        'post_type'      => 'programme',  // CPT slug for diet
-        'author'         => $user->ID,
-        'posts_per_page' => -1,      // Retrieve all diets for this user
-        'post_status'    => 'any', // You can adjust this to include drafts, etc.
-    );
-
-    $query = new WP_Query( $args );
-
-    if ( $query->have_posts() ) {
-      $nonce = wp_create_nonce('delete_programme_nonce_action' );
-      $redirect = get_edit_post_link( $post_id );
-      while ( $query->have_posts() ) {
-        $query->the_post();
-        $edit_link = get_edit_post_link( get_the_ID() );
-        echo '<div class="tile tile--button tile--' . esc_attr( get_post_status() ) .'"><a href="' . esc_url( $edit_link ) . '">' 
-          . get_the_title() 
+    
+    
+    foreach ( $programs as $programme ) {
+      $edit_link = get_edit_post_link( $programme->ID );
+      echo '<div class="tile tile--button tile--' . esc_attr( get_post_status( $programme->ID ) ) .'">
+        <a href="' . esc_url( $edit_link ) . '">' 
+        . get_the_title( $programme->ID ) 
         . '<br/><small>' 
         . '(' . get_post_status() . ') ' 
         . get_the_date() 
-        . '</small></a>'
-        . '<a href="' 
-          . esc_url(admin_url('admin-post.php?action=delete_programme_action&post_id=' . get_the_ID() . '&nonce=' . $nonce . '&redirect=' . $redirect )) 
-          . '" class="button button-primary">'
-          . '.Delete Programme Post'
+        . '</small>'
         . '</a>'
-        . '</div>';
-        }
+      . '</div>';
     }
-
-    wp_reset_postdata();
+    
   ?>
 </div>
 <?php

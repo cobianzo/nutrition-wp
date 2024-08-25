@@ -18,7 +18,7 @@
 
 
 
-<div class="client-dashboard">
+<div class="client-dashboard client-dashboard-diet">
   <?php 
   if ( empty( $diets ) || 1 ) :
 
@@ -44,7 +44,7 @@
 if ( ! empty( $diets ) ) : 
 ?>
 <h4><?php _e('Current diet(s) for the client.','asim'); ?></h4>
-<div class="client-dashboard">
+<div class="client-dashboard client-dashboard-diet">
   <?php
     $user = Cliente::get_client_user_by_post_id( $post_id );
     if ( ! $user || ! is_a( $user, 'WP_User' ) ) {

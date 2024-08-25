@@ -1,5 +1,7 @@
 # TODO:
 
+Pedir lista de todos los alimentos, con imagenes.
+
 ✅ finish the block for aliment in the backend
 ✅ insert realistic data: All aliments for the example pdf. Create the diet.
 ✅ Start using the default template for every term. -

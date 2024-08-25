@@ -124,7 +124,7 @@ class Dieta {
    * @return void
    */
   public static function create_diet_for_client() {
-    // Verificar la acción
+    // Verificar la acción @TODO: add a nonce no?
     if ( ! isset( $_GET['action'] ) || 'create_diet' !== $_GET['action'] ) {
         return;
     }

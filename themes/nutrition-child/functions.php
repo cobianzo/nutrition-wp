@@ -5,6 +5,7 @@ add_theme_support( 'block-patterns' );
 require_once __DIR__ . '/class-cliente.php';
 require_once __DIR__ . '/class-dieta.php';
 require_once __DIR__ . '/class-dieta-category.php';
+require_once __DIR__ . '/class-programma.php';
 require_once __DIR__ . '/class-alimento.php';
 require_once __DIR__ . '/includes/redirections.php';
 require_once __DIR__ . '/includes/shortcodes.php';

@@ -413,7 +413,7 @@ class Cliente {
   }
 
   /** Dashboard in client CMS page
-	 * See cliente-dashboard.php
+	 * See cliente-dashboard-diete.php
 	*/
   public static function client_dashboard_for_diets( $field ) {
 
@@ -423,7 +423,7 @@ class Cliente {
 
       $field['label'] = 'Actions';
       ob_start();
-      get_template_part( 'cliente-dashboard', '', ['post_id' => $post_id] );
+      get_template_part( 'cliente-dashboard-diete', '', ['post_id' => $post_id] );
       $field['message'] = ob_get_clean();
     }
     
@@ -432,7 +432,7 @@ class Cliente {
 
 
   /** Dashboard in client CMS page
-	 * See cliente-dashboard.php
+	 * See cliente-dashboard-programmi.php
 	*/
   public static function client_dashboard_for_programmes( $field ) {
 
