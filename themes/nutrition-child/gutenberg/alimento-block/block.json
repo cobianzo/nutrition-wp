@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "name": "asim/alimento-block",
   "title": "Block Alimento",
-  "category": "widgets",
+  "category": "diet",
   "icon": "cart",
   "supports": {
     "align": false,
     "anchor": true,
     "html": false
   },
-  "parent": [],
+  "keywords": ["alimento", "dieta"],
+  "parent": null,
   "textdomain": "asim",
   "attributes": {
     "title": {
@@ -25,6 +26,10 @@
     "alimentoID": {
       "type": "string",
       "default": ""
+    },
+    "hideImage": {
+      "type": "boolean",
+      "default": false
     },
     "imgSrc": {
       "type": "string",
@@ -44,10 +49,6 @@
       "mealType": "breakfast"
     }
   },
-  "providesContext": {
-    "custom/restricted-inner-blocks": "content"
-  },
-  "usesContext": ["core/paragraph", "core/heading", "core/list"],
 
   "editorScript": "file:../../build/alimento-block.js",
   "style": "file:./style.css",

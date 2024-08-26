@@ -11,11 +11,6 @@
  * @package block-developer-examples
  */
 
-//  echo "<h4>Alimentooo</h4>";
-//  dd( $attributes );
-//  dd ( $content ); // inner posts.
-//  echo "<h4>----------</h4>";
-
 $extra = [ 
 	'class' => ($attributes['imgSrc'] ? ' has-image ' : ' no-image ' ) . ' is-' . $attributes['mealType']
 ];

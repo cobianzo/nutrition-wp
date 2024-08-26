@@ -36,6 +36,16 @@
 					"color": "#45B644",
 					"name": "Accent-2",
 					"slug": "ti-accent-2"
+				},
+				{
+					"color": "#f5ff35",
+					"name": "Highlighted",
+					"slug": "custom-highlighted"
+				},
+				{
+					"color": "#ff8d8d",
+					"name": "Error",
+					"slug": "custom-error"
 				}
 			]
 		},
@@ -110,6 +120,17 @@
 			"text": "var(--wp--preset--color--ti-fg)"
 		},
 		"elements": {
+			"button": {
+				"color": {
+					"background": "var(--wp--preset--color--ti-accent)",
+					"text": "var(--wp--preset--color--ti-fg-alt)"
+				}
+			},
+			"heading": {
+				"color": {
+					"text": "var(--wp--preset--color--ti-accent)"
+				}
+			},
 			"link": {
 				":hover": {
 					"color": {
@@ -117,7 +138,7 @@
 					}
 				},
 				"color": {
-					"text": "var(--wp--preset--color--ti-accent)"
+					"text": "var(--wp--preset--color--ti-accent-2)"
 				}
 			}
 		},

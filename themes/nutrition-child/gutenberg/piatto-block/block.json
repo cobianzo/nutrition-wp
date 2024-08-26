@@ -3,16 +3,25 @@
   "version": "1.0.0",
   "name": "asim/piatto",
   "title": "Piatto Block",
-  "category": "widgets",
-  "icon": "star-filled",
+  "category": "diet",
   "description": "Un blocco per la gestione dei piatti",
   "keywords": ["piatto", "dieta"],
+  "textdomain": "asim",
   "supports": {
     "align": false,
     "anchor": true,
     "html": false
   },
-  "attributes": {},
+  "attributes": {
+    "alimentoID": {
+      "type": "string",
+      "default": ""
+    },
+    "title": {
+      "type": "string",
+      "default": "NOTITLE"
+    }
+  },
   "example": {
     "attributes": {}
   },

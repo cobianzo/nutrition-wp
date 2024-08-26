@@ -1,0 +1,48 @@
+/* only editor */
+
+.wp-block-asim-piatto-block {
+  border: 1px solid var(--wp--preset--color--ti-accent);
+  padding: 0.5rem 1rem;
+
+  .wp-block-asim-piatto-block__info {
+    display: none;
+  }
+
+  &.is-selected {
+    border: 5px solid var(--wp--preset--color--ti-accent);
+
+    .wp-block-asim-piatto-block__info {
+      display: block;
+    }
+  }
+  .block-editor-inner-blocks {
+    transition: padding;
+  }
+  &.has-child-selected .block-editor-inner-blocks {
+    border: 5px solid var(--wp--preset--color--ti-accent);
+    padding: 0 0.5rem;
+  }
+
+  .wp-block-asim-piatto-block__info {
+    position: absolute;
+    background: pink;
+    padding: 0 1rem;
+    font-size: 1rem;
+    right: 0;
+    translate: 26px -50px;
+
+    > div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    img {
+      max-height: 40px;
+    }
+
+    p {
+      max-width: 300px;
+    }
+  }
+}

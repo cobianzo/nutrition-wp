@@ -9,6 +9,7 @@ require_once __DIR__ . '/class-programma.php';
 require_once __DIR__ . '/class-alimento.php';
 require_once __DIR__ . '/includes/redirections.php';
 require_once __DIR__ . '/includes/shortcodes.php';
+require_once __DIR__ . '/gutenberg/gutenberg.php';
 
 // Kind of the functions.php equivalent
 // We insert generic things here.

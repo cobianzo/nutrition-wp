@@ -1,6 +1,12 @@
 /*
 This applies to the gutenberg editor!
 */
+
+/* for some reason the edito loses the max-width and looks attached to the borders. WE add this to fix.*/
+.is-root-container {
+  padding: 1rem;
+}
+
 body.post-type-diet .editor-styles-wrapper {
   background-color: aquamarine;
 }

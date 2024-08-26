@@ -8,26 +8,11 @@ class Programma {
    */
   public static function init() {
 
-    add_action('init', [__CLASS__, 'piatto_block_register'] );
-
     // when clicking on Create Programma from template in client Dashboard.
     add_action('admin_post_create_programme', [__CLASS__, 'handle_create_programme'] );
 
   }
 
-  /**
-   * Define block
-   *
-   * @return void
-   */
-  public static function piatto_block_register() {
-
-    // Start of the block development
-    $block_file = __DIR__ . '/gutenberg/piatto-block/';
-    register_block_type( $block_file );
-
-    $a = wp_set_script_translations( 'asim-piatto-block-editor-script', 'asim', get_stylesheet_directory_uri() . '/languages' );
-  }
 
   public static function handle_create_programme() {
     

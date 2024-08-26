@@ -10,6 +10,7 @@ import {
   SelectControl,
   Button,
   RadioControl,
+  CheckboxControl,
 } from "@wordpress/components";
 
 import { parse } from "@wordpress/blocks";
@@ -128,8 +129,9 @@ export default function edit(props) {
     <div
       {...useBlockProps({
         className:
-          (props.attributes.imgSrc ? ` has-image ` : ` no-image `) +
-          ` is-${props.attributes.mealType}`,
+          (props.attributes.imgSrc && props.attributes.hideImage !== true
+            ? ` has-image `
+            : ` no-image `) + ` is-${props.attributes.mealType}`,
       })}
     >
       <InspectorControls>
@@ -181,6 +183,17 @@ export default function edit(props) {
               />
             }
           </div>
+          <div>
+            <CheckboxControl
+              label={__("Hide Image", "asim")}
+              checked={props.attributes.hideImage}
+              onChange={(value) => {
+                props.setAttributes({
+                  hideImage: value,
+                });
+              }}
+            />
+          </div>
         </PanelBody>
       </InspectorControls>
       <Fragment>
@@ -205,19 +218,21 @@ export default function edit(props) {
             onChange={(content) => setAttributes({ textContent: content })}
           />
         </div>
-        <div className="alimento-right-column">
-          {props.attributes.alimentoID && (
-            <div className="alimento-image">
-              <img
-                src={
-                  props.attributes.imgSrc
-                    ? props.attributes.imgSrc
-                    : "http://placehold.it/300x300"
-                }
-              />
-            </div>
-          )}
-        </div>
+        {props.attributes.hideImage !== true && (
+          <div className="alimento-right-column">
+            {props.attributes.alimentoID && (
+              <div className="alimento-image">
+                <img
+                  src={
+                    props.attributes.imgSrc
+                      ? props.attributes.imgSrc
+                      : "http://placehold.it/300x300"
+                  }
+                />
+              </div>
+            )}
+          </div>
+        )}
       </Fragment>
     </div>
   );

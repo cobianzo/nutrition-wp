@@ -10,8 +10,6 @@ import { InnerBlocks } from "@wordpress/block-editor";
 import Edit from "./edit";
 registerBlockType("asim/alimento-block", {
   title: __("Alimento Block", "asim"),
-  icon: "cart",
-  category: "common",
   edit: Edit,
   save: function ({ attributes }) {
     const blockProps = useBlockProps.save();
