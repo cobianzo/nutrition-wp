@@ -1,0 +1,25 @@
+{
+  "apiVersion": 3,
+  "version": "1.0.0",
+  "name": "asim/test2-block",
+  "title": "Block test2",
+  "category": "diet",
+  "icon": "cart",
+  "supports": {
+    "align": false,
+    "anchor": true,
+    "html": false
+  },
+  "keywords": ["test2", "dieta"],
+  "parent": null,
+  "textdomain": "asim",
+  "attributes": {
+    "alimentoID": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "example": {},
+  "editorScript": "file:../../build/test2-block.js",
+  "render": "file:./render.php"
+}

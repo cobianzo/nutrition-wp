@@ -35,9 +35,18 @@ __webpack_require__.r(__webpack_exports__);
 
 const Edit = ({
   attributes,
-  setAttributes
+  setAttributes,
+  clientId
 }) => {
   const [alimentoPost, setAlimentoPost] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)(null);
+
+  // Access the inner blocks content using useSelect
+  const innerBlocks = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => {
+    return select("core/block-editor").getBlocks(clientId);
+  }, [clientId]);
+  const {
+    replaceInnerBlocks
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useDispatch)("core/block-editor");
 
   // Fetch posts of the CPT 'aliment'
   const alimentOptions = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => {
@@ -78,6 +87,17 @@ const Edit = ({
       fetchPost();
     }
   }, [attributes.alimentoID]);
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useEffect)(() => {
+    if (!alimentoPost) return;
+    // Check if inner blocks are empty
+    if (innerBlocks.length === 0 || innerBlocks.length === 1 && innerBlocks[0].attributes.content && innerBlocks[0].attributes.content.text.trim() === "") {
+      // Set default content if empty
+      const defaultBlock = wp.blocks.createBlock("core/paragraph", {
+        content: alimentoPost.title.rendered
+      });
+      replaceInnerBlocks(clientId, [defaultBlock]);
+    }
+  }, [alimentoPost]);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
     ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.useBlockProps)({
       className: "wp-block-asim-piatto-block"
@@ -94,14 +114,9 @@ const Edit = ({
           })
         })
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
       className: "wp-block-asim-piatto-block__info",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
-        onMouseDown: () => setAttributes({
-          title: "ASSIGNEDtitle"
-        }),
-        children: ["TODELTE title: ", attributes.title, " "]
-      }), alimentoPost ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+      children: alimentoPost ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
         children: [alimentoPost.imgSrc && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("img", {
           src: alimentoPost.imgSrc
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
@@ -109,7 +124,7 @@ const Edit = ({
         })]
       }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
         children: "Seleziona un alimento nel panello laterale"
-      })]
+      })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.InnerBlocks, {})]
   });
 };

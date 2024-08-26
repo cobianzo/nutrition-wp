@@ -4,14 +4,15 @@
   border: 1px solid var(--wp--preset--color--ti-accent);
   padding: 0.5rem 1rem;
 
-  .wp-block-asim-piatto-block__info {
+  /* info badge */
+  .wp-block-asim-piatto-block__info p {
     display: none;
   }
 
   &.is-selected {
     border: 5px solid var(--wp--preset--color--ti-accent);
 
-    .wp-block-asim-piatto-block__info {
+    .wp-block-asim-piatto-block__info p {
       display: block;
     }
   }

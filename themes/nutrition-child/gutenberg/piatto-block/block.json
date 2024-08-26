@@ -1,7 +1,7 @@
 {
   "apiVersion": 3,
   "version": "1.0.0",
-  "name": "asim/piatto",
+  "name": "asim/piatto-block",
   "title": "Piatto Block",
   "category": "diet",
   "description": "Un blocco per la gestione dei piatti",
@@ -16,10 +16,6 @@
     "alimentoID": {
       "type": "string",
       "default": ""
-    },
-    "title": {
-      "type": "string",
-      "default": "NOTITLE"
     }
   },
   "example": {

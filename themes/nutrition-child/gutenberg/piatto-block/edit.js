@@ -5,14 +5,24 @@ import {
   InnerBlocks,
 } from "@wordpress/block-editor";
 import { PanelBody, ComboboxControl } from "@wordpress/components";
-import { useSelect } from "@wordpress/data";
+import { useSelect, useDispatch } from "@wordpress/data";
 import apiFetch from "@wordpress/api-fetch";
 
 // React wrapper dependencies
 import { useState, useEffect } from "@wordpress/element";
 
-const Edit = ({ attributes, setAttributes }) => {
+const Edit = ({ attributes, setAttributes, clientId }) => {
   const [alimentoPost, setAlimentoPost] = useState(null);
+
+  // Access the inner blocks content using useSelect
+  const innerBlocks = useSelect(
+    (select) => {
+      return select("core/block-editor").getBlocks(clientId);
+    },
+    [clientId]
+  );
+
+  const { replaceInnerBlocks } = useDispatch("core/block-editor");
 
   // Fetch posts of the CPT 'aliment'
   const alimentOptions = useSelect((select) => {
@@ -56,6 +66,24 @@ const Edit = ({ attributes, setAttributes }) => {
     }
   }, [attributes.alimentoID]);
 
+  useEffect(() => {
+    if (!alimentoPost) return;
+    // Check if inner blocks are empty
+    if (
+      innerBlocks.length === 0 ||
+      (innerBlocks.length === 1 &&
+        innerBlocks[0].attributes.content &&
+        innerBlocks[0].attributes.content.text.trim() === "")
+    ) {
+      // Set default content if empty
+      const defaultBlock = wp.blocks.createBlock("core/paragraph", {
+        content: alimentoPost.title.rendered,
+      });
+
+      replaceInnerBlocks(clientId, [defaultBlock]);
+    }
+  }, [alimentoPost]);
+
   return (
     <div {...useBlockProps({ className: "wp-block-asim-piatto-block" })}>
       <InspectorControls>
@@ -69,9 +97,6 @@ const Edit = ({ attributes, setAttributes }) => {
         </PanelBody>
       </InspectorControls>
       <div className="wp-block-asim-piatto-block__info">
-        <p onMouseDown={() => setAttributes({ title: "ASSIGNEDtitle" })}>
-          TODELTE title: {attributes.title}{" "}
-        </p>
         {alimentoPost ? (
           <div>
             {alimentoPost.imgSrc && <img src={alimentoPost.imgSrc} />}

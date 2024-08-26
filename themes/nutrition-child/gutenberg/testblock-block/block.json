@@ -1,0 +1,22 @@
+{
+  "apiVersion": 3,
+  "version": "1.0.0",
+  "name": "asim/testblock",
+  "title": "Test Block",
+  "category": "diet",
+  "description": "Blocco to delete",
+  "keywords": ["test", "dieta"],
+  "textdomain": "asim",
+  "supports": {
+    "align": false,
+    "anchor": true,
+    "html": false
+  },
+  "attributes": {
+    "test_attribute": {
+      "type": "string",
+      "default": "Test value"
+    }
+  },
+  "editorScript": "file:../../build/testblock-block.js"
+}
