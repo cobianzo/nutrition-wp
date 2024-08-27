@@ -7,6 +7,7 @@ import {
 import { PanelBody, ComboboxControl } from "@wordpress/components";
 import { useSelect, useDispatch } from "@wordpress/data";
 import apiFetch from "@wordpress/api-fetch";
+import { __ } from "@wordpress/i18n";
 
 // React wrapper dependencies
 import { useState, useEffect } from "@wordpress/element";
@@ -85,35 +86,50 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
   }, [alimentoPost]);
 
   return (
-    <div {...useBlockProps({ className: "wp-block-asim-piatto-block" })}>
-      <InspectorControls>
-        <PanelBody title="Opzioni blocco Piatto">
-          <ComboboxControl
-            label="Seleziona Alimento"
-            value={attributes.alimentoID}
-            options={alimentOptions}
-            onChange={(newValue) => setAttributes({ alimentoID: newValue })}
-          />
-        </PanelBody>
-      </InspectorControls>
-      <div className="wp-block-asim-piatto-block__info">
-        {alimentoPost ? (
-          <div>
-            {alimentoPost.imgSrc && <img src={alimentoPost.imgSrc} />}
-            <p>
-              {
-                new DOMParser().parseFromString(
-                  alimentoPost.title.rendered,
-                  "text/html"
-                ).documentElement.textContent
-              }
-            </p>
-          </div>
-        ) : (
-          <p>Seleziona un alimento nel panello laterale</p>
-        )}
+    <div className="wp-block-asim-piatto-block__wrapper">
+      <div {...useBlockProps({ className: "" })}>
+        <InspectorControls>
+          <PanelBody title="Opzioni blocco Piatto">
+            <ComboboxControl
+              label="Seleziona Alimento"
+              value={attributes.alimentoID}
+              options={alimentOptions}
+              onChange={(newValue) => setAttributes({ alimentoID: newValue })}
+            />
+          </PanelBody>
+        </InspectorControls>
+
+        {/* This div is only for the edit.js backend */}
+        <div className="wp-block-asim-piatto-block__info">
+          {alimentoPost ? (
+            <div>
+              {alimentoPost.imgSrc && (
+                <img className="asim-alimento-icon" src={alimentoPost.imgSrc} />
+              )}
+              <p>
+                {
+                  new DOMParser().parseFromString(
+                    alimentoPost.title.rendered,
+                    "text/html"
+                  ).documentElement.textContent
+                }
+              </p>
+            </div>
+          ) : (
+            <p>Seleziona un alimento nel panello laterale</p>
+          )}
+        </div>
+
+        <div class="wp-block-asim-piatto-block__piatto-badge">
+          <div className="asim-piatto-badge__text">{__("Piatto", "asim")}</div>
+          {alimentoPost && alimentoPost.imgSrc && (
+            <div className="asim-piatto-badge__icon">
+              <img className="asim-alimento-icon" src={alimentoPost.imgSrc} />
+            </div>
+          )}
+        </div>
+        <InnerBlocks />
       </div>
-      <InnerBlocks />
     </div>
   );
 };

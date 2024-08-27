@@ -1,1 +1,26 @@
 /* front and backend */
+
+.wp-block-asim-piatto-block {
+  border: 1px solid var(--wp--preset--color--ti-accent);
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+}
+
+.wp-block-asim-piatto-block__wrapper {
+  position: relative;
+
+  .wp-block-asim-piatto-block__piatto-badge {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    top: 0;
+    right: 0;
+    background: var(--wp--preset--color--ti-bg-inv);
+    color: var(--wp--preset--color--white);
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 0 10px 0 10px;
+    z-index: 9;
+  }
+}

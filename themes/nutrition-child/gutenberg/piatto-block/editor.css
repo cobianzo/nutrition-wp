@@ -1,9 +1,6 @@
 /* only editor */
 
 .wp-block-asim-piatto-block {
-  border: 1px solid var(--wp--preset--color--ti-accent);
-  padding: 0.5rem 1rem;
-
   /* info badge */
   .wp-block-asim-piatto-block__info p {
     display: none;
@@ -24,6 +21,10 @@
     padding: 0 0.5rem;
   }
 
+  img.asim-alimento-icon {
+    max-height: 40px;
+  }
+
   .wp-block-asim-piatto-block__info {
     position: absolute;
     background: pink;
@@ -38,12 +39,16 @@
       align-items: center;
     }
 
-    img {
-      max-height: 40px;
-    }
-
     p {
       max-width: 300px;
+    }
+  }
+
+  /* Badge shown also in backend. Add little interaction in backend */
+  .wp-block-asim-piatto-block__piatto-badge {
+    &:hover {
+      background: var(--wp--preset--color--ti-accent-2);
+      cursor: pointer;
     }
   }
 }

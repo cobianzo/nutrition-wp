@@ -13,6 +13,7 @@ if ( ! empty( $attributes['alimentoID'] ) ) {
 }
 
 ?>
-<div <?php echo get_block_wrapper_attributes(); ?>>
+<div class="wp-block-asim-piatto-block__wrapper">
+    <span class="wp-block-asim-piatto-block__piatto-badge"><?php _e('Piatto', 'asim'); ?></span>
     <?php echo $content; // Output inner block content ?>
 </div>
