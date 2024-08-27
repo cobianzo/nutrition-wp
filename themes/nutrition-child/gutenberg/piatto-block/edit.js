@@ -25,13 +25,31 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 
   const { replaceInnerBlocks } = useDispatch("core/block-editor");
 
-  // Fetch posts of the CPT 'aliment'
+  // Fetch all posts of the CPT 'aliment'
   const alimentOptions = useSelect((select) => {
     const posts = select("core").getEntityRecords("postType", "aliment");
     return posts
-      ? posts.map((post) => ({ label: post.title.raw, value: post.id }))
+      ? posts.map((post) => ({ label: post.title.raw, value: String(post.id) }))
       : [];
   }, []);
+
+  const { isBlockSelected, isInnerBlocksSelected } = useSelect(
+    (select) => {
+      const isSelected = select("core/block-editor").isBlockSelected(clientId);
+
+      const { getSelectedBlockClientId, getBlockOrder } =
+        select("core/block-editor");
+      const selectedBlockClientId = getSelectedBlockClientId();
+      const innerBlockClientIds = getBlockOrder(clientId);
+
+      const isInnerBlocksSelected = innerBlockClientIds.includes(
+        selectedBlockClientId
+      );
+
+      return { isBlockSelected: isSelected, isInnerBlocksSelected };
+    },
+    [clientId]
+  );
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -94,30 +112,31 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
               label="Seleziona Alimento"
               value={attributes.alimentoID}
               options={alimentOptions}
-              onChange={(newValue) => setAttributes({ alimentoID: newValue })}
+              onChange={(newValue) =>
+                setAttributes({ alimentoID: String(newValue) })
+              }
             />
           </PanelBody>
         </InspectorControls>
 
         {/* This div is only for the edit.js backend */}
         <div className="wp-block-asim-piatto-block__info">
-          {alimentoPost ? (
-            <div>
-              {alimentoPost.imgSrc && (
-                <img className="asim-alimento-icon" src={alimentoPost.imgSrc} />
-              )}
-              <p>
-                {
-                  new DOMParser().parseFromString(
-                    alimentoPost.title.rendered,
-                    "text/html"
-                  ).documentElement.textContent
-                }
-              </p>
-            </div>
-          ) : (
-            <p>Seleziona un alimento nel panello laterale</p>
-          )}
+          {isBlockSelected || isInnerBlocksSelected ? (
+            alimentoPost ? (
+              <div>
+                <p>
+                  {
+                    new DOMParser().parseFromString(
+                      alimentoPost.title.rendered,
+                      "text/html"
+                    ).documentElement.textContent
+                  }
+                </p>
+              </div>
+            ) : (
+              <p>Seleziona un alimento nel panello laterale</p>
+            )
+          ) : null}
         </div>
 
         <div class="wp-block-asim-piatto-block__piatto-badge">

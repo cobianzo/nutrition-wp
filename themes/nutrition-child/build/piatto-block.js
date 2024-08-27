@@ -51,14 +51,31 @@ const Edit = ({
     replaceInnerBlocks
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useDispatch)("core/block-editor");
 
-  // Fetch posts of the CPT 'aliment'
+  // Fetch all posts of the CPT 'aliment'
   const alimentOptions = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => {
     const posts = select("core").getEntityRecords("postType", "aliment");
     return posts ? posts.map(post => ({
       label: post.title.raw,
-      value: post.id
+      value: String(post.id)
     })) : [];
   }, []);
+  const {
+    isBlockSelected,
+    isInnerBlocksSelected
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => {
+    const isSelected = select("core/block-editor").isBlockSelected(clientId);
+    const {
+      getSelectedBlockClientId,
+      getBlockOrder
+    } = select("core/block-editor");
+    const selectedBlockClientId = getSelectedBlockClientId();
+    const innerBlockClientIds = getBlockOrder(clientId);
+    const isInnerBlocksSelected = innerBlockClientIds.includes(selectedBlockClientId);
+    return {
+      isBlockSelected: isSelected,
+      isInnerBlocksSelected
+    };
+  }, [clientId]);
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_5__.useEffect)(() => {
     const fetchPost = async () => {
       let data = await _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_3___default()({
@@ -115,22 +132,19 @@ const Edit = ({
             value: attributes.alimentoID,
             options: alimentOptions,
             onChange: newValue => setAttributes({
-              alimentoID: newValue
+              alimentoID: String(newValue)
             })
           })
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
         className: "wp-block-asim-piatto-block__info",
-        children: alimentoPost ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-          children: [alimentoPost.imgSrc && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("img", {
-            className: "asim-alimento-icon",
-            src: alimentoPost.imgSrc
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
+        children: isBlockSelected || isInnerBlocksSelected ? alimentoPost ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
             children: new DOMParser().parseFromString(alimentoPost.title.rendered, "text/html").documentElement.textContent
-          })]
+          })
         }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
           children: "Seleziona un alimento nel panello laterale"
-        })
+        }) : null
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
         class: "wp-block-asim-piatto-block__piatto-badge",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {

@@ -18,7 +18,7 @@
     right: 0;
     background: var(--wp--preset--color--ti-bg-inv);
     color: var(--wp--preset--color--white);
-    padding: 0.5rem 1rem;
+    padding: 0 1rem;
     font-size: 1rem;
     border-radius: 0 10px 0 10px;
     z-index: 9;

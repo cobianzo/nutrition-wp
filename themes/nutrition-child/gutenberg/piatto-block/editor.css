@@ -2,16 +2,9 @@
 
 .wp-block-asim-piatto-block {
   /* info badge */
-  .wp-block-asim-piatto-block__info p {
-    display: none;
-  }
 
   &.is-selected {
     border: 5px solid var(--wp--preset--color--ti-accent);
-
-    .wp-block-asim-piatto-block__info p {
-      display: block;
-    }
   }
   .block-editor-inner-blocks {
     transition: padding;
@@ -22,7 +15,7 @@
   }
 
   img.asim-alimento-icon {
-    max-height: 40px;
+    max-height: 30px;
   }
 
   .wp-block-asim-piatto-block__info {
