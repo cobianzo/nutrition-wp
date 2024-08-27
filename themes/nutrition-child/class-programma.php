@@ -12,11 +12,11 @@ class Programma {
     add_action('admin_post_create_programme', [__CLASS__, 'handle_create_programme'] );
 
     // Save the alimenti in the programma. If we create a diet from this programme, they might contain these aliments
-    add_action( 'save_post', [__CLASS__, 'save_alimento_ids_as_post_meta'] );
+    add_action( 'save_post', [__CLASS__, 'save_alimento_ids_as_post_meta'], 10, 1 );
 
-    // add_action('init', [__CLASS__, 'register_alimento_meta']);
+    add_action('init', [__CLASS__, 'register_alimento_meta']);
     // Meta box to show the alimenti in the sidebar
-    // add_action('add_meta_boxes', [__CLASS__, 'add_alimento_meta_box']);
+    add_action('add_meta_boxes', [__CLASS__, 'add_alimento_meta_box']);
 
   }
 
@@ -80,12 +80,15 @@ class Programma {
   }
 
 
-  function save_alimento_ids_as_post_meta( $post_id ) {
+  public static function save_alimento_ids_as_post_meta( $post_id ) {
     // Check that this is not an autosave or a revision
+
     if ( wp_is_post_autosave( $post_id ) || wp_is_post_revision( $post_id ) ) {
-        return;
+      return;
     }
-    if ( 'programme' !== get_post_type( $post_id ) )
+    if ( 'programme' !== get_post_type( $post_id ) ) {
+      return;
+    }
 
     // Get the post content
     $post_content = get_post_field( 'post_content', $post_id );
@@ -97,9 +100,9 @@ class Programma {
 
     // Loop through the blocks and collect alimentoID
     foreach ( $blocks as $block ) {
-        if ( 'asim/piatto-block' === $block['blockName'] && isset( $block['attrs']['alimentoID'] ) ) {
-            $alimento_ids[] = $block['attrs']['alimentoID'];
-        }
+      if ( 'asim/piatto-block' === $block['blockName'] && isset( $block['attrs']['alimentoID'] ) ) {
+          $alimento_ids[] = $block['attrs']['alimentoID'];
+      }
     }
 
     // Save the alimentoIDs as post meta (could be serialized if multiple)
@@ -127,7 +130,6 @@ class Programma {
         function ($post) {
           // Get stored alimento IDs from post meta
           $alimento_ids = get_post_meta($post->ID, '_alimento_ids', true);
-      
           if (!empty($alimento_ids)) {
               echo '<div class="alimento-meta-box">';
               foreach ($alimento_ids as $alimento_id) {
