@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nutrition-child\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-18 07:32+0000\n"
+"POT-Creation-Date: 2024-08-18 07:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -72,10 +72,6 @@ msgstr ""
 
 #: gutenberg/alimento-block/edit.js:29
 msgid "Alternative"
-msgstr ""
-
-#: gutenberg/alimento-block/edit.js:25
-msgid "Breakfast"
 msgstr ""
 
 #. Description of the theme
@@ -159,5 +155,5 @@ msgstr ""
 msgid "Snack"
 msgstr ""
 
-msgid "Error, duplicate 1: Breakfast"
+msgid "Breakfast"
 msgstr ""

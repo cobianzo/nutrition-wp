@@ -6,16 +6,9 @@
 
  extract( $args ); // $post_id. of the client
 
- $user = Cliente::get_client_user_by_post_id( $post_id );
 
- if ( ! $user || ! is_a( $user, 'WP_User' ) ) {
-     wp_die( 'Invalid user associated with the client.' );
- }
+ $programs = Programma::get_programma_by_client( $post_id, false );
 
- $programs = get_posts([
-   'post_type' => 'programme',
-   'post_author' => $user->ID,
- ]);
 ?>
 
 
@@ -56,9 +49,15 @@
             'create_programme_nonce' => $nonce,
         ], admin_url('admin-post.php'));
 
-        echo '<a class="tile tile--button" href="' . esc_url($url) . '">' . 
-          sprintf( __( 'Create a new programme from template <b>%s</b>', 'asim' ), get_the_title( $pattern->ID ) )
-        . '</a>';
+        ob_start(); ?>
+
+        <a class="tile tile--button" href="<?php echo esc_url($url); ?>">
+            <?php echo sprintf( __( 'Create a new programme from template <b>%s</b>', 'asim' ), get_the_title( $pattern->ID ) ); ?>
+        </a>
+
+        <?php
+        $html_output = ob_get_clean();
+        echo $html_output;
       }
     }
   ?>
@@ -73,22 +72,26 @@
 <?php
 if ( ! empty( $programs ) ) : 
 ?>
-<h3><?php _e('Current programme for the client.','asim'); ?></h3>
+<h3><?php _e('Current food programme for the client.','asim'); ?></h3>
 <div class="client-dashboard client-dashboard-programme">
   <?php
     
     
     foreach ( $programs as $programme ) {
       $edit_link = get_edit_post_link( $programme->ID );
-      echo '<div class="tile tile--button tile--' . esc_attr( get_post_status( $programme->ID ) ) .'">
-        <a href="' . esc_url( $edit_link ) . '">' 
-        . get_the_title( $programme->ID ) 
-        . '<br/><small>' 
-        . '(' . get_post_status() . ') ' 
-        . get_the_date() 
-        . '</small>'
-        . '</a>'
-      . '</div>';
+
+      ob_start(); ?>
+
+      <div class="tile tile--button tile--<?php echo esc_attr( get_post_status( $programme->ID ) ); ?>">
+          <a href="<?php echo esc_url( $edit_link ); ?>">
+              <?php echo get_the_title( $programme->ID ); ?><br/>
+              <small>(<?php echo get_post_status(); ?>) <?php echo get_the_date(); ?></small>
+          </a>
+      </div>
+
+      <?php
+      $html_output = ob_get_clean(); 
+      echo $html_output;
     }
     
   ?>

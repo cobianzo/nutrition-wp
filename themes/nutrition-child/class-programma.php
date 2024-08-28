@@ -3,6 +3,7 @@
 
 class Programma {
 
+  const META_ALIMENTI = '_alimento_ids';
   /**
    * Init hooks
    */
@@ -107,9 +108,9 @@ class Programma {
 
     // Save the alimentoIDs as post meta (could be serialized if multiple)
     if ( ! empty( $alimento_ids ) ) {
-        update_post_meta( $post_id, '_alimento_ids', $alimento_ids );
+        update_post_meta( $post_id, self::META_ALIMENTI, $alimento_ids );
     } else {
-        delete_post_meta( $post_id, '_alimento_ids' );
+        delete_post_meta( $post_id, self::META_ALIMENTI );
     }
   }
 
@@ -154,6 +155,23 @@ class Programma {
         'side',                             // Location (side, normal, advanced)
         'high'                              // Priority (default, high, low)
     );
+  }
+
+
+  // HELPERS
+
+  static function get_programma_by_client( $post_id, $return_first = true ) {
+    $user = Cliente::get_client_user_by_post_id( $post_id );
+    if ( $user && is_a( $user, 'WP_User' ) ) {
+      $programs = get_posts([
+        'post_type' => 'programme',
+        'post_author' => $user->ID,
+      ]);
+      if ( ! empty( $programs ) ) {
+        return $return_first ? $programs[0] : $programs;
+      }
+    }
+    return null;
   }
 }
 

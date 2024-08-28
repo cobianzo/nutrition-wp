@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: nutrition-child\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-30 06:49+0000\n"
-"PO-Revision-Date: 2024-08-18 07:13+0000\n"
+"PO-Revision-Date: 2024-08-27 13:23+0000\n"
 "Last-Translator: \n"
 "Language-Team: Italiano\n"
 "Language: it_IT\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Loco-Version: 2.6.11; wp-6.6.1\n"
 "X-Domain: asim\n"
 
-#: gutenberg/alimento-block/edit.js:168
+#: gutenberg/alimento-block/edit.js:170
 msgid "--none---"
 msgstr "—"
 
@@ -65,7 +65,7 @@ msgstr "<h3>Profilo Wordpress associato:</h3>"
 msgid "<h3>Post ID not found</h3>"
 msgstr "<h3>Post ID non trovato</h3>"
 
-#: gutenberg/alimento-block/edit.js:138
+#: gutenberg/alimento-block/edit.js:140 gutenberg/test2-block/edit.js:42
 msgid "ALIMENT"
 msgstr "ALIMENTO"
 
@@ -73,13 +73,24 @@ msgstr "ALIMENTO"
 msgid "Alimento Block"
 msgstr "Blocco Alimento"
 
-#: gutenberg/alimento-block/edit.js:29
+#: class-programma.php:129
+msgid "Alimento IDs"
+msgstr ""
+
+#: gutenberg/alimento-block/edit.js:30
 msgid "Alternative"
 msgstr "Alternativa"
 
-#: gutenberg/alimento-block/edit.js:25
+#: gutenberg/alimento-block/edit.js:26
 msgid "Breakfast"
 msgstr "Colazione"
+
+#: patterns/single-diet.php:37
+msgid ""
+"cell: ‭<a href=\"tel:+393389368679‬\">3389368679‬</a><br>mail: <a "
+"href=\"mailto:dott.orsettileonardo@gmail.com\">dott.orsettileonardo@gmail."
+"com</a>"
+msgstr ""
 
 #. Description of the theme
 msgid "Child of Fork, dedicated to the Nutrtition site"
@@ -89,29 +100,53 @@ msgstr ""
 msgid "cobianzo"
 msgstr ""
 
-#: cliente-dashboard.php:36
+#: cliente-dashboard-diete.php:36
 #, php-format
 msgid "Create a new diet from type <b>%s</b>"
 msgstr ""
 
-#: cliente-dashboard.php:46
+#: cliente-dashboard-programmi.php:60
+#, php-format
+msgid "Create a new programme from template <b>%s</b>"
+msgstr ""
+
+#: cliente-dashboard-diete.php:46
 msgid "Current diet(s) for the client."
 msgstr ""
 
-#: cliente-dashboard.php:13
+#: cliente-dashboard-programmi.php:76
+msgid "Current programme for the client."
+msgstr ""
+
+#: functions.php:129 functions.php:130 cliente-dashboard-diete.php:13
 msgid "Currently this client has not any diet assigned."
 msgstr "Attualmente questo cliente non ha una dieta assegnata"
+
+#: gutenberg/gutenberg.php:52
+msgid "Diet"
+msgstr ""
 
 #: class-dieta.php:158
 #, php-format
 msgid "Diet for client %s"
 msgstr "Dieta per client %s"
 
-#: gutenberg/alimento-block/edit.js:28
+#: gutenberg/alimento-block/edit.js:29
 msgid "Dinner"
 msgstr ""
 
-#: gutenberg/alimento-block/edit.js:191
+#: patterns/footer.php:19
+msgid "Dr Orsetti Leonardo"
+msgstr ""
+
+#: patterns/single-diet.php:17
+msgid ""
+"Dr. Orsetti Leonardo<br><mark style=\"background-color:rgba(0, 0, 0, 0)\" "
+"class=\"has-inline-color has-ti-accent-color\">Bionutrizione</mark><br>"
+"Medicina Naturale | Fitoterapia | Microbiologia intestinale | PNEI"
+msgstr ""
+
+#: gutenberg/alimento-block/edit.js:204
 msgid "eg. Breakfast"
 msgstr "es. Colazione"
 
@@ -120,16 +155,29 @@ msgstr "es. Colazione"
 msgid "Email already exists: <a target=\"_blank\" href=\"%s\"><b>%s</b></a>"
 msgstr ""
 
+#: class-programma.php:60
+#, php-format
+msgid "Food Programme for %s"
+msgstr "Programma Alimentare per %s"
+
+#: gutenberg/alimento-block/edit.js:188
+msgid "Hide Image"
+msgstr ""
+
 #. Author URI of the theme
 msgid "https://cobianzo.com"
 msgstr ""
 
-#: gutenberg/alimento-block/edit.js:27
+#: gutenberg/alimento-block/edit.js:28
 msgid "Lunch"
 msgstr "Pranzo"
 
-#: gutenberg/alimento-block/edit.js:165
+#: gutenberg/alimento-block/edit.js:167
 msgid "Meal"
+msgstr ""
+
+#: class-programma.php:150
+msgid "No Alimento IDs found."
 msgstr ""
 
 #: class-cliente.php:133
@@ -146,18 +194,40 @@ msgstr ""
 msgid "nutrition-child"
 msgstr ""
 
-#: gutenberg/alimento-block/edit.js:158
+#: patterns/footer.php:2
+msgctxt "Pattern title"
+msgid "footer"
+msgstr ""
+
+#: patterns/single-diet.php:2
+msgctxt "Pattern title"
+msgid "single-diet"
+msgstr ""
+
+#: gutenberg/piatto-block/render.php:17 gutenberg/piatto-block/edit.js:143
+msgid "Piatto"
+msgstr ""
+
+#: gutenberg/piatto-block/index.js:8
+msgid "Piatto Block"
+msgstr ""
+
+#: gutenberg/alimento-block/edit.js:160
 msgid "Prefill text with defaults"
 msgstr ""
 
-#: gutenberg/alimento-block/edit.js:141
+#: gutenberg/alimento-block/edit.js:143 gutenberg/test2-block/edit.js:45
 msgid "SELECT ALIMENT"
 msgstr "Seleziona Alimento"
 
-#: gutenberg/alimento-block/edit.js:136
+#: gutenberg/alimento-block/edit.js:138 gutenberg/test2-block/edit.js:40
 msgid "Select aliment"
 msgstr "Seleziona Alimento"
 
-#: gutenberg/alimento-block/edit.js:26
+#: gutenberg/alimento-block/edit.js:27
 msgid "Snack"
 msgstr "Spuntino"
+
+#: cliente-dashboard-programmi.php:42
+msgid "There are no templates for Food Programmes. Create them in the Editor."
+msgstr ""

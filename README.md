@@ -1,3 +1,17 @@
+# NEXT:
+
+- Tener ya la lsita entera de productos.
+- Pasar CPT ya a codigo.
+- Create the CPT with template and locked groups, especially for programme:
+  - Generica, generic info
+  - colazione
+  - Spuntino facoltativo
+    - Pranzo
+  - Spuntino facoltativo
+  - Cena
+  - Spezie
+  - Tisane
+
 # TODO:
 
 Pedir lista de todos los alimentos, con imagenes.
@@ -34,6 +48,7 @@ Wordpress project, with child theme, to create a nutritionist website
    Dieta
    Cliente
    Alimento
+   Programma
 
    Dieta-category (stitichezza/generica/..)
 
@@ -45,14 +60,17 @@ Wordpress project, with child theme, to create a nutritionist website
      - Create a field in Dieta Category to a pattern for the default new dieta.
    - Create a fully custom control panel inside Client. (client Dashboard). Allows to create a new diet,
    - Create a custom block for alimenti inside of a dieta.
+   - Create a custom block for piatti inside a programme
 
 Development of all the frontend: use of the right parent theme, definition of styles using theme.json, create the right templates for the right pages on frontend. (restrict access only to logged in users?)
 
 By the End:
 
+- Bacheca for Editor - shortcuts to clienti
+- Remove Bacheca for clients
 - Dashboard for Cliente login - remove access to anything except the profile.php. Remove even the sidebar.
   - Use a plugin to make the edit profile page look ok.
-- Move ACF into programmatic
+- Move ACF and CPT into programmatic
 - Internazionalization With Loco Translator
 - Set up permissions. Access to Editor to certain blocks. Check the @TODO
 - Use AAM plugin to show/hide content and add redirects. Use ChatGPT.
