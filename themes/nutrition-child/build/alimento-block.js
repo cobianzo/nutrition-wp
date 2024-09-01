@@ -22,54 +22,51 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/api-fetch */ "@wordpress/api-fetch");
-/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/api-fetch */ "@wordpress/api-fetch");
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _helper_get_meals__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../helper-get-meals */ "./gutenberg/helper-get-meals.js");
+/* harmony import */ var _component_MealTypeSelectControl__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../component-MealTypeSelectControl */ "./gutenberg/component-MealTypeSelectControl.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__);
 
 
 
 
 
 
-// import useState
+
+// import React wrapper dependencies
 
 
+// Internal dependencies
 
-const mealTimes = [{
-  label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Breakfast", "asim"),
-  value: "breakfast"
-}, {
-  label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Snack", "asim"),
-  value: "snack"
-}, {
-  label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Lunch", "asim"),
-  value: "lunch"
-}, {
-  label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Dinner", "asim"),
-  value: "dinner"
-}, {
-  label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Alternative", "asim"),
-  value: "alternative"
-}];
+
 
 /**
  * Functional component for the Edit.js
  * @param {*} props
  * @returns
  */
+
 function edit(props) {
   // We'll use it later
   const {
     replaceInnerBlocks
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useDispatch)("core/block-editor");
+  const mealTerms = (0,_helper_get_meals__WEBPACK_IMPORTED_MODULE_7__.useMealsTerms)();
+  const mealOptions = mealTerms.map(term => {
+    return {
+      label: term.name,
+      value: term.slug
+    };
+  });
 
   // helper to update the attribute.imgSrc when alimentoID changes.
   const fetchImage = async () => {
     const fetchPost = async () => {
-      const data = await _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_6___default()({
+      const data = await _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5___default()({
         path: `/wp/v2/aliment/${props.attributes.alimentoID}`
       });
       return data;
@@ -78,7 +75,7 @@ function edit(props) {
     if (postData?.featured_media) {
       // featured_media is the ID of the attachment. We grab the media src.
       // NOTE: I tried using `select` but for some reasonit doesnt work.
-      _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_6___default()({
+      _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5___default()({
         path: `/wp/v2/media/${postData.featured_media}`
       }).then(attachmentPost => {
         if (attachmentPost && attachmentPost.media_details && attachmentPost.media_details.sizes) {
@@ -106,7 +103,7 @@ function edit(props) {
       return [];
     }
   }, []);
-  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_5__.useEffect)(() => {
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_6__.useEffect)(() => {
     // keep attr imgSrc Up to date.
     if (props.attributes.alimentoID) {
       fetchImage();
@@ -134,41 +131,34 @@ function edit(props) {
   // create a function that grabs the editor content for the current attr alimentoID.
   // And it replaces the inner blocks with the content of the editor
   const prefillInnerBlocks = () => {
-    const content = _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_6___default()({
+    _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5___default()({
       path: `/wp/v2/aliment/${props.attributes.alimentoID}?context=edit`
     }).then(json => {
       if (json && json.content && json.content.raw) {
         const content = json.content.raw;
         const blocks = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_2__.parse)(content);
-        console.log(blocks);
+        // console.log(blocks);
         replaceInnerBlocks(props.clientId, blocks);
-
-        // props.setAttributes({
-        //   innerBlocks: blocks,
-        // });
       }
     });
   };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
     ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.useBlockProps)({
-      className: (props.attributes.imgSrc && props.attributes.hideImage !== true ? ` has-image ` : ` no-image `) + ` is-${props.attributes.mealType}`
+      className: (props.attributes.imgSrc && props.attributes.hideImage !== true ? ` has-image ` : ` no-image `) + ` is-${props.attributes.mealType}` + (props.attributes.isAlternative ? ` is-alternative` : ``)
     }),
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.InspectorControls, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelBody, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.InspectorControls, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelBody, {
         title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Select aliment", "asim"),
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.SelectControl, {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_component_MealTypeSelectControl__WEBPACK_IMPORTED_MODULE_8__["default"], {
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("ALIMENT", "asim"),
           value: props.attributes.alimentoID,
-          options: [{
-            label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("SELECT ALIMENT", "asim"),
-            value: ""
-          }, ...aliments],
+          mealType: props.attributes.mealType,
           onChange: value => {
             props.setAttributes({
-              alimentoID: value
+              alimentoID: String(value)
             });
           }
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
           isPrimary: true,
           onClick: () => {
             console.log("You clicked the button!");
@@ -176,25 +166,46 @@ function edit(props) {
             prefillInnerBlocks();
           },
           children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Prefill text with defaults", "asim")
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.RadioControl, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.RadioControl, {
             label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Meal", "asim"),
             selected: props.attributes.mealType,
             options: [{
               label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("--none---", "asim"),
               value: ""
-            }, ...mealTimes],
+            }, ...mealOptions],
             onChange: value => {
-              const label = mealTimes.find(meal => meal.value === value).label;
-              const translated = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)(label, "asim");
+              let translated = props.attributes.title;
+              if (!props.attributes.isAlternative) {
+                const label = mealOptions.find(meal => meal.value === value).label;
+                translated = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)(label, "asim");
+              }
               props.setAttributes({
                 mealType: value,
                 title: translated
               });
             }
           })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.CheckboxControl, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.CheckboxControl, {
+            label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Is Alternative?", "asim"),
+            checked: props.attributes.isAlternative,
+            onChange: value => {
+              let newTitle = "";
+              if (value === true) {
+                newTitle = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Alternative", "asim");
+              } else {
+                const labelable = mealOptions.find(meal => meal.value === props.attributes.mealType);
+                newTitle = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)(labelable && labelable.label ? labelable.label : "", "asim");
+              }
+              props.setAttributes({
+                isAlternative: value,
+                title: newTitle
+              });
+            }
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.CheckboxControl, {
             label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Hide Image", "asim"),
             checked: props.attributes.hideImage,
             onChange: value => {
@@ -205,20 +216,21 @@ function edit(props) {
           })
         })]
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.RichText, {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.RichText, {
         tagName: "h3",
         className: "alimento-title",
         value: props.attributes.title,
         placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("eg. Breakfast", "asim"),
+        disabled: props.attributes.isAlternative,
         onChange: value => {
           props.setAttributes({
             title: value
           });
         }
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
         className: "alimento-left-column",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.InnerBlocks, {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.InnerBlocks, {
           allowedBlocks: ["core/paragraph", "core/heading", "core/list"],
           orientation: "vertical",
           template: [["core/paragraph"], ["core/paragraph"], ["core/paragraph"]],
@@ -226,17 +238,136 @@ function edit(props) {
             textContent: content
           })
         })
-      }), props.attributes.hideImage !== true && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+      }), props.attributes.hideImage !== true && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
         className: "alimento-right-column",
-        children: props.attributes.alimentoID && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+        children: props.attributes.alimentoID && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
           className: "alimento-image",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("img", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("img", {
             src: props.attributes.imgSrc ? props.attributes.imgSrc : "http://placehold.it/300x300"
           })
         })
       })]
     })]
   });
+}
+
+/***/ }),
+
+/***/ "./gutenberg/component-MealTypeSelectControl.js":
+/*!******************************************************!*\
+  !*** ./gutenberg/component-MealTypeSelectControl.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/api-fetch */ "@wordpress/api-fetch");
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__);
+
+
+
+
+/**
+ *
+ * @param {{ mealType: string, label: string, onChange: (value: string) => void, value: string }} props
+ * @returns
+ */
+
+const MealTypeSelectControl = ({
+  mealType,
+  ...props
+}) => {
+  var _props$label;
+  const [options, setOptions] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    const getTermID = async slug => {
+      try {
+        const terms = await _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_2___default()({
+          path: `/wp/v2/meal?slug=${slug}&_fields=id`
+        });
+        if (terms.length > 0) {
+          return terms[0].id; // Return the ID of the first term found
+        } else {
+          console.log("No term found with that slug.");
+        }
+      } catch (error) {
+        console.error("Error fetching term:", error);
+      }
+    };
+    const fetchPosts = async () => {
+      try {
+        const mealTermID = await getTermID(mealType);
+        const posts = await _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_2___default()({
+          path: `/wp/v2/aliment?meal=${mealTermID}&_fields=id,title.rendered`
+        });
+        const formattedOptions = posts.map(post => ({
+          label: new DOMParser().parseFromString(post.title.rendered, "text/html").documentElement.textContent,
+          value: String(post.id)
+        }));
+        setOptions(formattedOptions);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+    if (mealType) {
+      fetchPosts();
+    }
+  }, [mealType]);
+  if (!mealType) return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+    children: "Select a meal type"
+  });
+  return options.length ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ComboboxControl, {
+    ...props,
+    options: options
+  }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h4", {
+      children: (_props$label = props.label) !== null && _props$label !== void 0 ? _props$label : "Loading..."
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Spinner, {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("br", {})]
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MealTypeSelectControl);
+
+/***/ }),
+
+/***/ "./gutenberg/helper-get-meals.js":
+/*!***************************************!*\
+  !*** ./gutenberg/helper-get-meals.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useMealsTerms: () => (/* binding */ useMealsTerms)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/api-fetch */ "@wordpress/api-fetch");
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1__);
+// useMealsTerms.js
+
+
+function useMealsTerms() {
+  const [terms, setTerms] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    // Fetch terms for the 'meal' taxonomy
+    _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1___default()({
+      path: "/wp/v2/meal?orderby=id&order=desc"
+    }).then(data => {
+      setTerms(data);
+    }).catch(error => {
+      console.error("Error fetching terms:", error);
+    });
+  }, []); // Empty dependency array means this runs once on mount
+
+  return terms;
 }
 
 /***/ }),

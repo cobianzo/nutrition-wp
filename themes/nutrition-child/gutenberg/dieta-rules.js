@@ -69,7 +69,6 @@ const restrictBlocks = createHigherOrderComponent((BlockEdit) => {
  * @returns
  */
 // Function to unregister blocks that are not in the allowedBlocks array
-console.log("TODELEEL");
 const restrictBlocksForDietCPT = (settings, name) => {
   const postType = select("core/editor").getCurrentPostType();
 

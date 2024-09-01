@@ -113,7 +113,7 @@ class Cliente {
 		});
 
 		/**
-		 * Simply extra info for the user-edit.php?user_id=xx page, nothing else
+		 * profile.php Simply extra info for the user-edit.php?user_id=xx page, nothing else
 		 */
 		add_filter('acf/load_field', function( $field ) {
 			// Client Data field
@@ -141,8 +141,16 @@ class Cliente {
 		}, 10, 1 );
 
 		// Custom HTML for diets dashboard:
-    add_filter('acf/load_field', [__CLASS__, 'client_dashboard_for_diets'] );
-		
+    add_action('acf/render_field', [__CLASS__, 'client_dashboard_for_diets'] );
+		add_action( 'admin_enqueue_scripts', function( $hook ) {
+			global $post;
+			// Check if the current page is 'post.php' or 'post-new.php' and the post type is 'client'
+			if ( ($hook === 'post.php' || $hook === 'post-new.php') && isset($post->post_type) && $post->post_type === 'client' ) {
+				$programma = Programma::get_programma_by_client( $post->ID );
+				add_action( 'admin_footer', fn() => self::client_dashboard_for_diets_scripts($post->ID, $programma->ID) );
+			}
+		}, 10, 1 );
+
 		// Custom HTML for programmi dashboard:
     add_filter('acf/load_field', [__CLASS__, 'client_dashboard_for_programmes'] );
     
@@ -417,18 +425,85 @@ class Cliente {
 	*/
   public static function client_dashboard_for_diets( $field ) {
 
+		// field type 'message' defined in ACF.
     if ( 'field_66aa86c7f526b' === $field['key'] ) {
 
       $post_id = isset($_REQUEST['post'])? $_REQUEST['post'] : false;
 
-      $field['label'] = 'Actions';
-      ob_start();
       get_template_part( 'cliente-dashboard-diete', '', ['post_id' => $post_id] );
-      $field['message'] = ob_get_clean();
+
     }
-    
-    return $field;
+
   }
+
+	public static function client_dashboard_for_diets_scripts($client_id, $programme_id) {
+		?>	
+			<form id="creation-diet-from-aliments" action="<?php echo admin_url('admin-post.php'); ?>" method="post">
+    		<?php wp_nonce_field('create_diet_from_aliments_action', 'create_diet_from_aliments_nonce'); ?>
+    
+				<div style="position: fixed; right: 0; bottom: 100px;" >
+					<input type="hidden" name="action" value="create_diet_from_aliments">
+					
+					<input type="text" name="client_id" value="<?php echo esc_attr($client_id); ?>">
+					<input type="text" name="programme_id" value="<?php echo esc_attr($programme_id); ?>">
+					<input type="text" name="day_of_the_week" value="<?php echo esc_attr('Monday'); ?>">
+				</div>
+
+				<div style="position:fixed; right:0; bottom: 0">
+					<?php 
+					$terms = get_terms(array(
+						'taxonomy' => 'meal',
+						'orderby'  => 'id',
+					));
+					if (!empty($terms) && !is_wp_error($terms)) {
+						foreach ($terms as $term) : ?>
+							<input id="<?php echo esc_attr($term->slug); ?>_aliment_ids" type="text" name="<?php echo esc_attr($term->slug); ?>_aliments" value="">
+						<?php
+						endforeach;
+					}
+					?>
+				</div>
+			</form>
+			<script type="text/javascript">
+				function checkAliment( liEl ) {
+					liEl.classList.toggle('checked');
+					liEl.classList.toggle('unchecked', !liEl.classList.includes('checked'));
+					
+				}
+				function createDietFromAliments() {
+					const formToCreateDiet = document.getElementById('creation-diet-from-aliments');
+					const containerUIButtons = document.getElementById('container-aliments');
+					console.log( 'containers', formToCreateDiet, containerUIButtons);
+					
+					<?php 
+					$term_slugs = wp_list_pluck($terms, 'slug');
+					?>
+					var termSlugs = <?php echo json_encode($term_slugs); ?>;
+					termSlugs.forEach( termSlug => {
+						const alimentsContainer = document.getElementById('term-'+termSlug+'-aliments');
+						const checkedAliments = alimentsContainer.querySelectorAll('li.checked');
+						if (checkedAliments) {
+							// we update the field for that term
+							let checkedAlimentsIds = [];
+							const alimentIds = [...checkedAliments].map( (alEl) => alEl.getAttribute('data-alimentoid') );
+					
+							formToCreateDiet.querySelector('#'+termSlug+'_aliment_ids').value = alimentIds.join(',');
+
+						}
+					});
+
+					// Add day of the week to the form: 
+					formToCreateDiet.querySelector('input[name="day_of_the_week"]').value = document.getElementById('day-of-the-week').value;
+
+					// @TODO: add validation. Don't submit if no aliments are selected
+							
+					// now we can submit the form, which will be handled in the backend as a WP action (create_diet_from_aliments).
+					// comment this for testing the inputs
+					formToCreateDiet.submit();
+				}
+			</script>
+		<?php
+	}
 
 
   /** Dashboard in client CMS page
@@ -440,7 +515,7 @@ class Cliente {
 
       $post_id = isset($_REQUEST['post'])? $_REQUEST['post'] : false;
 
-      $field['label'] = 'Actions';
+      // $field['label'] = 'Actions';
       ob_start();
       get_template_part( 'cliente-dashboard-programmi', '', ['post_id' => $post_id] );
       $field['message'] = ob_get_clean();

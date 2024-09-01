@@ -4,7 +4,7 @@ import {
   useBlockProps,
   InnerBlocks,
 } from "@wordpress/block-editor";
-import { PanelBody, ComboboxControl } from "@wordpress/components";
+import { PanelBody, RadioControl } from "@wordpress/components";
 import { useSelect, useDispatch } from "@wordpress/data";
 import apiFetch from "@wordpress/api-fetch";
 import { __ } from "@wordpress/i18n";
@@ -12,8 +12,16 @@ import { __ } from "@wordpress/i18n";
 // React wrapper dependencies
 import { useState, useEffect } from "@wordpress/element";
 
+// Internal dependencies
+import { useMealsTerms } from "../helper-get-meals";
+import MealTypeSelectControl from "../component-MealTypeSelectControl";
+
 const Edit = ({ attributes, setAttributes, clientId }) => {
   const [alimentoPost, setAlimentoPost] = useState(null);
+  const mealTerms = useMealsTerms();
+  const mealOptions = mealTerms.map((term) => {
+    return { label: term.name, value: term.slug };
+  });
 
   // Access the inner blocks content using useSelect
   const innerBlocks = useSelect(
@@ -23,6 +31,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
     [clientId]
   );
 
+  // we like to prefill the content if we select an aliment
   const { replaceInnerBlocks } = useDispatch("core/block-editor");
 
   // Fetch all posts of the CPT 'aliment'
@@ -108,13 +117,29 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
       <div {...useBlockProps({ className: "" })}>
         <InspectorControls>
           <PanelBody title="Opzioni blocco Piatto">
-            <ComboboxControl
-              label="Seleziona Alimento"
+            <MealTypeSelectControl
+              label={__("ALIMENT", "asim")}
               value={attributes.alimentoID}
-              options={alimentOptions}
-              onChange={(newValue) =>
-                setAttributes({ alimentoID: String(newValue) })
-              }
+              mealType={attributes.mealType}
+              onChange={(value) => {
+                setAttributes({
+                  alimentoID: String(value),
+                });
+              }}
+            />
+
+            <RadioControl
+              label={__("Meal", "asim")}
+              selected={attributes.mealType}
+              options={[
+                { label: __("--none---", "asim"), value: "" },
+                ...mealOptions,
+              ]}
+              onChange={(value) => {
+                setAttributes({
+                  mealType: value,
+                });
+              }}
             />
           </PanelBody>
         </InspectorControls>

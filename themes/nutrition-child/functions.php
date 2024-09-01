@@ -11,6 +11,9 @@ require_once __DIR__ . '/includes/redirections.php';
 require_once __DIR__ . '/includes/shortcodes.php';
 require_once __DIR__ . '/gutenberg/gutenberg.php';
 
+
+add_post_type_support( 'programme', 'custom-fields', 'editor', 'revisions', 'block-editor' );
+
 // Kind of the functions.php equivalent
 // We insert generic things here.
 
@@ -24,7 +27,7 @@ class Setup {
     // print styles css:
     add_action( 'wp_enqueue_scripts', [__CLASS__, 'enqueue_print_stylesheet'] );
 
-    // enqueue style.css for both front and backend.
+    // enqueue default style.css for both front and backend.
     add_action( 'wp_enqueue_scripts', [__CLASS__, 'enqueue_style_css'] );
     add_action( 'admin_enqueue_scripts', [__CLASS__, 'enqueue_style_css'] );
 
@@ -73,12 +76,20 @@ class Setup {
     // Check if the current post type is 'diet' or 'aliment'
     if ( ( $editor->post && in_array( $editor->post->post_type, array('diet', 'aliment') ) ) ) {
 
-      $json_path          = get_stylesheet_directory_uri() . '/includes/allowed-blocks.json';
-      $json_data          = file_get_contents($json_path);
-      $our_allowed_blocks = json_decode($json_data, true);
+      $json_path = get_stylesheet_directory_uri() . '/includes/allowed-blocks.json';
+      $response  = wp_remote_get( $json_path );
+      if ( is_wp_error( $response ) ) {
+        // Handle error
+        $error_message = $response->get_error_message();
+        echo "Something went wrong: $error_message";
+      } else {
+        $body = wp_remote_retrieve_body( $response );
+        $our_allowed_blocks = json_decode( $body, true);
 
-      if ( is_array($our_allowed_blocks) ) {
-        return $our_allowed_blocks;
+        // @TODO: accept all patterns from categories 'diet' etc...
+        if ( is_array($our_allowed_blocks) ) {
+          return $our_allowed_blocks;
+        }
       }
 
     }
@@ -120,14 +131,21 @@ Setup::init();
 /**
  * DEBUGGING HELPERS
  */
+
+
 add_action('init', function(){
 	if (isset($_GET['w-test'])) {
-		// echo __('Currently this client has not any diet assigned.', 'asim');
-		// wp_die();
-    $current_language = get_locale();
-    echo 'The current language is: ' . $current_language;
-    _e('Currently this client has not any diet assigned.','asim');
-    wp_die( __('Currently this client has not any diet assigned.', 'asim') );
+    $_POST['client_id'] = 387;
+    $_POST['programme_id'] = 458;
+    $_POST['day_of_the_week'] = __('Monday', 'asim');
+    $_POST['cena_aliments'] = '190';
+    $_POST['colazione_aliments'] = '179,177';
+    dd( $_POST );
+    Dieta::create_diet_from_aliments();
+    
+    // $post = get_post(474);
+    // $content = $post->post_content;
+    // dd(parse_blocks( $content ));
 	}
 });
 function dd($var) {

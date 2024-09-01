@@ -17,12 +17,14 @@ class Dieta {
     add_action( 'admin_post_create_diet', [ __CLASS__, 'create_diet_for_client' ] );
     add_action( 'admin_post_delete_diet_action', [__CLASS__, 'delete_diet_of_client'] );
 
+    add_action( 'admin_post_create_diet_from_aliments', [ __CLASS__, 'create_diet_from_aliments' ] );
+
 
     // info sidebar metabox. prescidible
     add_action('add_meta_boxes', function() {
       add_meta_box(
         'diet_metabox_id',                // Unique ID
-        'Related Client Post',            // Title
+        'Related to this Diet',            // Title
         [__CLASS__, 'display_diet_metabox'],           // Callback function
         'diet',                           // Post type
         'side',                           // Context
@@ -82,7 +84,7 @@ class Dieta {
    * Retrieve the diet posts in an array. Normally there is only one diet per client.
    *
    * @param [type] $client_id
-   * @return void
+   * @return array
    */
   public static function get_client_diets( $client_id ) {
     // Retrieve the WP_User object associated with the client post ID
@@ -223,10 +225,10 @@ class Dieta {
     }
 
     // Redirect back to the edit page or another location
-    if (! $redirect ) {
-      $redirect = admin_url( 'edit.php?post_type=diet' );
-    }
-    wp_redirect( $redirect );
+    if ( ! empty( $_SERVER['HTTP_REFERER'] ) ) {
+      wp_safe_redirect( $_SERVER['HTTP_REFERER'] );
+      exit;
+    } 
     exit;
   }
 
@@ -242,7 +244,13 @@ class Dieta {
     $client_post = Cliente::get_client_post_by_user_id( $the_user_owner_id );
     if ( $client_post ) {
       $edit_link = get_edit_post_link( $client_post->ID );
-      echo '<p><a href="' . esc_url( $edit_link ) . '">' . $client_post->post_title . '</a></p>';
+      echo '<p>Client: <a href="' . esc_url( $edit_link ) . '">' . $client_post->post_title . '</a></p>';
+    }
+
+    $programme = get_post_meta( $post->ID, '_created_from_programme', true );
+    if ( $programme && get_post_status( $programme )) {
+      $edit_link = get_edit_post_link( $programme );
+      echo '<p>Created from programme: <a href="' . esc_url( $edit_link ) . '">' . get_the_title( $programme ) . '</a></p>';
     }
   }
 
@@ -296,6 +304,179 @@ class Dieta {
     // Re-add the hook to avoid disrupting other save_post actions
     add_action( 'save_post', [__CLASS__, 'sync_cliente_owner_with_author'] );
   }
+
+
+  static public function create_diet_from_aliments() {
+    // Very basic nonce verification
+    // if ( ! isset( $_POST['create_diet_from_aliments_nonce'] ) || ! wp_verify_nonce( $_POST['create_diet_from_aliments_nonce'], 'create_diet_from_aliments_action' ) ) {
+    //   wp_die( 'Invalid nonce.' );
+    // }
+
+    $client_id = isset( $_POST['client_id'] ) ? intval( $_POST['client_id'] ) : 0;
+    $programme_id = isset( $_POST['programme_id'] ) ? intval( $_POST['programme_id'] ) : 0;
+    $client_post = get_post( $client_id );
+    if ( ! $client_post ) {
+        wp_die( 'Invalid client ID.' );
+    }
+
+    $user = Cliente::get_client_user_by_post_id( $client_id );
+    if ( ! isset( $user->ID ) ) {
+      wp_die( 'Invalid user ID.' );
+    }
+
+
+    $content = '';
+    // We build the content based on the aliments selected
+    $pattern_alimento_block = '<!-- wp:asim/alimento-block {"title":"[TITLE]","alimentoID":"[ALIMENTO_ID]","imgSrc":"[IMG_SRC]","mealType":"[MEAL_TYPE]"} --><div class="wp-block-asim-alimento-block"><div class="alimento-left-column"></div></div><!-- /wp:asim/alimento-block -->';
+
+    $pattern_weekday_wrapper = '<!-- wp:heading --><h2 class="wp-block-heading" id="title-[DAY_OF_THE_WEEK_SLUG]">[DAY_OF_THE_WEEK]</h2><!-- /wp:heading --><!-- wp:group {"className":"giorno-settimana","layout":{"type":"default"}} --><div id="[DAY_OF_THE_WEEK_SLUG]" class="wp-block-group giorno-settimana">[CONTENT]</div>';
+
+    $day_of_the_week = isset( $_POST['day_of_the_week'] ) ? $_POST['day_of_the_week'] : __( 'Monday', 'asim' );
+    $day_of_the_week_slug = sanitize_title( $day_of_the_week );
+
+    $days_of_the_week = array(
+        __( 'Monday', 'asim' ),
+        __( 'Tuesday', 'asim' ),
+        __( 'Wednesday', 'asim' ),
+        __( 'Thursday', 'asim' ),
+        __( 'Friday', 'asim' ),
+        __( 'Saturday', 'asim' ),
+        __( 'Sunday', 'asim' )
+    );
+
+    $diets                        = Dieta::get_client_diets( $client_id );
+    $existing_diet_from_programme = null;
+    foreach ( $diets as $diet ) {
+      $existing_diet_from_programme = get_post_meta( $diet->ID, '_created_from_programme', true );
+      if ( $existing_diet_from_programme ) {
+        $existing_diet_from_programme = get_post( $existing_diet_from_programme );
+        break;
+      }
+    }
+
+    $terms = get_terms(array(
+      'taxonomy' => 'meal',
+      'orderby'  => 'id',
+      'order'    => 'desc',
+    ));
+          
+    if (!empty($terms) && !is_wp_error($terms)) {
+      $aliment_blocks = '';
+      foreach ($terms as $term) {
+        // echo '<br>TODELETE: evaluating ' . $term->slug .' <br>';
+        $key                = $term->slug . '_aliments';
+        $aliment_ids_string = isset( $_POST[$key] ) ? $_POST[$key] : '';
+        $aliment_ids        = explode(',', $aliment_ids_string);
+        
+        foreach ($aliment_ids as $index => $aliment_id) {
+          
+          if ( ! get_post_status( $aliment_id ) ) {
+            continue;
+          }
+
+          $mark_as_alternative = ! (0 === $index % 2);
+
+          $block_for_aliment = str_replace( 
+            [ 
+              '[TITLE]',
+              '[ALIMENTO_ID]',
+              '[IMG_SRC]',
+              '[MEAL_TYPE]',
+            ], 
+            [
+              $mark_as_alternative? $term->name : __('Alternative', 'asim'),
+              $aliment_id,
+              get_the_post_thumbnail_url( $aliment_id, 'thumbnail' ),
+              $term->slug,
+            ], 
+            $pattern_alimento_block );
+
+            if ($mark_as_alternative) {
+              $block_for_aliment = str_replace( '"mealType"', '"isAlternative":true,"mealType"', $block_for_aliment );
+            }
+
+            $aliment_blocks .= $block_for_aliment;
+        }
+
+        // If the aliment is the second aliment, mark it as alternative
+        
+
+        // echo '<br>TODELETE: done: ' . $term->slug .': ' . htmlentities($aliment_blocks) .' <br>';
+
+      }
+      
+      $is_day_of_the_week_replaced = false;
+      if ( $existing_diet_from_programme ) {
+        // echo '<h1>TODELET: There is an existing diet from a programme: '. $existing_diet_from_programme->ID.'</h1>';
+        // if the content existed, we need to parse it, find the day of week, and replace the content
+        $current_content_as_array = parse_blocks( $existing_diet_from_programme->post_content ); 
+        $aliment_blocks_as_array = parse_blocks( $aliment_blocks );
+        
+        // find the block that contains the id=day_of_the_week-slug, and replace it with $aliment_blocks_as_array
+        foreach ($current_content_as_array as $index => $block) {
+          if ( false !== strpos( $block['innerHTML'], 'id="' . $day_of_the_week_slug. '"' ) ) { 
+            $current_content_as_array['innerBlocks'] = $aliment_blocks_as_array;
+            $is_day_of_the_week_replaced             = true;
+            break;
+          }
+        }
+
+        $content = serialize_blocks( $current_content_as_array );
+      }
+      if ( ! $existing_diet_from_programme || ! $is_day_of_the_week_replaced ) {
+        // echo ! $is_day_of_the_week_replaced ? ' TODELET NOT REPLACED. Adding afterwards' : 'not existing diet, creating one.';
+        $content .= str_replace(
+          [ '[DAY_OF_THE_WEEK]', '[DAY_OF_THE_WEEK_SLUG]', '[CONTENT]' ],
+          [ $day_of_the_week, $day_of_the_week_slug, $aliment_blocks ],
+          $pattern_weekday_wrapper
+        );
+      }
+      // Now the content is ready to replace the day of the week in template
+    }
+    // echo 'TODELETE dcsfd';
+    // ddie( htmlentities($content));
+
+    // find out if there is existing diet.
+    
+
+    // Create a new diet post. 
+    $diet_title = sprintf( __( 'Diet for client %s', 'asim'), $client_post->post_title );
+    $diet_post = array(
+      'post_title'   => $existing_diet_from_programme ? $existing_diet_from_programme->post_title : $diet_title,
+      'post_type'    => 'diet',
+      'post_status'  => $existing_diet_from_programme ? 'draft' : $existing_diet_from_programme->post_status, // Cambiar si es necesario
+      'post_author'  => $user->ID,
+      'post_content' => $content,
+      'meta_input'   => array(
+          '_related_client_id'      => $client_id, // Guardar la relación con el cliente si es necesario
+          '_created_from_programme' => $programme_id, // Guardar la relación con el cliente si es necesario
+      ),
+    );
+
+    // $blocks = parse_blocks( $content );  verification not needed
+
+    if ( $existing_diet_from_programme ) {
+      $diet_id = $existing_diet_from_programme->ID;
+      wp_update_post( $diet_post );
+    }
+    $diet_id = wp_insert_post( $diet_post );
+
+
+    if ($diet_id) {
+      update_post_meta( $client_id, '_diet_from_aliments', $diet_id );
+      // once finished, redirect to the just created post edit page
+      if ( ! empty( $_SERVER['HTTP_REFERER'] ) ) {
+        wp_safe_redirect( $_SERVER['HTTP_REFERER'] );
+        exit;
+      } 
+      wp_safe_redirect( get_edit_post_link( $diet_id ) );
+      exit;
+    } else {
+      wp_die('Error creating diet.'); 
+    }
+    
+    exit;
+  } 
 }
 
 Dieta::init();

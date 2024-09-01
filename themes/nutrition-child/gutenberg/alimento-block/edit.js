@@ -16,19 +16,14 @@ import {
 import { parse } from "@wordpress/blocks";
 import { select, useSelect, useDispatch } from "@wordpress/data";
 import { __ } from "@wordpress/i18n";
-
-// import useState
-import { useState, useEffect, Fragment } from "@wordpress/element";
-
 import apiFetch from "@wordpress/api-fetch";
 
-const mealTimes = [
-  { label: __("Breakfast", "asim"), value: "breakfast" },
-  { label: __("Snack", "asim"), value: "snack" },
-  { label: __("Lunch", "asim"), value: "lunch" },
-  { label: __("Dinner", "asim"), value: "dinner" },
-  { label: __("Alternative", "asim"), value: "alternative" },
-];
+// import React wrapper dependencies
+import { useState, useEffect, Fragment } from "@wordpress/element";
+
+// Internal dependencies
+import { useMealsTerms } from "../helper-get-meals";
+import MealTypeSelectControl from "../component-MealTypeSelectControl";
 
 /**
  * Functional component for the Edit.js
@@ -38,6 +33,10 @@ const mealTimes = [
 export default function edit(props) {
   // We'll use it later
   const { replaceInnerBlocks } = useDispatch("core/block-editor");
+  const mealTerms = useMealsTerms();
+  const mealOptions = mealTerms.map((term) => {
+    return { label: term.name, value: term.slug };
+  });
 
   // helper to update the attribute.imgSrc when alimentoID changes.
   const fetchImage = async () => {
@@ -109,18 +108,14 @@ export default function edit(props) {
   // create a function that grabs the editor content for the current attr alimentoID.
   // And it replaces the inner blocks with the content of the editor
   const prefillInnerBlocks = () => {
-    const content = apiFetch({
+    apiFetch({
       path: `/wp/v2/aliment/${props.attributes.alimentoID}?context=edit`,
     }).then((json) => {
       if (json && json.content && json.content.raw) {
         const content = json.content.raw;
         const blocks = parse(content);
-        console.log(blocks);
+        // console.log(blocks);
         replaceInnerBlocks(props.clientId, blocks);
-
-        // props.setAttributes({
-        //   innerBlocks: blocks,
-        // });
       }
     });
   };
@@ -131,21 +126,20 @@ export default function edit(props) {
         className:
           (props.attributes.imgSrc && props.attributes.hideImage !== true
             ? ` has-image `
-            : ` no-image `) + ` is-${props.attributes.mealType}`,
+            : ` no-image `) +
+          ` is-${props.attributes.mealType}` +
+          (props.attributes.isAlternative ? ` is-alternative` : ``),
       })}
     >
       <InspectorControls>
         <PanelBody title={__("Select aliment", "asim")}>
-          <SelectControl
+          <MealTypeSelectControl
             label={__("ALIMENT", "asim")}
             value={props.attributes.alimentoID}
-            options={[
-              { label: __("SELECT ALIMENT", "asim"), value: "" },
-              ...aliments,
-            ]}
+            mealType={props.attributes.mealType}
             onChange={(value) => {
               props.setAttributes({
-                alimentoID: value,
+                alimentoID: String(value),
               });
             }}
           />
@@ -168,13 +162,16 @@ export default function edit(props) {
                 selected={props.attributes.mealType}
                 options={[
                   { label: __("--none---", "asim"), value: "" },
-                  ...mealTimes,
+                  ...mealOptions,
                 ]}
                 onChange={(value) => {
-                  const label = mealTimes.find(
-                    (meal) => meal.value === value
-                  ).label;
-                  const translated = __(label, "asim");
+                  let translated = props.attributes.title;
+                  if (!props.attributes.isAlternative) {
+                    const label = mealOptions.find(
+                      (meal) => meal.value === value
+                    ).label;
+                    translated = __(label, "asim");
+                  }
                   props.setAttributes({
                     mealType: value,
                     title: translated,
@@ -182,6 +179,31 @@ export default function edit(props) {
                 }}
               />
             }
+          </div>
+          <div>
+            <CheckboxControl
+              label={__("Is Alternative?", "asim")}
+              checked={props.attributes.isAlternative}
+              onChange={(value) => {
+                let newTitle = "";
+                if (value === true) {
+                  newTitle = __("Alternative", "asim");
+                } else {
+                  const labelable = mealOptions.find(
+                    (meal) => meal.value === props.attributes.mealType
+                  );
+                  newTitle = __(
+                    labelable && labelable.label ? labelable.label : "",
+                    "asim"
+                  );
+                }
+
+                props.setAttributes({
+                  isAlternative: value,
+                  title: newTitle,
+                });
+              }}
+            />
           </div>
           <div>
             <CheckboxControl
@@ -202,6 +224,7 @@ export default function edit(props) {
           className="alimento-title"
           value={props.attributes.title}
           placeholder={__("eg. Breakfast", "asim")}
+          disabled={props.attributes.isAlternative}
           onChange={(value) => {
             props.setAttributes({ title: value });
           }}

@@ -38,6 +38,10 @@
     "mealType": {
       "type": "string",
       "default": ""
+    },
+    "isAlternative": {
+      "type": "boolean",
+      "default": false
     }
   },
   "example": {

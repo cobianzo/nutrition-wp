@@ -26,8 +26,9 @@ class Dieta_Category {
 
     // Get all terms of taxonomy 'diet-category'
     $terms = get_terms(array(
-        'taxonomy' => 'diet-category',
+        'taxonomy'   => 'diet-category',
         'hide_empty' => false,
+        'orderby'    => 'id',
     ));
 
     // Check and register block patterns for each term

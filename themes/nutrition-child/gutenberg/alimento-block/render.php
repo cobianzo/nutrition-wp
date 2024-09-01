@@ -12,7 +12,9 @@
  */
 
 $extra = [ 
-	'class' => ($attributes['imgSrc'] ? ' has-image ' : ' no-image ' ) . ' is-' . $attributes['mealType']
+	'class' => ($attributes['imgSrc'] ? ' has-image ' : ' no-image ' ) 
+    . ' is-' . $attributes['mealType']
+    . isset( $attributes['isAlternative'] ) && $attributes['isAlternative'] ? ' is-alternative' : ''
 ];
 
 ?>

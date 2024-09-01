@@ -16,6 +16,10 @@
     "alimentoID": {
       "type": "string",
       "default": ""
+    },
+    "mealType": {
+      "type": "string",
+      "default": ""
     }
   },
   "example": {

@@ -1,6 +1,7 @@
 # NEXT:
 
 - Tener ya la lsita entera de productos.
+- Crear la plantilla de Programma alimentare
 - Pasar CPT ya a codigo.
 - Create the CPT with template and locked groups, especially for programme:
   - Generica, generic info

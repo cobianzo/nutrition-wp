@@ -81,6 +81,19 @@ class Programma {
   }
 
 
+  public static function find_alimento_block( $block, $acc = [] ) {
+    if ( 'asim/piatto-block' === $block['blockName'] && isset( $block['attrs']['alimentoID'] ) ) {
+      $acc[] = $block['attrs']['alimentoID'];
+    } else {
+      if ( !empty( $block['innerBlocks'] ) ) {
+        foreach ( $block['innerBlocks'] as $innerBlock ) {
+          $acc = self::find_alimento_block( $innerBlock, $acc );
+        }
+      }
+    }
+    return $acc;
+  }
+
   public static function save_alimento_ids_as_post_meta( $post_id ) {
     // Check that this is not an autosave or a revision
 
@@ -90,20 +103,20 @@ class Programma {
     if ( 'programme' !== get_post_type( $post_id ) ) {
       return;
     }
-
     // Get the post content
     $post_content = get_post_field( 'post_content', $post_id );
 
+    
+
     // Parse the blocks
     $blocks = parse_blocks( $post_content );
-
+    
     $alimento_ids = [];
 
     // Loop through the blocks and collect alimentoID
+    // Loop through the blocks and collect alimentoID
     foreach ( $blocks as $block ) {
-      if ( 'asim/piatto-block' === $block['blockName'] && isset( $block['attrs']['alimentoID'] ) ) {
-          $alimento_ids[] = $block['attrs']['alimentoID'];
-      }
+      $alimento_ids = self::find_alimento_block( $block, $alimento_ids );      
     }
 
     // Save the alimentoIDs as post meta (could be serialized if multiple)
@@ -134,17 +147,11 @@ class Programma {
           if (!empty($alimento_ids)) {
               echo '<div class="alimento-meta-box">';
               foreach ($alimento_ids as $alimento_id) {
-                  $alimento_post = get_post($alimento_id);
-                  if ($alimento_post) {
-                      $thumbnail_url = get_the_post_thumbnail_url($alimento_id, 'thumbnail');
-                      $title = get_the_title($alimento_id);
-                      if ($thumbnail_url) {
-                          echo '<div class="alimento-item">';
-                          echo '<img src="' . esc_url($thumbnail_url) . '" alt="' . esc_attr($title) . '" style="width: 50px; height: 50px; margin-right: 10px;" />';
-                          echo '<span>' . esc_html($title) . '</span>';
-                          echo '</div>';
-                      }
-                  }
+                if ( get_post_status( $alimento_id ) ) {
+                    echo '<div class="alimento-item">';
+                    Alimento::preview_alimento( $alimento_id, 1 );
+                    echo '</div>';
+                }
               }
               echo '</div>';
           } else {
@@ -165,7 +172,7 @@ class Programma {
     if ( $user && is_a( $user, 'WP_User' ) ) {
       $programs = get_posts([
         'post_type' => 'programme',
-        'post_author' => $user->ID,
+        'author' => $user->ID,
       ]);
       if ( ! empty( $programs ) ) {
         return $return_first ? $programs[0] : $programs;
