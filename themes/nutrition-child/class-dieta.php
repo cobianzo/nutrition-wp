@@ -308,9 +308,9 @@ class Dieta {
 
   static public function create_diet_from_aliments() {
     // Very basic nonce verification
-    // if ( ! isset( $_POST['create_diet_from_aliments_nonce'] ) || ! wp_verify_nonce( $_POST['create_diet_from_aliments_nonce'], 'create_diet_from_aliments_action' ) ) {
-    //   wp_die( 'Invalid nonce.' );
-    // }
+    if ( ! isset( $_POST['create_diet_from_aliments_nonce'] ) || ! wp_verify_nonce( $_POST['create_diet_from_aliments_nonce'], 'create_diet_from_aliments_action' ) ) {
+      wp_die( 'Invalid nonce.' );
+    }
 
     $client_id = isset( $_POST['client_id'] ) ? intval( $_POST['client_id'] ) : 0;
     $programme_id = isset( $_POST['programme_id'] ) ? intval( $_POST['programme_id'] ) : 0;
@@ -324,12 +324,22 @@ class Dieta {
       wp_die( 'Invalid user ID.' );
     }
 
+    $diets                        = Dieta::get_client_diets( $client_id );
+    $existing_diet_from_programme = null;
+    foreach ( $diets as $diet ) {
+      $existing_diet_from_programme = get_post_meta( $diet->ID, '_created_from_programme', true );
+      if ( $existing_diet_from_programme ) {
+        $existing_diet_from_programme = $diet;
+        break;
+      }
+    }
 
     $content = '';
     // We build the content based on the aliments selected
     $pattern_alimento_block = '<!-- wp:asim/alimento-block {"title":"[TITLE]","alimentoID":"[ALIMENTO_ID]","imgSrc":"[IMG_SRC]","mealType":"[MEAL_TYPE]"} --><div class="wp-block-asim-alimento-block"><div class="alimento-left-column"></div></div><!-- /wp:asim/alimento-block -->';
 
-    $pattern_weekday_wrapper = '<!-- wp:heading --><h2 class="wp-block-heading" id="title-[DAY_OF_THE_WEEK_SLUG]">[DAY_OF_THE_WEEK]</h2><!-- /wp:heading --><!-- wp:group {"className":"giorno-settimana","layout":{"type":"default"}} --><div id="[DAY_OF_THE_WEEK_SLUG]" class="wp-block-group giorno-settimana">[CONTENT]</div>';
+    // $pattern_weekday_wrapper = '<!-- wp:heading --><h2 class="wp-block-heading" id="title-[DAY_OF_THE_WEEK_SLUG]">[DAY_OF_THE_WEEK]</h2><!-- /wp:heading --><!-- wp:group {"className":"giorno-settimana","layout":{"type":"default"}} --><div id="[DAY_OF_THE_WEEK_SLUG]" class="wp-block-group giorno-settimana">[CONTENT]</div>';
+    $pattern_weekday_wrapper = '<!-- wp:group {"className":"giorno-settimana giorno-[DAY_OF_THE_WEEK_SLUG]","layout":{"type":"default"}} --><div id="[DAY_OF_THE_WEEK_SLUG]" class="wp-block-group giorno-settimana giorno-[DAY_OF_THE_WEEK_SLUG]"><!-- wp:heading --><h2 class="wp-block-heading" id="title-monday">[DAY_OF_THE_WEEK]</h2><!-- /wp:heading -->[CONTENT]</div><!-- /wp:group -->';
 
     $day_of_the_week = isset( $_POST['day_of_the_week'] ) ? $_POST['day_of_the_week'] : __( 'Monday', 'asim' );
     $day_of_the_week_slug = sanitize_title( $day_of_the_week );
@@ -344,15 +354,7 @@ class Dieta {
         __( 'Sunday', 'asim' )
     );
 
-    $diets                        = Dieta::get_client_diets( $client_id );
-    $existing_diet_from_programme = null;
-    foreach ( $diets as $diet ) {
-      $existing_diet_from_programme = get_post_meta( $diet->ID, '_created_from_programme', true );
-      if ( $existing_diet_from_programme ) {
-        $existing_diet_from_programme = get_post( $existing_diet_from_programme );
-        break;
-      }
-    }
+    
 
     $terms = get_terms(array(
       'taxonomy' => 'meal',
@@ -368,13 +370,14 @@ class Dieta {
         $aliment_ids_string = isset( $_POST[$key] ) ? $_POST[$key] : '';
         $aliment_ids        = explode(',', $aliment_ids_string);
         
-        foreach ($aliment_ids as $index => $aliment_id) {
-          
+        $count = 0;
+        foreach ($aliment_ids as $aliment_id) {
+          $count++;
           if ( ! get_post_status( $aliment_id ) ) {
             continue;
           }
 
-          $mark_as_alternative = ! (0 === $index % 2);
+          $mark_as_alternative = (0 === ($count % 2));
 
           $block_for_aliment = str_replace( 
             [ 
@@ -384,7 +387,7 @@ class Dieta {
               '[MEAL_TYPE]',
             ], 
             [
-              $mark_as_alternative? $term->name : __('Alternative', 'asim'),
+              ! $mark_as_alternative? $term->name : __('Alternative', 'asim'),
               $aliment_id,
               get_the_post_thumbnail_url( $aliment_id, 'thumbnail' ),
               $term->slug,
@@ -405,32 +408,49 @@ class Dieta {
 
       }
       
+        // echo ! $is_day_of_the_week_replaced ? ' TODELET NOT REPLACED. Adding afterwards' : 'not existing diet, creating one.';
+      $content .= str_replace(
+        [ '[DAY_OF_THE_WEEK]', '[DAY_OF_THE_WEEK_SLUG]', '[CONTENT]' ],
+        [ $day_of_the_week, $day_of_the_week_slug, $aliment_blocks ],
+        $pattern_weekday_wrapper
+      );
+      
+
       $is_day_of_the_week_replaced = false;
       if ( $existing_diet_from_programme ) {
-        // echo '<h1>TODELET: There is an existing diet from a programme: '. $existing_diet_from_programme->ID.'</h1>';
+        
         // if the content existed, we need to parse it, find the day of week, and replace the content
         $current_content_as_array = parse_blocks( $existing_diet_from_programme->post_content ); 
-        $aliment_blocks_as_array = parse_blocks( $aliment_blocks );
+        $aliment_blocks_as_array  = parse_blocks( $content );
+        
+        
         
         // find the block that contains the id=day_of_the_week-slug, and replace it with $aliment_blocks_as_array
+        $new_content = '';
         foreach ($current_content_as_array as $index => $block) {
-          if ( false !== strpos( $block['innerHTML'], 'id="' . $day_of_the_week_slug. '"' ) ) { 
-            $current_content_as_array['innerBlocks'] = $aliment_blocks_as_array;
-            $is_day_of_the_week_replaced             = true;
-            break;
+          
+          if ( isset( $block['blockName'] ) && $block['blockName'] === 'core/group' &&
+            isset( $block['attrs'] ) && isset( $block['attrs']['className'] ) 
+              && (false !== strpos( $block['attrs']['className'], 'giorno-' . $day_of_the_week_slug )) ) {
+            // Found the group with the right id of the day of the week. We update its content
+
+            // dd( htmlentities(serialize_block($block)));
+            $new_content .= $content; 
+
+            $is_day_of_the_week_replaced = $index;
+            
+          } else {
+            $new_content .= serialize_block( $block );
           }
         }
+        if ( false !== $is_day_of_the_week_replaced ) {
+          $content = $new_content;
+        } else {
+          $content = $existing_diet_from_programme->post_content . $content;
+        }
+        
+      }
 
-        $content = serialize_blocks( $current_content_as_array );
-      }
-      if ( ! $existing_diet_from_programme || ! $is_day_of_the_week_replaced ) {
-        // echo ! $is_day_of_the_week_replaced ? ' TODELET NOT REPLACED. Adding afterwards' : 'not existing diet, creating one.';
-        $content .= str_replace(
-          [ '[DAY_OF_THE_WEEK]', '[DAY_OF_THE_WEEK_SLUG]', '[CONTENT]' ],
-          [ $day_of_the_week, $day_of_the_week_slug, $aliment_blocks ],
-          $pattern_weekday_wrapper
-        );
-      }
       // Now the content is ready to replace the day of the week in template
     }
     // echo 'TODELETE dcsfd';
@@ -456,10 +476,15 @@ class Dieta {
     // $blocks = parse_blocks( $content );  verification not needed
 
     if ( $existing_diet_from_programme ) {
-      $diet_id = $existing_diet_from_programme->ID;
+      $diet_id = $existing_diet_from_programme->ID; 
+      $diet_post = [
+        'ID' => $diet_id,
+        'post_content' => $content
+      ];
       wp_update_post( $diet_post );
+    } else {
+      $diet_id = wp_insert_post( $diet_post );
     }
-    $diet_id = wp_insert_post( $diet_post );
 
 
     if ($diet_id) {

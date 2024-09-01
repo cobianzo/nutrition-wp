@@ -135,6 +135,7 @@ Setup::init();
 
 add_action('init', function(){
 	if (isset($_GET['w-test'])) {
+    $_POST['create_diet_from_aliments_nonce'] = wp_create_nonce( 'create_diet_from_aliments_action' );
     $_POST['client_id'] = 387;
     $_POST['programme_id'] = 458;
     $_POST['day_of_the_week'] = __('Monday', 'asim');
