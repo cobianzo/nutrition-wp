@@ -49,7 +49,7 @@ class Cliente {
 
       $post_id = isset($_REQUEST['post'])? $_REQUEST['post'] : false;
 
-      get_template_part( 'clienti/cliente' ,'dashboard-diete', ['post_id' => $post_id] );
+      get_template_part( 'clienti/partial' ,'dashboard-diete', ['post_id' => $post_id] );
 
     }
 
@@ -137,7 +137,7 @@ class Cliente {
       // $field['label'] = 'Actions';
       ob_start();
 			
-      get_template_part( 'clienti/cliente', 'dashboard-programmi', ['post_id' => $post_id] );
+      get_template_part( 'clienti/partial', 'dashboard-programmi', ['post_id' => $post_id] );
       $field['message'] = ob_get_clean();
     }
     

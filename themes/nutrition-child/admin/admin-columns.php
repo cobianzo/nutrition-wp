@@ -24,7 +24,9 @@ class Admin_Columns {
     unset($columns['author']);
     unset($columns['date']);
     $columns['dietas'] = __( 'Dietas', 'asim' );
+    $columns['programmi'] = __( 'Programmes', 'asim' );
     $columns['wp_user'] = __( 'Profile user', 'asim' );
+    $columns['last_visit'] = __( 'Last Visit', 'asim' );
 
     return $columns;
   }
@@ -32,8 +34,34 @@ class Admin_Columns {
   public static function show_dietas_column_content($column, $post_id) {
     if ($column == 'dietas') {
       
-      $custom_value = get_post_meta($post_id, 'dietas_meta_key', true); // Reemplaza 'dietas_meta_key' por tu clave meta
-      echo !empty($custom_value) ? esc_html($custom_value) : __('No hay dietas');
+      $diets = Dieta_Helpers::get_diets_by_client( $post_id );
+      if ( ! $diets ) {
+        echo 'No data';
+        return;
+      }
+      echo sprintf(
+        '<a href="%s" class="asim-btn-small" target="_blank">%s</a>',
+        esc_url( add_query_arg( array( 'diet_id' => $diets[0]->ID ), get_edit_post_link( $diets[0]->ID ) ) ),
+        esc_html( $diets[0]->post_title )
+      );
+      
+    } elseif ($column == 'programmi') {
+      
+      $programmas = Programma::get_programma_by_client( $post_id, false );
+      if ( ! empty( $programmas ) && count($programmas) > 1 ) {
+        echo '<p>' . __('Error: There are more than one programme for the client. There should be only one.', 'asim') . '</p>';
+      }
+
+      if ( empty( $programmas ) ) {
+        echo '<p>' . __('No Programme found for this client.', 'asim') . '</p>';
+      } else {
+        echo sprintf(
+          '<a href="%s" class="asim-btn-small" target="_blank">%s</a>',
+          esc_url( add_query_arg( array( 'diet_id' => $programmas[0]->ID ), get_edit_post_link( $programmas[0]->ID ) ) ),
+          esc_html( $programmas[0]->post_title )
+        );
+      }
+      
     } elseif ($column == 'wp_user') {
       $user = Relation_Cliente_User::get_client_user_by_post_id( $post_id );
       if ( ! isset( $user->ID ) ) {
@@ -45,6 +73,19 @@ class Admin_Columns {
         esc_url( add_query_arg( array( 'user_id' => $user->ID ), admin_url( 'user-edit.php' ) ) ),
         esc_html( $user->display_name )
       );
+    } elseif ($column == 'last_visit') {
+      // recorrer hasta la ultima con data: 
+      $visits = get_field('visits', $post_id);
+      $last_date = 'No d';
+      if ( ! empty( $visits ) ) {
+        foreach ( $visits as $visit) {
+          if ( !empty( $visit['date'] ) ) {
+            $last_date = date('d/m/Y', strtotime($visit['date']));
+          }
+        }
+      }
+      echo $last_date;
+      
     }
 
   }

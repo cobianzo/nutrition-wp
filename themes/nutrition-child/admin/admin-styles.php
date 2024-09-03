@@ -14,10 +14,11 @@ add_filter('admin_body_class', function($classes) {
 /** For single CPT admin edit pages. eg. admin-client-styles.css , etc */
 add_action( 'admin_enqueue_scripts', function( $hook ) {
 
+    
     $url = get_stylesheet_directory_uri() . '/admin/admin-styles.css';
     wp_enqueue_style( 'asim-admin-styles',  $url );
 
-    
+
     if ( $hook !== 'post.php' && $hook !== 'post-new.php' ) {
         return;
     }

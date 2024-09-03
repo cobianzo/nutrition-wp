@@ -10,3 +10,17 @@ body.user-edit-php {
     display: none;
   }
 }
+
+.asim-btn-small {
+  border: 1px solid #ccc;
+  padding: 0.15rem 0.25rem;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  &:hover {
+    background-color: #ccc;
+    color: white;
+  }
+}
