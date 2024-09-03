@@ -1,14 +1,13 @@
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: nutrition-child\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-03 10:50+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: \n"
-"Language: \n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"POT-Creation-Date: 2024-09-03 09:14+0000\n"
+"PO-Revision-Date: 2024-09-03 09:33+0000\n"
+"Last-Translator: \n"
+"Language-Team: Italiano\n"
+"Language: it_IT\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,7 +17,7 @@ msgstr ""
 
 #: gutenberg/alimento-block/edit.js:164 gutenberg/piatto-block/edit.js:135
 msgid "--none---"
-msgstr ""
+msgstr "--nessuno---"
 
 #: class-cliente.php:104 clienti/relation-cliente_user.php:95
 #, php-format
@@ -26,11 +25,13 @@ msgid ""
 "<br> - Link: <a href=\"%s\" target=\"_blank\">click here to edit %s's user "
 "profile</a>"
 msgstr ""
+"<br> - Link: <a href=\"%s\" target=\"_blank\">clicca qui per modificare il "
+"profilo utente di %s</a>"
 
 #: class-cliente.php:130 clienti/relation-cliente_user.php:121
 #, php-format
 msgid "<br> - Post ID: <b>%s</b>"
-msgstr ""
+msgstr "<br> - ID post: <b>%s</b>"
 
 #: class-cliente.php:131 clienti/relation-cliente_user.php:122
 #, php-format
@@ -38,58 +39,60 @@ msgid ""
 "<br> - Post link: <a href=\"%s\" target=\"_blank\">click here to edit %s's "
 "post</a>"
 msgstr ""
+"<br> - Link post: <a href=\"%s\" target=\"_blank\">clicca qui per modificare "
+"il post di %s</a>"
 
 #: class-cliente.php:103 clienti/relation-cliente_user.php:94
 #, php-format
 msgid "<br> - User email: <b>%s</b>"
-msgstr ""
+msgstr "<br> - Email utente: <b>%s</b>"
 
 #: class-cliente.php:101 clienti/relation-cliente_user.php:92
 #, php-format
 msgid "<br> - User ID: <b>%s</b>"
-msgstr ""
+msgstr "<br> - ID utente: <b>%s</b>"
 
 #: class-cliente.php:102 clienti/relation-cliente_user.php:93
 #, php-format
 msgid "<br> - User login: <b>%s</b>"
-msgstr ""
+msgstr "<br> - Login utente: <b>%s</b>"
 
 #: class-cliente.php:98 clienti/relation-cliente_user.php:89
 msgid "<h3>Associated WP User profile:</h3>"
-msgstr ""
+msgstr "<h3>Profilo utente WordPress associato:</h3>"
 
 #: class-cliente.php:95 clienti/relation-cliente_user.php:86
 msgid "<h3>Post ID not found</h3>"
-msgstr ""
+msgstr "<h3>ID post non trovato</h3>"
 
 #: clienti/cpt-cliente.php:34
 msgid "A link to a client."
-msgstr ""
+msgstr "Un link a un paziente."
 
 #: clienti/cpt-cliente.php:13 clienti/cpt-cliente.php:14
 msgid "Add New Client"
-msgstr ""
+msgstr "Aggiungi nuovo paziente"
 
 #: gutenberg/alimento-block/edit.js:137 gutenberg/test2-block/edit.js:42
 #: gutenberg/piatto-block/edit.js:121
 msgid "ALIMENT"
-msgstr ""
+msgstr "ALIMENTO"
 
 #: gutenberg/alimento-block/index.js:12
 msgid "Alimento Block"
-msgstr ""
+msgstr "Blocco Alimento"
 
 #: class-programma.php:143
 msgid "Alimento IDs"
-msgstr ""
+msgstr "ID Alimenti"
 
 #: clienti/cpt-cliente.php:9
 msgid "All Clients"
-msgstr ""
+msgstr "Tutti i pazienti"
 
 #: class-dieta.php:391 gutenberg/alimento-block/edit.js:190
 msgid "Alternative"
-msgstr ""
+msgstr "Alternativa"
 
 #: patterns/single-diet.php:37
 msgid ""
@@ -97,109 +100,112 @@ msgid ""
 "href=\"mailto:dott.orsettileonardo@gmail.com\">dott.orsettileonardo@gmail."
 "com</a>"
 msgstr ""
+"cell: ‭<a href=\"tel:+393389368679‬\">3389368679‬</a><br>email: <a "
+"href=\"mailto:dott.orsettileonardo@gmail.com\">dott.orsettileonardo@gmail."
+"com</a>"
 
 #. Description of the theme
 msgid "Child of Fork, dedicated to the Nutrtition site"
-msgstr ""
+msgstr "Tema figlio di Fork, dedicato al sito di Nutrizione"
 
 #: clienti/cpt-cliente.php:7
 msgid "Client"
-msgstr ""
+msgstr "Paziente"
 
 #: clienti/cpt-cliente.php:20
 msgid "Client Archives"
-msgstr ""
+msgstr "Archivi pazienti"
 
 #: clienti/cpt-cliente.php:21
 msgid "Client Attributes"
-msgstr ""
+msgstr "Attributi pazienti"
 
 #: clienti/cpt-cliente.php:33
 msgid "Client Link"
-msgstr ""
+msgstr "Link paziente"
 
 #: clienti/cpt-cliente.php:36
 msgid "Client model associated to a user."
-msgstr ""
+msgstr "Modello paziente associato a un utente"
 
 #: clienti/cpt-cliente.php:29
 msgid "Client published privately."
-msgstr ""
+msgstr "Paziente pubblicato privatamente"
 
 #: clienti/cpt-cliente.php:28
 msgid "Client published."
-msgstr ""
+msgstr "Paziente pubblicato"
 
 #: clienti/cpt-cliente.php:30
 msgid "Client reverted to draft."
-msgstr ""
+msgstr "Paziente ripristinato in bozza"
 
 #: clienti/cpt-cliente.php:31
 msgid "Client scheduled."
-msgstr ""
+msgstr "Paziente programmato"
 
 #: clienti/cpt-cliente.php:32
 msgid "Client updated."
-msgstr ""
+msgstr "Paziente aggiornato"
 
-#: clienti/cpt-cliente.php:6 clienti/cpt-cliente.php:8
+#: clienti/cpt-cliente.php:6
 msgid "Clients"
-msgstr ""
+msgstr "Pazienti"
 
 #: clienti/cpt-cliente.php:27
 msgid "Clients list"
-msgstr ""
+msgstr "Lista pazienti"
 
 #: clienti/cpt-cliente.php:26
 msgid "Clients list navigation"
-msgstr ""
+msgstr "Navigazione lista pazienti"
 
 #. Author of the theme
 msgid "cobianzo"
-msgstr ""
+msgstr "cobianzo"
 
 #: clienti/cliente-dashboard-diete.php:90
 #, php-format
 msgid "Create a new diet from type <b>%s</b>"
-msgstr ""
+msgstr "Crea una nuova dieta dal tipo <b>%s</b>"
 
 #: clienti/cliente-dashboard-programmi.php:55
 #, php-format
 msgid "Create a new programme from template <b>%s</b>"
-msgstr ""
+msgstr "Crea un nuovo programma dal template <b>%s</b>"
 
 #: clienti/cliente-dashboard-diete.php:208
 msgid "Create diet out of the selected aliments"
-msgstr ""
+msgstr "Crea una dieta dagli alimenti selezionati"
 
 #: clienti/cliente-dashboard-diete.php:17
 msgid "Current diet(s) for the client."
-msgstr ""
+msgstr "Dieta corrente(i) per il paziente."
 
 #: clienti/cliente-dashboard-programmi.php:75
 msgid "Current food programme for the client."
-msgstr ""
+msgstr "Programma alimentare corrente per il paziente."
 
 #: clienti/cliente-dashboard-diete.php:13
 msgid "Currently this client has not any diet assigned."
-msgstr ""
+msgstr "Attualmente questo paziente non ha alcuna dieta assegnata."
 
 #: gutenberg/gutenberg.php:52
 msgid "Diet"
-msgstr ""
+msgstr "Dieta"
 
 #: class-dieta.php:166 class-dieta.php:460
 #, php-format
 msgid "Diet for client %s"
-msgstr ""
+msgstr "Dieta per il paziente %s"
 
 #: admin/admin-columns.php:26
 msgid "Dietas"
-msgstr ""
+msgstr "Diete"
 
 #: patterns/footer.php:19
 msgid "Dr Orsetti Leonardo"
-msgstr ""
+msgstr "Dr Orsetti Leonardo"
 
 #: patterns/single-diet.php:17
 msgid ""
@@ -207,201 +213,209 @@ msgid ""
 "class=\"has-inline-color has-ti-accent-color\">Bionutrizione</mark><br>"
 "Medicina Naturale | Fitoterapia | Microbiologia intestinale | PNEI"
 msgstr ""
+"Dr. Orsetti Leonardo<br><mark style=\"background-color:rgba(0, 0, 0, 0)\" "
+"class=\"has-inline-color has-ti-accent-color\">Bionutrizione</mark><br>"
+"Medicina Naturale | Fitoterapia | Microbiologia intestinale | PNEI"
 
 #: clienti/cpt-cliente.php:10
 msgid "Edit Client"
-msgstr ""
+msgstr "Modifica paziente"
 
 #: gutenberg/alimento-block/edit.js:226
 msgid "eg. Breakfast"
-msgstr ""
+msgstr "es. Colazione"
 
 #: class-cliente.php:75 clienti/relation-cliente_user.php:66
 #, php-format
 msgid "Email already exists: <a target=\"_blank\" href=\"%s\"><b>%s</b></a>"
-msgstr ""
+msgstr "Email già esistente: <a target=\"_blank\" href=\"%s\"><b>%s</b></a>"
 
 #: clienti/cliente-dashboard-diete.php:106
 msgid ""
 "Error: There are more than one programme for the client. There should be "
 "only one."
 msgstr ""
+"Errore: Ci sono più programmi per il paziente. Ci dovrebbe essere solo uno."
 
 #: clienti/cpt-cliente.php:25
 msgid "Filter clients by date"
-msgstr ""
+msgstr "Filtra pazienti per data"
 
 #: clienti/cpt-cliente.php:24
 msgid "Filter clients list"
-msgstr ""
+msgstr "Filtra elenco pazienti"
 
 #: class-programma.php:61
 #, php-format
 msgid "Food Programme for %s"
-msgstr ""
+msgstr "Programma alimentare per %s"
 
 #: clienti/cliente-dashboard-diete.php:115
 #, php-format
 msgid "Found a programme for this client: <a href=\"%s\">%s</a>"
-msgstr ""
+msgstr "Trovato un programma per questo paziente: <a href=\"%s\">%s</a>"
 
 #: class-dieta.php:353 clienti/cliente-dashboard-diete.php:189
 #: clienti/cliente-dashboard-diete.php:189
 msgid "Friday"
-msgstr ""
+msgstr "Venerdì"
 
-#: functions.php:148
+#: functions.php:50
 msgid "Hello, my World!"
-msgstr ""
+msgstr "Ciao, il mio mondo!"
 
 #: gutenberg/alimento-block/edit.js:210
 msgid "Hide Image"
-msgstr ""
+msgstr "Nascondi immagine"
 
 #. Author URI of the theme
 msgid "https://cobianzo.com"
-msgstr ""
+msgstr "https://cobianzo.com"
 
 #: clienti/cpt-cliente.php:22
 msgid "Insert into client"
-msgstr ""
+msgstr "Inserisci nel paziente"
 
 #: gutenberg/alimento-block/edit.js:185
 msgid "Is Alternative?"
-msgstr ""
+msgstr "È Alternativa?"
 
 #: gutenberg/alimento-block/edit.js:161 gutenberg/piatto-block/edit.js:132
 msgid "Meal"
-msgstr ""
+msgstr "Pasto"
 
-#: functions.php:154 class-dieta.php:345 class-dieta.php:349
+#: functions.php:155 class-dieta.php:345 class-dieta.php:349
 #: clienti/cliente-dashboard-diete.php:185
 #: clienti/cliente-dashboard-diete.php:185
 msgid "Monday"
-msgstr ""
+msgstr "Lunedì"
 
 #: clienti/cpt-cliente.php:15
 msgid "New Client"
-msgstr ""
+msgstr "Nuovo paziente"
 
 #: clienti/cliente-dashboard-diete.php:119
 msgid "No Aliment associated to the programme."
-msgstr ""
+msgstr "Nessun Alimento associato al programma."
 
 #: class-programma.php:158
 msgid "No Alimento IDs found."
-msgstr ""
+msgstr "Nessun ID Alimento trovato."
 
 #: clienti/cpt-cliente.php:18
 msgid "No clients found"
-msgstr ""
+msgstr "Nessun paziente trovato"
 
 #: clienti/cpt-cliente.php:19
 msgid "No clients found in Trash"
-msgstr ""
+msgstr "Nessun paziente trovato nel cestino"
 
 #: class-cliente.php:133 clienti/relation-cliente_user.php:124
 #, php-format
 msgid "No post associated with user ID <b>%s</b>"
-msgstr ""
+msgstr "Nessun post associato all'ID utente <b>%s</b>"
 
 #: clienti/cliente-dashboard-diete.php:110
 msgid "No Programme found for this client."
-msgstr ""
+msgstr "Nessun programma trovato per questo paziente."
 
 #: class-cliente.php:106 clienti/relation-cliente_user.php:97
 #, php-format
 msgid "Not user associated for post ID %s"
-msgstr ""
+msgstr "Nessun utente associato per il post ID %s"
 
 #. Name of the theme
 msgid "nutrition-child"
-msgstr ""
+msgstr "nutrition-child"
 
 #: clienti/cpt-cliente.php:16
 msgid "Parent Client:"
-msgstr ""
+msgstr "Paziente genitore:"
 
 #: patterns/footer.php:2
 msgctxt "Pattern title"
 msgid "footer"
-msgstr ""
+msgstr "footer"
 
 #: patterns/single-diet.php:2
 msgctxt "Pattern title"
 msgid "single-diet"
-msgstr ""
+msgstr "dieta-singola"
 
 #: gutenberg/piatto-block/render.php:17 gutenberg/piatto-block/edit.js:168
 msgid "Piatto"
-msgstr ""
+msgstr "Piatto"
 
 #: gutenberg/piatto-block/index.js:8
 msgid "Piatto Block"
-msgstr ""
+msgstr "Blocco Piatto"
 
 #: gutenberg/alimento-block/edit.js:154
 msgid "Prefill text with defaults"
-msgstr ""
+msgstr "Precompila il testo con i valori predefiniti"
 
 #: admin/admin-columns.php:27
 msgid "Profile user"
-msgstr ""
+msgstr "Profilo utente"
 
 #: class-dieta.php:354 clienti/cliente-dashboard-diete.php:190
 #: clienti/cliente-dashboard-diete.php:190
 msgid "Saturday"
-msgstr ""
+msgstr "Sabato"
 
 #: clienti/cpt-cliente.php:17
 msgid "Search Clients"
-msgstr ""
+msgstr "Cerca pazienti"
 
 #: gutenberg/test2-block/edit.js:45
 msgid "SELECT ALIMENT"
-msgstr ""
+msgstr "SELEZIONA ALIMENTO"
 
 #: gutenberg/alimento-block/edit.js:135 gutenberg/test2-block/edit.js:40
 msgid "Select aliment"
-msgstr ""
+msgstr "Seleziona alimento"
 
 #: class-dieta.php:355 clienti/cliente-dashboard-diete.php:191
 #: clienti/cliente-dashboard-diete.php:191
 msgid "Sunday"
-msgstr ""
+msgstr "Domenica"
+
+#: clienti/cpt-cliente.php:8
+msgid "The Clients"
+msgstr "I pazienti"
 
 #: clienti/cliente-dashboard-programmi.php:35
 msgid "There are no templates for Food Programmes. Create them in the Editor."
-msgstr ""
+msgstr "Non ci sono modelli per i Programmi Alimentari. Creali nell'Editor."
 
 #: class-dieta.php:352 clienti/cliente-dashboard-diete.php:188
 #: clienti/cliente-dashboard-diete.php:188
 msgid "Thursday"
-msgstr ""
+msgstr "Giovedì"
 
 #: class-dieta.php:350 clienti/cliente-dashboard-diete.php:186
 #: clienti/cliente-dashboard-diete.php:186
 msgid "Tuesday"
-msgstr ""
+msgstr "Martedì"
 
 #: clienti/cliente-dashboard-diete.php:206
 #, php-format
 msgid "Update diet <em>%s</em> (%s) for the selected day of the week"
-msgstr ""
+msgstr "Aggiorna la dieta <em>%s</em> (%s) per il giorno della settimana selezionato"
 
 #: clienti/cpt-cliente.php:23
 msgid "Uploaded to this client"
-msgstr ""
+msgstr "Caricato in questo paziente"
 
 #: clienti/cpt-cliente.php:11
 msgid "View Client"
-msgstr ""
+msgstr "Visualizza paziente"
 
 #: clienti/cpt-cliente.php:12
 msgid "View Clients"
-msgstr ""
+msgstr "Visualizza pazienti"
 
 #: class-dieta.php:351 clienti/cliente-dashboard-diete.php:187
 #: clienti/cliente-dashboard-diete.php:187
 msgid "Wednesday"
-msgstr ""
+msgstr "Mercoledì"

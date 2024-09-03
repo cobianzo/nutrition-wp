@@ -69,7 +69,7 @@ function show_registro_misurazioni( $atts = [] ) {
   }
 
   // get the `client` CPT for current user. 
-  $client_post = Cliente::get_client_post_by_user_id( get_current_user_id() );
+  $client_post = Relation_Cliente_User::get_client_post_by_user_id( get_current_user_id() );
 
   if ( !$client_post ) {
     return 'Client not found';

@@ -1,0 +1,12 @@
+/* General styles for all the backend. */
+
+/* Styles for WP User profile page. */
+body.user-edit-php {
+  table:first-of-type {
+    display: none;
+  }
+
+  .application-passwords {
+    display: none;
+  }
+}

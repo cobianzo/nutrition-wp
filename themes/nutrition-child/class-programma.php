@@ -42,7 +42,7 @@ class Programma {
     if ( empty( $client ) ) {
       wp_die('No client found');
     }
-    $user = Cliente::get_client_user_by_post_id( $client->ID );
+    $user = Relation_Cliente_User::get_client_user_by_post_id( $client->ID );
     if ( ! is_a( $user, 'WP_User' ) ) {
       wp_die('No user for client ' . $client->ID  );
     }
@@ -168,7 +168,7 @@ class Programma {
   // HELPERS
 
   static function get_programma_by_client( $post_id, $return_first = true ) {
-    $user = Cliente::get_client_user_by_post_id( $post_id );
+    $user = Relation_Cliente_User::get_client_user_by_post_id( $post_id );
     if ( $user && is_a( $user, 'WP_User' ) ) {
       $programs = get_posts([
         'post_type' => 'programme',

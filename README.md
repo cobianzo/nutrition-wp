@@ -2,6 +2,7 @@
 
 - Tener ya la lsita entera de productos.
 - Crear la plantilla de Programma alimentare
+- Nice to have: sort clients by last visit. Show last visit of client, saved as meta.
 - Pasar CPT ya a codigo.
 - Create the CPT with template and locked groups, especially for programme:
   - Generica, generic info

@@ -3,6 +3,12 @@
 
 class Dieta {
 
+  // placeholders: '[TITLE]', '[ALIMENTO_ID]', '[IMG_SRC]', '[MEAL_TYPE]',
+  const TEMPLATE_ALIMENTO_WITH_PLACEHOLDERS = '<!-- wp:asim/alimento-block {"title":"[TITLE]","alimentoID":"[ALIMENTO_ID]","imgSrc":"[IMG_SRC]","mealType":"[MEAL_TYPE]"} --><div class="wp-block-asim-alimento-block"><div class="alimento-left-column"></div></div><!-- /wp:asim/alimento-block -->';
+
+  // placeholders: '[DAY_OF_THE_WEEK]', '[DAY_OF_THE_WEEK_SLUG]', '[CONTENT]'
+  const TEMPLATE_DAY_OF_WEEK_WITH_PLACEHOLDERS = '<!-- wp:group {"className":"giorno-settimana giorno-[DAY_OF_THE_WEEK_SLUG]","layout":{"type":"default"}} --><div id="[DAY_OF_THE_WEEK_SLUG]" class="wp-block-group giorno-settimana giorno-[DAY_OF_THE_WEEK_SLUG]"><!-- wp:heading --><h2 class="wp-block-heading" id="title-monday">[DAY_OF_THE_WEEK]</h2><!-- /wp:heading -->[CONTENT]</div><!-- /wp:group -->';
+
   /**
    * Init hooks
    */
@@ -88,7 +94,7 @@ class Dieta {
    */
   public static function get_client_diets( $client_id ) {
     // Retrieve the WP_User object associated with the client post ID
-    $user = Cliente::get_client_user_by_post_id( $client_id );
+    $user = Relation_Cliente_User::get_client_user_by_post_id( $client_id );
 
     // Check if a valid WP_User object is returned
     if ( !$user || !is_a( $user, 'WP_User' ) ) {
@@ -151,7 +157,7 @@ class Dieta {
     }
 
     // Obtener el usuario asociado al cliente
-    $user = Cliente::get_client_user_by_post_id( $client_id );
+    $user = Relation_Cliente_User::get_client_user_by_post_id( $client_id );
     if ( ! $user || ! is_a( $user, 'WP_User' ) ) {
         wp_die( 'Invalid user associated with the client.' );
     }
@@ -241,7 +247,7 @@ class Dieta {
    */
   public static function display_diet_metabox( $post ) {
     $the_user_owner_id = $post->post_author;
-    $client_post = Cliente::get_client_post_by_user_id( $the_user_owner_id );
+    $client_post       = Relation_Cliente_User::get_client_post_by_user_id( $the_user_owner_id );
     if ( $client_post ) {
       $edit_link = get_edit_post_link( $client_post->ID );
       echo '<p>Client: <a href="' . esc_url( $edit_link ) . '">' . $client_post->post_title . '</a></p>';
@@ -319,7 +325,7 @@ class Dieta {
         wp_die( 'Invalid client ID.' );
     }
 
-    $user = Cliente::get_client_user_by_post_id( $client_id );
+    $user = Relation_Cliente_User::get_client_user_by_post_id( $client_id );
     if ( ! isset( $user->ID ) ) {
       wp_die( 'Invalid user ID.' );
     }
@@ -335,12 +341,7 @@ class Dieta {
     }
 
     $content = '';
-    // We build the content based on the aliments selected
-    $pattern_alimento_block = '<!-- wp:asim/alimento-block {"title":"[TITLE]","alimentoID":"[ALIMENTO_ID]","imgSrc":"[IMG_SRC]","mealType":"[MEAL_TYPE]"} --><div class="wp-block-asim-alimento-block"><div class="alimento-left-column"></div></div><!-- /wp:asim/alimento-block -->';
-
-    // $pattern_weekday_wrapper = '<!-- wp:heading --><h2 class="wp-block-heading" id="title-[DAY_OF_THE_WEEK_SLUG]">[DAY_OF_THE_WEEK]</h2><!-- /wp:heading --><!-- wp:group {"className":"giorno-settimana","layout":{"type":"default"}} --><div id="[DAY_OF_THE_WEEK_SLUG]" class="wp-block-group giorno-settimana">[CONTENT]</div>';
-    $pattern_weekday_wrapper = '<!-- wp:group {"className":"giorno-settimana giorno-[DAY_OF_THE_WEEK_SLUG]","layout":{"type":"default"}} --><div id="[DAY_OF_THE_WEEK_SLUG]" class="wp-block-group giorno-settimana giorno-[DAY_OF_THE_WEEK_SLUG]"><!-- wp:heading --><h2 class="wp-block-heading" id="title-monday">[DAY_OF_THE_WEEK]</h2><!-- /wp:heading -->[CONTENT]</div><!-- /wp:group -->';
-
+  
     $day_of_the_week = isset( $_POST['day_of_the_week'] ) ? $_POST['day_of_the_week'] : __( 'Monday', 'asim' );
     $day_of_the_week_slug = sanitize_title( $day_of_the_week );
 
@@ -392,7 +393,7 @@ class Dieta {
               get_the_post_thumbnail_url( $aliment_id, 'thumbnail' ),
               $term->slug,
             ], 
-            $pattern_alimento_block );
+            self::TEMPLATE_ALIMENTO_WITH_PLACEHOLDERS );
 
             if ($mark_as_alternative) {
               $block_for_aliment = str_replace( '"mealType"', '"isAlternative":true,"mealType"', $block_for_aliment );
@@ -402,17 +403,13 @@ class Dieta {
         }
 
         // If the aliment is the second aliment, mark it as alternative
-        
-
-        // echo '<br>TODELETE: done: ' . $term->slug .': ' . htmlentities($aliment_blocks) .' <br>';
-
       }
       
         // echo ! $is_day_of_the_week_replaced ? ' TODELET NOT REPLACED. Adding afterwards' : 'not existing diet, creating one.';
       $content .= str_replace(
         [ '[DAY_OF_THE_WEEK]', '[DAY_OF_THE_WEEK_SLUG]', '[CONTENT]' ],
         [ $day_of_the_week, $day_of_the_week_slug, $aliment_blocks ],
-        $pattern_weekday_wrapper
+        self::TEMPLATE_DAY_OF_WEEK_WITH_PLACEHOLDERS
       );
       
 

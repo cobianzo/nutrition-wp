@@ -34,3 +34,8 @@ ul {
     }
   }
 }
+
+/* hover link over dark bg */
+.has-background.has-ti-accent-background-color a:hover {
+  color: white !important;
+}

@@ -2,7 +2,7 @@
 
 add_theme_support( 'block-patterns' );
 
-require_once __DIR__ . '/class-cliente.php';
+require_once __DIR__ . '/clienti/class-cliente.php';
 require_once __DIR__ . '/class-dieta.php';
 require_once __DIR__ . '/class-dieta-category.php';
 require_once __DIR__ . '/class-programma.php';
@@ -11,6 +11,9 @@ require_once __DIR__ . '/includes/redirections.php';
 require_once __DIR__ . '/includes/shortcodes.php';
 require_once __DIR__ . '/gutenberg/gutenberg.php';
 
+// Add admin styles for Edit client in CMS:
+require_once( __DIR__ . '/admin/admin-styles.php' );
+require_once( __DIR__ . '/admin/admin-columns.php' );
 
 add_post_type_support( 'programme', 'custom-fields', 'editor', 'revisions', 'block-editor' );
 
@@ -37,6 +40,12 @@ class Setup {
     // Gutenberg enqueues
     add_action( 'enqueue_block_editor_assets', [__CLASS__, 'enqueue_gutenberg_generic_rules'] );
 
+    // Translations child theme:
+    add_action( 'after_setup_theme', function () {
+      load_child_theme_textdomain( 'asim', get_stylesheet_directory() . '/languages' );
+    } );
+    
+  
   }
 
   
@@ -135,6 +144,10 @@ Setup::init();
 
 add_action('init', function(){
 	if (isset($_GET['w-test'])) {
+
+    $a = __( 'Hello, my World!', 'asim' );
+    ddie( $a  );
+
     $_POST['create_diet_from_aliments_nonce'] = wp_create_nonce( 'create_diet_from_aliments_action' );
     $_POST['client_id'] = 387;
     $_POST['programme_id'] = 458;

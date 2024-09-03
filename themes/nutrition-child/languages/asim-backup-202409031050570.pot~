@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nutrition-child\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-03 10:50+0000\n"
+"POT-Creation-Date: 2024-09-03 09:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -142,7 +142,7 @@ msgstr ""
 msgid "Client updated."
 msgstr ""
 
-#: clienti/cpt-cliente.php:6 clienti/cpt-cliente.php:8
+#: clienti/cpt-cliente.php:6
 msgid "Clients"
 msgstr ""
 
@@ -250,7 +250,7 @@ msgstr ""
 msgid "Friday"
 msgstr ""
 
-#: functions.php:148
+#: functions.php:50
 msgid "Hello, my World!"
 msgstr ""
 
@@ -274,7 +274,7 @@ msgstr ""
 msgid "Meal"
 msgstr ""
 
-#: functions.php:154 class-dieta.php:345 class-dieta.php:349
+#: functions.php:155 class-dieta.php:345 class-dieta.php:349
 #: clienti/cliente-dashboard-diete.php:185
 #: clienti/cliente-dashboard-diete.php:185
 msgid "Monday"
@@ -368,6 +368,10 @@ msgstr ""
 #: class-dieta.php:355 clienti/cliente-dashboard-diete.php:191
 #: clienti/cliente-dashboard-diete.php:191
 msgid "Sunday"
+msgstr ""
+
+#: clienti/cpt-cliente.php:8
+msgid "The Clients"
 msgstr ""
 
 #: clienti/cliente-dashboard-programmi.php:35

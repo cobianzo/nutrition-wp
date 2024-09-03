@@ -17,7 +17,7 @@
 <h4><?php _e('Current diet(s) for the client.','asim'); ?></h4>
 <div class="client-dashboard client-dashboard-diet">
   <?php
-    $user = Cliente::get_client_user_by_post_id( $post_id );
+    $user = Relation_Cliente_User::get_client_user_by_post_id( $post_id );
     if ( ! $user || ! is_a( $user, 'WP_User' ) ) {
         wp_die( 'Invalid user associated with the client.' );
     }
