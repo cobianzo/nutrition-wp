@@ -4,6 +4,7 @@
 // actions, 
 // and another file for meta boxes
 
+require_once __DIR__ . '/cpt-taxo-dieta.php';
 require_once __DIR__ . '/class-dieta-helpers.php';
 
 

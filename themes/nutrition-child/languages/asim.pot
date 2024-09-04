@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nutrition-child\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-03 10:50+0000\n"
+"POT-Creation-Date: 2024-09-04 02:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -20,45 +20,45 @@ msgstr ""
 msgid "--none---"
 msgstr ""
 
-#: class-cliente.php:104 clienti/relation-cliente_user.php:95
+#: clienti/relation-cliente_user.php:95
 #, php-format
 msgid ""
 "<br> - Link: <a href=\"%s\" target=\"_blank\">click here to edit %s's user "
 "profile</a>"
 msgstr ""
 
-#: class-cliente.php:130 clienti/relation-cliente_user.php:121
+#: clienti/relation-cliente_user.php:121
 #, php-format
 msgid "<br> - Post ID: <b>%s</b>"
 msgstr ""
 
-#: class-cliente.php:131 clienti/relation-cliente_user.php:122
+#: clienti/relation-cliente_user.php:122
 #, php-format
 msgid ""
 "<br> - Post link: <a href=\"%s\" target=\"_blank\">click here to edit %s's "
 "post</a>"
 msgstr ""
 
-#: class-cliente.php:103 clienti/relation-cliente_user.php:94
+#: clienti/relation-cliente_user.php:94
 #, php-format
 msgid "<br> - User email: <b>%s</b>"
 msgstr ""
 
-#: class-cliente.php:101 clienti/relation-cliente_user.php:92
+#: clienti/relation-cliente_user.php:92
 #, php-format
 msgid "<br> - User ID: <b>%s</b>"
 msgstr ""
 
-#: class-cliente.php:102 clienti/relation-cliente_user.php:93
+#: clienti/relation-cliente_user.php:93
 #, php-format
 msgid "<br> - User login: <b>%s</b>"
 msgstr ""
 
-#: class-cliente.php:98 clienti/relation-cliente_user.php:89
+#: clienti/relation-cliente_user.php:89
 msgid "<h3>Associated WP User profile:</h3>"
 msgstr ""
 
-#: class-cliente.php:95 clienti/relation-cliente_user.php:86
+#: clienti/relation-cliente_user.php:86
 msgid "<h3>Post ID not found</h3>"
 msgstr ""
 
@@ -66,8 +66,24 @@ msgstr ""
 msgid "A link to a client."
 msgstr ""
 
+#: diete/cpt-taxo-dieta.php:25
+msgid "A link to a diet category"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:67
+msgid "A link to a diet."
+msgstr ""
+
 #: clienti/cpt-cliente.php:13 clienti/cpt-cliente.php:14
 msgid "Add New Client"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:46 diete/cpt-taxo-dieta.php:47
+msgid "Add New Diet"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:16
+msgid "Add New Diet Category"
 msgstr ""
 
 #: gutenberg/alimento-block/edit.js:137 gutenberg/test2-block/edit.js:42
@@ -87,7 +103,16 @@ msgstr ""
 msgid "All Clients"
 msgstr ""
 
-#: class-dieta.php:391 gutenberg/alimento-block/edit.js:190
+#: diete/cpt-taxo-dieta.php:12
+msgid "All Diet Categories"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:42
+msgid "All Diets"
+msgstr ""
+
+#: class-dieta.php:391 diete/class-dieta.php:399
+#: gutenberg/alimento-block/edit.js:190
 msgid "Alternative"
 msgstr ""
 
@@ -158,43 +183,112 @@ msgstr ""
 msgid "cobianzo"
 msgstr ""
 
-#: clienti/cliente-dashboard-diete.php:90
+#: cliente-dashboard-diete.php:91 clienti/partiial-dashboard-diete.php:90
 #, php-format
 msgid "Create a new diet from type <b>%s</b>"
 msgstr ""
 
-#: clienti/cliente-dashboard-programmi.php:55
+#: clienti/partial-dashboard-programmi.php:55
 #, php-format
 msgid "Create a new programme from template <b>%s</b>"
 msgstr ""
 
-#: clienti/cliente-dashboard-diete.php:208
+#: cliente-dashboard-diete.php:209 clienti/partiial-dashboard-diete.php:208
 msgid "Create diet out of the selected aliments"
 msgstr ""
 
-#: clienti/cliente-dashboard-diete.php:17
+#: cliente-dashboard-diete.php:17 clienti/partiial-dashboard-diete.php:17
 msgid "Current diet(s) for the client."
 msgstr ""
 
-#: clienti/cliente-dashboard-programmi.php:75
+#: clienti/partial-dashboard-programmi.php:75
 msgid "Current food programme for the client."
 msgstr ""
 
-#: clienti/cliente-dashboard-diete.php:13
+#: cliente-dashboard-diete.php:13 clienti/partiial-dashboard-diete.php:13
 msgid "Currently this client has not any diet assigned."
 msgstr ""
 
-#: gutenberg/gutenberg.php:52
+#: diete/cpt-taxo-dieta.php:40 gutenberg/gutenberg.php:52
 msgid "Diet"
 msgstr ""
 
-#: class-dieta.php:166 class-dieta.php:460
+#: diete/cpt-taxo-dieta.php:53
+msgid "Diet Archives"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:69
+msgid "Diet associated to a client"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:54
+msgid "Diet Attributes"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:9
+msgid "Diet Categories"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:22
+msgid "Diet Categories list"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:21
+msgid "Diet Categories list navigation"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:10 diete/cpt-taxo-dieta.php:11
+msgid "Diet Category"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:24
+msgid "Diet Category Link"
+msgstr ""
+
+#: class-dieta.php:166 class-dieta.php:460 diete/class-dieta.php:174
+#: diete/class-dieta.php:468
 #, php-format
 msgid "Diet for client %s"
 msgstr ""
 
+#: diete/cpt-taxo-dieta.php:66
+msgid "Diet Link"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:62
+msgid "Diet published privately."
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:61
+msgid "Diet published."
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:63
+msgid "Diet reverted to draft."
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:64
+msgid "Diet scheduled."
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:65
+msgid "Diet updated."
+msgstr ""
+
 #: admin/admin-columns.php:26
 msgid "Dietas"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:39 diete/cpt-taxo-dieta.php:41
+msgid "Diets"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:60
+msgid "Diets list"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:59
+msgid "Diets list navigation"
 msgstr ""
 
 #: patterns/footer.php:19
@@ -212,16 +306,25 @@ msgstr ""
 msgid "Edit Client"
 msgstr ""
 
+#: diete/cpt-taxo-dieta.php:43
+msgid "Edit Diet"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:13
+msgid "Edit Diet Category"
+msgstr ""
+
 #: gutenberg/alimento-block/edit.js:226
 msgid "eg. Breakfast"
 msgstr ""
 
-#: class-cliente.php:75 clienti/relation-cliente_user.php:66
+#: clienti/relation-cliente_user.php:66
 #, php-format
 msgid "Email already exists: <a target=\"_blank\" href=\"%s\"><b>%s</b></a>"
 msgstr ""
 
-#: clienti/cliente-dashboard-diete.php:106
+#: cliente-dashboard-diete.php:107 clienti/partiial-dashboard-diete.php:106
+#: admin/admin-columns.php:52
 msgid ""
 "Error: There are more than one programme for the client. There should be "
 "only one."
@@ -235,18 +338,27 @@ msgstr ""
 msgid "Filter clients list"
 msgstr ""
 
+#: diete/cpt-taxo-dieta.php:58
+msgid "Filter diets by date"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:57
+msgid "Filter diets list"
+msgstr ""
+
 #: class-programma.php:61
 #, php-format
 msgid "Food Programme for %s"
 msgstr ""
 
-#: clienti/cliente-dashboard-diete.php:115
+#: cliente-dashboard-diete.php:116 clienti/partiial-dashboard-diete.php:115
 #, php-format
 msgid "Found a programme for this client: <a href=\"%s\">%s</a>"
 msgstr ""
 
-#: class-dieta.php:353 clienti/cliente-dashboard-diete.php:189
-#: clienti/cliente-dashboard-diete.php:189
+#: cliente-dashboard-diete.php:190 class-dieta.php:353
+#: clienti/partiial-dashboard-diete.php:189
+#: clienti/partiial-dashboard-diete.php:189 diete/class-dieta.php:361
 msgid "Friday"
 msgstr ""
 
@@ -266,17 +378,27 @@ msgstr ""
 msgid "Insert into client"
 msgstr ""
 
+#: diete/cpt-taxo-dieta.php:55
+msgid "Insert into diet"
+msgstr ""
+
 #: gutenberg/alimento-block/edit.js:185
 msgid "Is Alternative?"
+msgstr ""
+
+#: admin/admin-columns.php:29
+msgid "Last Visit"
 msgstr ""
 
 #: gutenberg/alimento-block/edit.js:161 gutenberg/piatto-block/edit.js:132
 msgid "Meal"
 msgstr ""
 
-#: functions.php:154 class-dieta.php:345 class-dieta.php:349
-#: clienti/cliente-dashboard-diete.php:185
-#: clienti/cliente-dashboard-diete.php:185
+#: functions.php:154 cliente-dashboard-diete.php:186
+#: cliente-dashboard-diete.php:186 class-dieta.php:345 class-dieta.php:349
+#: clienti/partiial-dashboard-diete.php:185
+#: clienti/partiial-dashboard-diete.php:185 diete/class-dieta.php:353
+#: diete/class-dieta.php:357
 msgid "Monday"
 msgstr ""
 
@@ -284,7 +406,15 @@ msgstr ""
 msgid "New Client"
 msgstr ""
 
-#: clienti/cliente-dashboard-diete.php:119
+#: diete/cpt-taxo-dieta.php:48
+msgid "New Diet"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:17
+msgid "New Diet Category Name"
+msgstr ""
+
+#: cliente-dashboard-diete.php:120 clienti/partiial-dashboard-diete.php:119
 msgid "No Aliment associated to the programme."
 msgstr ""
 
@@ -300,16 +430,33 @@ msgstr ""
 msgid "No clients found in Trash"
 msgstr ""
 
-#: class-cliente.php:133 clienti/relation-cliente_user.php:124
+#: diete/cpt-taxo-dieta.php:20
+msgid "No diet categories"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:19
+msgid "No diet category found"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:51
+msgid "No diets found"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:52
+msgid "No diets found in Trash"
+msgstr ""
+
+#: clienti/relation-cliente_user.php:124
 #, php-format
 msgid "No post associated with user ID <b>%s</b>"
 msgstr ""
 
-#: clienti/cliente-dashboard-diete.php:110
+#: cliente-dashboard-diete.php:111 clienti/partiial-dashboard-diete.php:110
+#: admin/admin-columns.php:56
 msgid "No Programme found for this client."
 msgstr ""
 
-#: class-cliente.php:106 clienti/relation-cliente_user.php:97
+#: clienti/relation-cliente_user.php:97
 #, php-format
 msgid "Not user associated for post ID %s"
 msgstr ""
@@ -320,6 +467,10 @@ msgstr ""
 
 #: clienti/cpt-cliente.php:16
 msgid "Parent Client:"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:49
+msgid "Parent Diet:"
 msgstr ""
 
 #: patterns/footer.php:2
@@ -344,17 +495,30 @@ msgstr ""
 msgid "Prefill text with defaults"
 msgstr ""
 
-#: admin/admin-columns.php:27
+#: admin/admin-columns.php:28
 msgid "Profile user"
 msgstr ""
 
-#: class-dieta.php:354 clienti/cliente-dashboard-diete.php:190
-#: clienti/cliente-dashboard-diete.php:190
+#: admin/admin-columns.php:27
+msgid "Programmes"
+msgstr ""
+
+#: cliente-dashboard-diete.php:191 class-dieta.php:354
+#: clienti/partiial-dashboard-diete.php:190
+#: clienti/partiial-dashboard-diete.php:190 diete/class-dieta.php:362
 msgid "Saturday"
 msgstr ""
 
 #: clienti/cpt-cliente.php:17
 msgid "Search Clients"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:18
+msgid "Search Diet Categories"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:50
+msgid "Search Diets"
 msgstr ""
 
 #: gutenberg/test2-block/edit.js:45
@@ -365,32 +529,43 @@ msgstr ""
 msgid "Select aliment"
 msgstr ""
 
-#: class-dieta.php:355 clienti/cliente-dashboard-diete.php:191
-#: clienti/cliente-dashboard-diete.php:191
+#: cliente-dashboard-diete.php:192 class-dieta.php:355
+#: clienti/partiial-dashboard-diete.php:191
+#: clienti/partiial-dashboard-diete.php:191 diete/class-dieta.php:363
 msgid "Sunday"
 msgstr ""
 
-#: clienti/cliente-dashboard-programmi.php:35
+#: clienti/partial-dashboard-programmi.php:35
 msgid "There are no templates for Food Programmes. Create them in the Editor."
 msgstr ""
 
-#: class-dieta.php:352 clienti/cliente-dashboard-diete.php:188
-#: clienti/cliente-dashboard-diete.php:188
+#: cliente-dashboard-diete.php:189 class-dieta.php:352
+#: clienti/partiial-dashboard-diete.php:188
+#: clienti/partiial-dashboard-diete.php:188 diete/class-dieta.php:360
 msgid "Thursday"
 msgstr ""
 
-#: class-dieta.php:350 clienti/cliente-dashboard-diete.php:186
-#: clienti/cliente-dashboard-diete.php:186
+#: cliente-dashboard-diete.php:187 class-dieta.php:350
+#: clienti/partiial-dashboard-diete.php:186
+#: clienti/partiial-dashboard-diete.php:186 diete/class-dieta.php:358
 msgid "Tuesday"
 msgstr ""
 
-#: clienti/cliente-dashboard-diete.php:206
+#: cliente-dashboard-diete.php:207 clienti/partiial-dashboard-diete.php:206
 #, php-format
 msgid "Update diet <em>%s</em> (%s) for the selected day of the week"
 msgstr ""
 
+#: diete/cpt-taxo-dieta.php:15
+msgid "Update Diet Category"
+msgstr ""
+
 #: clienti/cpt-cliente.php:23
 msgid "Uploaded to this client"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:56
+msgid "Uploaded to this diet"
 msgstr ""
 
 #: clienti/cpt-cliente.php:11
@@ -401,7 +576,24 @@ msgstr ""
 msgid "View Clients"
 msgstr ""
 
-#: class-dieta.php:351 clienti/cliente-dashboard-diete.php:187
-#: clienti/cliente-dashboard-diete.php:187
+#: diete/cpt-taxo-dieta.php:44
+msgid "View Diet"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:14
+msgid "View Diet Category"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:45
+msgid "View Diets"
+msgstr ""
+
+#: cliente-dashboard-diete.php:188 class-dieta.php:351
+#: clienti/partiial-dashboard-diete.php:187
+#: clienti/partiial-dashboard-diete.php:187 diete/class-dieta.php:359
 msgid "Wednesday"
+msgstr ""
+
+#: diete/cpt-taxo-dieta.php:23
+msgid "← Go to diet categories"
 msgstr ""

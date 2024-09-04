@@ -6,8 +6,25 @@ body.user-edit-php {
     display: none;
   }
 
-  .application-passwords {
+  h2 {
     display: none;
+  }
+
+  #wpfooter {
+    display: none;
+  }
+
+  .user-user-login-wrap,
+  .user-nickname-wrap,
+  .user-url-wrap,
+  .user-description-wrap,
+  .application-passwords,
+  .user-profile-picture {
+    display: none;
+  }
+
+  #email {
+    font-size: 2rem;
   }
 }
 
@@ -19,8 +36,15 @@ body.user-edit-php {
   align-items: center;
   justify-content: center;
   text-align: center;
+
   &:hover {
     background-color: #ccc;
     color: white;
+  }
+}
+
+body.user-role-editor.user-edit-php {
+  .page-title-action {
+    display: none;
   }
 }

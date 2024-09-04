@@ -1,5 +1,10 @@
 # NEXT:
 
+- Aprender Wordpress, Full site editing. Maquetar con bloques nativos.
+- Uso de Loco Translate for translating. Explicar.
+
+URGENTE:
+
 - Tener ya la lsita entera de productos.
 - Crear la plantilla de Programma alimentare
 - Nice to have: sort clients by last visit. Show last visit of client, saved as meta.
@@ -14,10 +19,13 @@
   - Spezie
   - Tisane
 
+# Case Study:
+
+1. Arriva nuovo cliente:
+
 # TODO:
 
-Pedir lista de todos los alimentos, con imagenes.
-
+Include relevant data for the client when visitng the homepage. Last visit... etc.
 ✅ finish the block for aliment in the backend
 ✅ insert realistic data: All aliments for the example pdf. Create the diet.
 ✅ Start using the default template for every term. -

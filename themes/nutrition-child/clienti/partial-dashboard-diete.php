@@ -6,8 +6,8 @@
 
  extract( $args ); // $post_id (of client).
 
- $diets = Dieta::get_client_diets( $post_id );
-
+ $diets = Dieta::get_diets_by_client( $post_id );
+  
  if ( empty( $diets ) ) :
 ?>
   <h4><?php _e('Currently this client has not any diet assigned.','asim'); ?></h4>
@@ -70,7 +70,10 @@ endif;
 
 
 
-<div class="client-dashboard client-dashboard-diet">
+<div class="row-title row-title--create-from-template">
+  <h2><?php _e('Create new diet from type','asim'); ?></h2>
+</div>
+<div class="client-dashboard client-dashboard-diet client-dashboard-diet-create-from-template">
   <?php 
   $terms = get_terms(array(
       'taxonomy'   => 'diet-category',
@@ -112,8 +115,6 @@ endif;
     $programma = $programmas[0];
     $alimenti = get_post_meta( $programma->ID, Programma::META_ALIMENTI, true );
 
-    echo '<h4>' . sprintf(__('Found a programme for this client: <a href="%s">%s</a>', 'asim'), get_edit_post_link($programma->ID), get_the_title($programma->ID)) . '</h4>';
-
     if ( empty( $alimenti ) ) : ?>
       
       <p><?php _e('No Aliment associated to the programme.', 'asim'); ?></p>
@@ -123,6 +124,15 @@ endif;
     ?>
 
     <div class="client-dashboard-wrapper">
+      <div class="title-row">
+        <h2><?php _e('Create/modify the diet created from the programme', 'asim'); ?></h2>
+        <p><?php
+        echo '<h4 style="max-width:500px;">' . sprintf(__('Found a programme for this client: <a href="%s">%s</a><br/>These are the aliments included in the dishes of this programme. You can create/modify the diet using these aliments', 'asim'), get_edit_post_link($programma->ID), get_the_title($programma->ID)) . '</h4>';
+        ?></p>
+        <p><?php
+        _e('Click on the aliments to mark them up, then select the day of the week, and click on the Update Button','asim');
+        ?></p>
+      </div>
     <?php
 
         // Sort the aliments grouped by meal
@@ -164,8 +174,8 @@ endif;
                   $thumbnail_url = get_the_post_thumbnail_url($alimento_id, 'thumbnail');
                   $title = get_the_title($alimento_id);
                   echo '<li class="ui-checkbox unchecked" data-alimentoid="' . esc_attr( $alimento_id ). '" ' .
-                    ' data-termslug="' . esc_attr( $term->slug ) . '" onClick="checkAliment(this)">'
-                  . '>';
+                    ' data-termslug="' . esc_attr( $term->slug ) . '" onClick="checkAliment(this)">';
+                  
                   Alimento::preview_alimento( $alimento_id, 1 );
                   echo '</li>';
                 }
@@ -181,6 +191,9 @@ endif;
         ?>
 
         <div class="client-dashboard" id="client-dashboard-create-diet-from-aliments">
+          <label>
+            <?php _e('Day of the week to create/overwrite in the Diet', 'asim'); ?>
+          </label>
           <select id="day-of-the-week" name="day-of-the-week">
             <option value="<?php echo esc_attr(__('Monday', 'asim')); ?>"><?php echo esc_html(__('Monday', 'asim')); ?></option>
             <option value="<?php echo esc_attr(__('Tuesday', 'asim')); ?>"><?php echo esc_html(__('Tuesday', 'asim')); ?></option>
@@ -209,6 +222,14 @@ endif;
           }
           ?>
           </div>
+
+          
+          <?php if ( $diet_from_programme ) : ?>
+            <a href="<?php echo esc_url(get_edit_post_link( $diet_from_programme->ID )); ?>" class="text-center">
+              <?php printf( __('Link to  diet %s', 'asim'), get_the_title($diet_from_programme->ID) ); ?>
+            </a>
+          <?php endif; ?>
+          
         </div>
 
 

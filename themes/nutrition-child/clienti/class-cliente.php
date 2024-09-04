@@ -48,7 +48,6 @@ class Cliente {
     if ( 'field_66aa86c7f526b' === $field['key'] ) {
 
       $post_id = isset($_REQUEST['post'])? $_REQUEST['post'] : false;
-
       get_template_part( 'clienti/partial' ,'dashboard-diete', ['post_id' => $post_id] );
 
     }
@@ -57,12 +56,16 @@ class Cliente {
 
 	public static function client_dashboard_for_diets_scripts($client_id, $programme_id) {
 		?>	
-			<form id="creation-diet-from-aliments" action="<?php echo admin_url('admin-post.php'); ?>" method="post">
+			<form id="creation-diet-from-aliments"
+				action="<?php echo admin_url('admin-post.php'); ?>"
+				method="post"
+				style="display:none;"
+				>
     		<?php wp_nonce_field('create_diet_from_aliments_action', 'create_diet_from_aliments_nonce'); ?>
     
 				<div style="position: fixed; right: 0; bottom: 100px;" >
 					<input type="hidden" name="action" value="create_diet_from_aliments">
-					
+					<!-- These fields should be hidden, but for easier debugging ar text -->
 					<input type="text" name="client_id" value="<?php echo esc_attr($client_id); ?>">
 					<input type="text" name="programme_id" value="<?php echo esc_attr($programme_id); ?>">
 					<input type="text" name="day_of_the_week" value="<?php echo esc_attr('Monday'); ?>">

@@ -19,7 +19,7 @@ class Alimento {
       $thumbnail_url = get_the_post_thumbnail_url($alimento_id, 'thumbnail');
       $title = get_the_title($alimento_id);
       if ($thumbnail_url) {
-        $content .=  '<img src="' . esc_url($thumbnail_url) . '" alt="' . esc_attr($title) . '" style="width: 50px; height: 50px; margin-right: 10px;" />';
+        $content .=  '<img class="img-preview-alimento" src="' . esc_url($thumbnail_url) . '" alt="' . esc_attr($title) . '" />';
       }
       $content .= '<span>' . esc_html($title) . '</span>';
     }

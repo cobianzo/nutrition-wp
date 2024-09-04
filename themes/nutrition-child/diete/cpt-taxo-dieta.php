@@ -1,0 +1,87 @@
+<?php 
+
+add_action( 'init', function() {
+	register_taxonomy( 'diet-category', array(
+	0 => 'diet',
+	1 => 'client',
+), array(
+	'labels' => array(
+		'name' => __( 'Diet Categories', 'asim' ),
+		'singular_name' => __( 'Diet Category', 'asim' ),
+		'menu_name' => __( 'Diet Category', 'asim' ),
+		'all_items' => __( 'All Diet Categories', 'asim' ),
+		'edit_item' => __( 'Edit Diet Category', 'asim' ),
+		'view_item' => __( 'View Diet Category', 'asim' ),
+		'update_item' => __( 'Update Diet Category', 'asim' ),
+		'add_new_item' => __( 'Add New Diet Category', 'asim' ),
+		'new_item_name' => __( 'New Diet Category Name', 'asim' ),
+		'search_items' => __( 'Search Diet Categories', 'asim' ),
+		'not_found' => __( 'No diet category found', 'asim' ),
+		'no_terms' => __( 'No diet categories', 'asim' ),
+		'items_list_navigation' => __( 'Diet Categories list navigation', 'asim' ),
+		'items_list' => __( 'Diet Categories list', 'asim' ),
+		'back_to_items' => __( '← Go to diet categories', 'asim' ),
+		'item_link' => __( 'Diet Category Link', 'asim' ),
+		'item_link_description' => __( 'A link to a diet category', 'asim' ),
+	),
+	'public' => true,
+	'hierarchical' => true,
+	'show_in_menu' => true,
+	'show_in_rest' => true,
+	'show_tagcloud' => false,
+	'show_admin_column' => true,
+) );
+} );
+
+add_action( 'init', function() {
+	register_post_type( 'diet', array(
+	'labels' => array(
+		'name' => __( 'Diets', 'asim' ),
+		'singular_name' => __( 'Diet', 'asim' ),
+		'menu_name' => __( 'Diets', 'asim' ),
+		'all_items' => __( 'All Diets', 'asim' ),
+		'edit_item' => __( 'Edit Diet', 'asim' ),
+		'view_item' => __( 'View Diet', 'asim' ),
+		'view_items' => __( 'View Diets', 'asim' ),
+		'add_new_item' => __( 'Add New Diet', 'asim' ),
+		'add_new' => __( 'Add New Diet', 'asim' ),
+		'new_item' => __( 'New Diet', 'asim' ),
+		'parent_item_colon' => __( 'Parent Diet:', 'asim' ),
+		'search_items' => __( 'Search Diets', 'asim' ),
+		'not_found' => __( 'No diets found', 'asim' ),
+		'not_found_in_trash' => __( 'No diets found in Trash', 'asim' ),
+		'archives' => __( 'Diet Archives', 'asim' ),
+		'attributes' => __( 'Diet Attributes', 'asim' ),
+		'insert_into_item' => __( 'Insert into diet', 'asim' ),
+		'uploaded_to_this_item' => __( 'Uploaded to this diet', 'asim' ),
+		'filter_items_list' => __( 'Filter diets list', 'asim' ),
+		'filter_by_date' => __( 'Filter diets by date', 'asim' ),
+		'items_list_navigation' => __( 'Diets list navigation', 'asim' ),
+		'items_list' => __( 'Diets list', 'asim' ),
+		'item_published' => __( 'Diet published.', 'asim' ),
+		'item_published_privately' => __( 'Diet published privately.', 'asim' ),
+		'item_reverted_to_draft' => __( 'Diet reverted to draft.', 'asim' ),
+		'item_scheduled' => __( 'Diet scheduled.', 'asim' ),
+		'item_updated' => __( 'Diet updated.', 'asim' ),
+		'item_link' => __( 'Diet Link', 'asim' ),
+		'item_link_description' => __( 'A link to a diet.', 'asim' ),
+	),
+	'description' => __( 'Diet associated to a client', 'asim' ),
+	'public' => true,
+	'show_in_rest' => true,
+	'menu_position' => 4,
+	'menu_icon' => 'dashicons-carrot',
+	'supports' => array(
+		0 => 'title',
+		1 => 'author',
+		2 => 'editor',
+		3 => 'excerpt',
+		4 => 'page-attributes',
+		5 => 'custom-fields',
+	),
+	'taxonomies' => array(
+		0 => 'diet-category',
+	),
+	'delete_with_user' => false,
+) );
+} );
