@@ -2,11 +2,8 @@
 
 - Aprender Wordpress, Full site editing. Maquetar con bloques nativos.
 - Uso de Loco Translate for translating. Explicar.
-
-URGENTE:
-
 - Tener ya la lsita entera de productos.
-- Crear la plantilla de Programma alimentare
+- Crear la plantilla definitiva de Programma alimentare, con block Piatto
 - Nice to have: sort clients by last visit. Show last visit of client, saved as meta.
 - Pasar CPT ya a codigo.
 - Create the CPT with template and locked groups, especially for programme:
@@ -21,7 +18,16 @@ URGENTE:
 
 # Case Study:
 
-1. Arriva nuovo cliente:
+1. Arriva nuovo cliente: Creare nuovo paziente. Salvare.
+2. Confermare che arriva mail all'utente. Lui dovrebbe poter aggiornare il profilo e password.
+3. Il profile Paziente - WP Utente dovrebbe sincronizzare.
+4. Creare un nuovo programma alimentare per il cliente, partendo da una template.
+
+- Bisogna aver create diversi template per Programma alimentare: /wp-admin/site-editor.php?categoryId=programma-alimentare&postType=wp_block
+- Il pattern del programma alimentare deve aver la categoria Programma Alimentare.
+- Il pattern deve contenere blocchi di tipo Piatto, associati ad un alimento.
+
+5. Creare una nuova dieta. Si puo creare basato in una templae, o basato negli alimenti del programma.
 
 # TODO:
 
